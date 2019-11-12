@@ -23,4 +23,13 @@ router.get('/', function(req, res, next) {
     res.send('API is working properly');
 });
 
+router.get('/accounts', function(req, res, next) {
+
+    connection.query('SELECT * FROM c37_cablink.Account;', (err, results) => {
+        if(err) throw err;
+        res.send(results);
+    });
+
+});
+
 module.exports = router;
