@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import GoogleMapReact from 'google-map-react';
+//import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
+ 
+class SimpleMap extends Component {
+  static defaultProps = {
+    center: {
+      lat: 51.296942,
+      lng: 1.063161
+    },
+    zoom: 15
+  };
+ 
+  render() {
+    return (
+      // Important! Always set the container height explicitly otherwise it won't appear
+      <div style={{ height: '100vh', width: '100%' }}>
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: 'AIzaSyAb2fQDVRAkT8KMln_0HIX6s0zVcz06_3U' }}  // this is our API key
+          defaultCenter={this.props.center}
+          defaultZoom={this.props.zoom}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+          <AnyReactComponent
+            lat={51.296942}
+            lng={1.063161}
+            text="University of Kent"
+          />
+        </GoogleMapReact>
+      </div>
+    );
+  }
 }
-
-export default App;
+ 
+export default SimpleMap;
