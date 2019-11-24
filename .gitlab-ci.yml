@@ -19,4 +19,4 @@ test_async:
 test_db:
   image: mysql
   script:
-  - echo "SELECT 'OK';" | mysql --user=root --password="$MYSQL_ROOT_PASSWORD" --host=mysql "$MYSQL_DATABASE"
+  - echo "SELECT 'OK';" | mysql --user=c37_cablink --password="$MYSQL_ROOT_PASSWORD" --host=dragon "$MYSQL_DATABASE"
