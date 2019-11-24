@@ -1,0 +1,11 @@
+{
+    "name": "route",
+    "description": "Cablink",
+    "engines": {
+        "node": "10.15.0",
+        "npm": "6.7.0"
+    },
+    "scripts": {
+        "start": "(cd ./api && npm install && npm start) & (cd ./client && npm install && npm start)"
+    }
+}
