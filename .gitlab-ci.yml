@@ -1,18 +1,21 @@
-image: node:latest
+ image: node:latest
 
-services:
-  - mysql:latest
+    stages:
+      - build
+      - test
 
-cache:
-  paths:
-    - node_modules/
+    cache:
+      paths:
+        - node_modules/
 
-test_async:
-  script:
-    - npm install
-    - node ./specs/start.js ./specs/async.spec.js
+    install_dependencies:
+      stage: build
+      script:
+        - npm install
+      artifacts:
+        paths:
+          - node_modules/
 
-test_db:
-  script:
-    - npm install
-    - node ./specs/start.js ./specs/db-postgres.spec.js
+    testing_testing:
+      stage: test
+      script: npm run start
