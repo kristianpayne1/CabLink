@@ -3,8 +3,11 @@ image: node:latest
 services:
   - mysql:latest
 
-# This folder is cached between builds
-# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+variables:
+  # Configure mysql environment variables (https://hub.docker.com/_/mysql/)
+  MYSQL_DATABASE: "c37_cablink"
+  MYSQL_ROOT_PASSWORD: "wlindl!>"
+
 cache:
   paths:
     - node_modules/
@@ -14,5 +17,6 @@ test_async:
     - npm install
 
 test_db:
+  image: mysql
   script:
-    - npm install
+  - echo "SELECT 'OK';" | mysql --user=root --password="$MYSQL_ROOT_PASSWORD" --host=mysql "$MYSQL_DATABASE"
