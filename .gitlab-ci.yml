@@ -12,15 +12,10 @@ cache:
   paths:
     - node_modules/
 
-test_api:
+test_app:
   script:
     - npm install
-    - npm run startAPI
-
-test_client:
-  script:
-    - npm install
-    - npm run startClient
+    - npm run start
 
 test_db:
   image: mysql
