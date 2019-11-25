@@ -12,7 +12,7 @@ cache:
   paths:
     - node_modules/
 
-test_async:
+test_app:
   script:
     - npm install
     - npm run start
