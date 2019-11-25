@@ -6,6 +6,7 @@
         "npm": "6.7.0"
     },
     "scripts": {
-        "start": "(cd ./api && npm start) & (cd ./client && npm install && npm run build)"
+        "startAPI": "cd ./api && npm start",
+        "startClient": "cd ./client && npm install && npm run build"
     }
 }
