@@ -24,11 +24,11 @@ router.get('/get/:id', function(req, res, next) {
 });
 
 // update a cab company by id 
-router.post('/update', function(req, res, next) {
+router.post('/update/:id', function(req, res, next) {
   mysqlconnection.query(
     'UPDATE c37_cablink.Cab_Company SET companyName='+req.body.companyName+
     ', phoneNo='+req.body.phoneNo+
-    ' WHERE companyID='+req.params.companyID+';', 
+    ' WHERE companyID='+req.params.id+';', 
   function (error, results) {
     if(error) throw error;
     res.send(JSON.stringify(results));

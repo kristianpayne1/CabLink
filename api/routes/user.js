@@ -24,14 +24,14 @@ router.get('/get/:id', function(req, res, next) {
 });
 
 // update a user by id 
-router.post('/update', function(req, res, next) {
+router.post('/update/:id', function(req, res, next) {
   mysqlconnection.query(
     'UPDATE c37_cablink.User SET firstname='+req.body.firstname+
     ', lastname='+req.body.lastname+
     ', email='+req.body.email+
     ', mobileNo='+req.body.email+
     ', userType='+req.body.userType+
-    ' WHERE userID='+req.params.userID+';', 
+    ' WHERE userID='+req.params.id+';', 
   function (error, results) {
     if(error) throw error;
     res.send(JSON.stringify(results));

@@ -24,14 +24,14 @@ router.get('/get/:id', function(req, res, next) {
 });
 
 // update a billing address by id 
-router.post('/update', function(req, res, next) {
+router.post('/update/:id', function(req, res, next) {
   mysqlconnection.query(
     'UPDATE c37_cablink.Billing_Address SET addressLine1='+req.body.addressLine1+
     ', addressLine2='+req.body.addressLine2+
     ', city='+req.body.city+
     ', county='+req.body.county+
     ', postcode='+req.body.postcode+
-    ' WHERE billingAddressID='+req.params.billingAddressID+';', 
+    ' WHERE billingAddressID='+req.params.id+';', 
   function (error, results) {
     if(error) throw error;
     res.send(JSON.stringify(results));

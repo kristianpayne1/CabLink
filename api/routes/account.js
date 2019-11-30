@@ -24,11 +24,11 @@ router.get('/get/:id', function(req, res, next) {
 });
 
 // update a account by id 
-router.post('/update', function(req, res, next) {
+router.post('/update/:id', function(req, res, next) {
   mysqlconnection.query(
     'UPDATE c37_cablink.Account SET password='+req.body.password+
     ', lastLogin='+req.body.lastLogin+
-    ' WHERE accountID='+req.params.accountID+';', 
+    ' WHERE accountID='+req.params.id+';', 
   function (error, results) {
     if(error) throw error;
     res.send(JSON.stringify(results));
