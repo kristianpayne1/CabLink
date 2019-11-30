@@ -12,6 +12,11 @@ var testAPIRouter = require('./routes/testAPI')
 var cabcompanyRouter = require('./routes/cabcompany');
 var accountRouter = require('./routes/account');
 var paymentDetailsRouter = require('./routes/paymentdetails');
+var billingAddressRouter = require('./routes/billingaddress');
+var driverRouter = require('./routes/driver');
+var carRouter = require('./routes/car');
+var bookingRouter = require('./routes/booking');
+
 
 var app = express();
 
@@ -32,6 +37,10 @@ app.use('/testAPI', testAPIRouter)
 app.use('/cabcompany', cabcompanyRouter);
 app.use('/account', accountRouter);
 app.use('/paymentdetails', paymentDetailsRouter);
+app.use('/billingaddress', billingAddressRouter);
+app.use('/driver', driverRouter);
+app.use('/car', carRouter);
+app.use('/booking', bookingRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
