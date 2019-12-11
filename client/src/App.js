@@ -1,37 +1,55 @@
 import React, { Component } from 'react';
-import GoogleMapReact from 'google-map-react';
+import { GoogleApiWrapper, Marker, InfoWindow} from 'google-maps-react';
 //import logo from './logo.svg';
 import './App.css';
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
- 
-class SimpleMap extends Component {
-  static defaultProps = {
-    center: {
-      lat: 51.296942,
-      lng: 1.063161
-    },
-    zoom: 15
+import CurrentLocation from './map';
+
+class MapContainer extends Component {
+  state = {
+    showingInfoWindow: false,  //Hides or the shows the infoWindow
+    activeMarker: {},          //Shows the active marker upon click
+    selectedPlace: {}          //Shows the infoWindow to the selected place upon a marker
   };
- 
+
+  onMarkerClick = (props, marker, e) =>
+  this.setState({
+    selectedPlace: props,
+    activeMarker: marker,
+    showingInfoWindow: true
+  });
+
+onClose = props => {
+  if (this.state.showingInfoWindow) {
+    this.setState({
+      showingInfoWindow: false,
+      activeMarker: null
+    });
+  }
+};
+
   render() {
     return (
-      // Important! Always set the container height explicitly otherwise it won't appear
-      <div style={{ height: '100vh', width: '100%' }}>
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: 'AIzaSyAb2fQDVRAkT8KMln_0HIX6s0zVcz06_3U' }}  // this is our API key
-          defaultCenter={this.props.center}
-          defaultZoom={this.props.zoom}
+      <CurrentLocation
+        centerAroundCurrentLocation
+        google={this.props.google}
+      >
+        <Marker onClick={this.onMarkerClick} name={'You'}/>
+        <InfoWindow
+          marker={this.state.activeMarker}
+          visible={this.state.showingInfoWindow}
+          onClose={this.onClose}
         >
-          <AnyReactComponent
-            lat={51.296942}
-            lng={1.063161}
-            text="University of Kent"
-          />
-        </GoogleMapReact>
-      </div>
+          <div>
+            <h4>{this.state.selectedPlace.name}</h4>
+          </div>
+        </InfoWindow>
+      </CurrentLocation>
     );
   }
 }
- 
-export default SimpleMap;
+
+
+export default GoogleApiWrapper({
+  apiKey: 'AIzaSyAb2fQDVRAkT8KMln_0HIX6s0zVcz06_3U'
+})(MapContainer);
