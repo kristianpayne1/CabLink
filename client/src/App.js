@@ -6,18 +6,25 @@ import './App.css';
 import CurrentLocation from './map';
 
 class MapContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.child = React.createRef();
+  }
+
   state = {
     showingInfoWindow: false,  //Hides or the shows the infoWindow
     activeMarker: {},          //Shows the active marker upon click
     selectedPlace: {}          //Shows the infoWindow to the selected place upon a marker
   };
 
-  onMarkerClick = (props, marker) =>
+  onMarkerClick = (props, marker) => {
   this.setState({
     selectedPlace: props,
     activeMarker: marker,
     showingInfoWindow: true
   });
+  this.child.current.recenterMap();
+}
 
 onClose = props => {
   if (this.state.showingInfoWindow) {
@@ -33,6 +40,7 @@ onClose = props => {
       <CurrentLocation
         centerAroundCurrentLocation
         google={this.props.google}
+        ref={this.child}
       >
         <Marker onClick={this.onMarkerClick} name={'You'}/>
         <InfoWindow
