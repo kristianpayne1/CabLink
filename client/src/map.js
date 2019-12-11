@@ -76,7 +76,11 @@ export class CurrentLocation extends React.Component {
             {},
             {
               center: center,
-              zoom: zoom
+              zoom: zoom,
+              zoomControl: true,
+              mapTypeControl:false,
+              streetViewControl:false,
+              mapTypeId: google.maps.MapTypeId.ROADMAP 
             }
           );
     
@@ -88,7 +92,7 @@ export class CurrentLocation extends React.Component {
         const { children } = this.props;
     
         if (!children) return;
-    
+
         return React.Children.map(children, c => {
           if (!c) return;
           return React.cloneElement(c, {
