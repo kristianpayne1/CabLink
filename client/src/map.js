@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 //import logo from './logo.svg';
-import CurrentPin from './CurrentPin.js'
+import CurrentPin from './CurrentPin.js';
+import DriverPin from './DriverPin.js';
  
 class GoogleMap extends Component {
   static defaultProps = {
@@ -15,7 +16,40 @@ class GoogleMap extends Component {
   state = {
     currentLat: 0,
     currentLong: 0,
+    drivers: []
   };
+
+  callAPI() {
+    let self = this;
+    fetch('http://localhost:4000/driver/get', {
+        method: 'GET'
+    }).then(function (response) {
+        if (response.status >= 400) {
+            throw new Error("Bad response from server");
+        }
+        return response.json();
+    }).then(function (data) {
+        self.setState({ drivers: data });
+    }).catch(err => {
+        console.log('caught it!', err);
+    })
+};
+
+    getDrivers() 
+    { 
+      this.callAPI();
+      return(     
+      this.state.drivers.map(driver =>
+        <DriverPin
+            lat={driver.currentLat}
+            lng={driver.currentLong}
+            name={driver.firstname}
+            color="black"
+            key={driver.driverID}
+        />
+      )
+    )
+    }
 
   apiIsLoaded = (map, maps) => {
     if (map) {
@@ -26,7 +60,7 @@ class GoogleMap extends Component {
           map.panTo(latLng);
         })
       } else {
-        console.log("not yet")
+        console.log("not found")
       }
     }
   };
@@ -48,6 +82,7 @@ class GoogleMap extends Component {
             name="You"
             color="deepskyblue"
           />
+          {this.getDrivers()}
         </GoogleMapReact>
       </div>
     );

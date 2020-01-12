@@ -1,6 +1,6 @@
 import React from 'react';
 //import ReactDOM from 'react-dom';
-import { Marker } from 'google-maps-react';
+import DriverPin from './DriverPin.js';
 
 export class DriverLocations extends React.Component {
     constructor(props) {
@@ -10,7 +10,7 @@ export class DriverLocations extends React.Component {
 
     callAPI() {
         let self = this;
-        fetch('http://localhost:5000/driver/get', {
+        fetch('http://localhost:4000/driver/get', {
             method: 'GET'
         }).then(function (response) {
             if (response.status >= 400) {
@@ -24,14 +24,21 @@ export class DriverLocations extends React.Component {
         })
     };
 
-    componentWillMount() {
+    componentDidMount() {
         this.callAPI();
     };
 
-    renderDrivers() {
+    render() {
+        return(
         this.state.drivers.map(driver =>
-            <Marker key={driver.driverID} onClick={this.onMarkerClick} name={driver.firstname}
-                position={{ lat: driver.currentLat, lng: driver.currentLong }} />
+            <DriverPin
+                lat={driver.currentLat}
+                lng={driver.currentLong}
+                name={driver.firstname}
+                color="black"
+                key={driver.driverID}
+            />
+        )
         )
     }
 }
