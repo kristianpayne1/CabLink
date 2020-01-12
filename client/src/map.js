@@ -37,7 +37,6 @@ class GoogleMap extends Component {
 
     getDrivers() 
     { 
-      this.callAPI();
       return(     
       this.state.drivers.map(driver =>
         <DriverPin
@@ -62,6 +61,7 @@ class GoogleMap extends Component {
       } else {
         console.log("not found")
       }
+      this.callAPI();
     }
   };
  
