@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import './App.css';
 import GoogleMap from './map.js';
 import NavBar from './NavBar.js';
-import LoginModal from './LoginModal.js';
+import Login from './Login.js';
 
 class App extends Component {
 
@@ -23,7 +23,7 @@ class App extends Component {
     return (
       <div>
         <NavBar handleShow={this.handleLoginShow.bind(this)}/>
-        <LoginModal handleShow={this.state.showModal} handleLoginClose={this.handleLoginClose.bind(this)}/>
+        <Login handleShow={this.state.showModal} handleLoginClose={this.handleLoginClose.bind(this)}/>
         <GoogleMap/>
       </div>
     );

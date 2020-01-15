@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Tabs from 'react-bootstrap/Tabs'
+import Tab from 'react-bootstrap/Tab';
 
-class LoginModal extends Component {
+class Login extends Component {
 
     closeClicked = () => {
         this.props.handleLoginClose();
@@ -14,7 +16,16 @@ class LoginModal extends Component {
                 <Modal.Header closeButton>
                     <Modal.Title>Account</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>This is where account login and registration will go</Modal.Body>
+                <Modal.Body>
+                    <Tabs defaultActiveKey="login" id="uncontrolled-tab-example" fill>
+                        <Tab eventKey="login" title="Login">
+                            This is where login will go
+                        </Tab>
+                        <Tab eventKey="registration" title="Registration">
+                            This is where registration will go
+                        </Tab>
+                    </Tabs>
+                </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={this.closeClicked}>
                         Close
@@ -25,4 +36,4 @@ class LoginModal extends Component {
     }
 }
 
-export default LoginModal;
+export default Login;
