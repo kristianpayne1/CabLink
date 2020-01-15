@@ -5,16 +5,23 @@ import Button from 'react-bootstrap/Button';
 
 class NavBar extends Component {
 
+    loginClicked = () => {
+        this.props.handleShow();
+    }
+    
     render() {
         return (
-            <Navbar bg="light" variant="light">
+            <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
                 <Navbar.Brand href="#home">CabLink</Navbar.Brand>
-                <Nav className="mr-auto">
-                    <Nav.Link href="#home">Home</Nav.Link>
-                    <Nav.Link href="#booking">Booking</Nav.Link>
-                    <Nav.Link href="#help">Help</Nav.Link>
-                </Nav>
-                    <Button variant="outline-primary">Login</Button>
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
+                    <Nav className="mr-auto">
+                        <Nav.Link href="#home">Home</Nav.Link>
+                        <Nav.Link href="#booking">Booking</Nav.Link>
+                        <Nav.Link href="#help">Help</Nav.Link>
+                    </Nav>
+                    <Button variant="outline-primary" onClick= {this.loginClicked}>Login</Button>
+                </Navbar.Collapse>
             </Navbar>
         );
     }
