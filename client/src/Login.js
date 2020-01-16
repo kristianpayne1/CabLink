@@ -3,6 +3,8 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab';
+import LoginForm from './LoginForm.js';
+import RegisterForm from './RegisterForm.js';
 
 class Login extends Component {
 
@@ -19,10 +21,10 @@ class Login extends Component {
                 <Modal.Body>
                     <Tabs defaultActiveKey="login" id="uncontrolled-tab-example" fill>
                         <Tab eventKey="login" title="Login">
-                            This is where login will go
+                            <LoginForm/>
                         </Tab>
-                        <Tab eventKey="registration" title="Registration">
-                            This is where registration will go
+                        <Tab eventKey="register" title="Register">
+                            <RegisterForm/>
                         </Tab>
                     </Tabs>
                 </Modal.Body>
