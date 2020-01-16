@@ -2,27 +2,32 @@ import React, { Component } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
+import {Link } from "react-router-dom";
 
 class NavBar extends Component {
 
     loginClicked = () => {
         this.props.handleShow();
     }
-    
+
     render() {
         return (
-            <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-                <Navbar.Brand href="#home">CabLink</Navbar.Brand>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="mr-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
-                        <Nav.Link href="#booking">Booking</Nav.Link>
-                        <Nav.Link href="#help">Help</Nav.Link>
-                    </Nav>
-                    <Button variant="outline-primary" onClick= {this.loginClicked}>Login</Button>
-                </Navbar.Collapse>
-            </Navbar>
+            <div>
+                <div>
+                    <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+                        <Navbar.Brand as={Link} to="/">CabLink</Navbar.Brand>
+                        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                        <Navbar.Collapse id="responsive-navbar-nav">
+                            <Nav className="mr-auto">
+                                <Nav.Link as={Link} to="/">Home</Nav.Link>
+                                <Nav.Link as={Link} to="/booking">Booking</Nav.Link>
+                                <Nav.Link as={Link} to="/help">Help</Nav.Link>
+                            </Nav>
+                            <Button variant="outline-primary" onClick={this.loginClicked}>Login</Button>
+                        </Navbar.Collapse>
+                    </Navbar>
+                </div>
+            </div>
         );
     }
 }
