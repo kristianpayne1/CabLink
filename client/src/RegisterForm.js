@@ -4,10 +4,23 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 class RegisterForm extends Component {
+    state = {
+        validated : false,
+    };
+
+    handleSubmit = event => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+    
+        this.setState({validated: true});
+      };
 
     render() {
         return (
-            <Form noValidate >
+            <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit}>
                 <Form.Group md="4" controlId="validationFirstName">
                     <Form.Label>First name</Form.Label>
                     <Form.Control
@@ -58,14 +71,17 @@ class RegisterForm extends Component {
                 </Form.Group>
                 <Form.Group controlId="formPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" />
+                    <Form.Control type="password" placeholder="Password" required/>
                     <Form.Control.Feedback type="invalid">
                         Please enter a valid password.
                     </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group controlId="formPasswordConfirm">
                     <Form.Label>Confirm password</Form.Label>
-                    <Form.Control type="password" placeholder="Confirm Password" />
+                    <Form.Control type="password" placeholder="Confirm Password" required/>
+                    <Form.Control.Feedback type="invalid">
+                        The confirmation password does not match.
+                    </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group>
                     <Form.Check
