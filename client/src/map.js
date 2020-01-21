@@ -57,7 +57,7 @@ class GoogleMap extends Component {
   apiIsLoaded = (map, maps) => {
     if (map) {
       this.setState({ map: map, maps: maps });
-      this.setState({mapControlShouldRender: true});
+      this.setState({ mapControlShouldRender: true });
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
           this.setState({ currentLat: position.coords.latitude, currentLong: position.coords.longitude });
@@ -73,10 +73,13 @@ class GoogleMap extends Component {
 
   recenterToUser = () => {
     if (this.state.map) {
-      if (this.state.currentLat !== 0 && this.state.currentLong !== 0) {
-        const latLng = new this.state.maps.LatLng(parseFloat(this.state.currentLat), parseFloat(this.state.currentLong)); // Makes a latlng
-        //this.state.map.setZoom(15); zoom in not smooth will fix later
-        this.state.map.panTo(latLng);
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          this.setState({ currentLat: position.coords.latitude, currentLong: position.coords.longitude });
+          const latLng = new this.state.maps.LatLng(parseFloat(this.state.currentLat), parseFloat(this.state.currentLong)); // Makes a latlng
+          //this.state.map.setZoom(15); zoom in not smooth will fix later
+          this.state.map.panTo(latLng);
+        });
       } else {
         console.log("User not found yet");
       }
