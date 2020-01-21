@@ -54,12 +54,22 @@ class GoogleMap extends Component {
     )
   }
 
+  onSpinner = () => {
+    this.LocationButton.showSpinner();
+  }
+
+  offSpinner = () => {
+    this.LocationButton.hideSpinner();
+  }
+
   apiIsLoaded = (map, maps) => {
     if (map) {
       this.setState({ map: map, maps: maps });
       this.setState({ mapControlShouldRender: true });
       if (navigator.geolocation) {
+        this.onSpinner();
         navigator.geolocation.getCurrentPosition((position) => {
+          this.offSpinner();
           this.setState({ currentLat: position.coords.latitude, currentLong: position.coords.longitude });
           const latLng = new maps.LatLng(parseFloat(this.state.currentLat), parseFloat(this.state.currentLong)); // Makes a latlng
           map.panTo(latLng);
@@ -74,7 +84,9 @@ class GoogleMap extends Component {
   recenterToUser = () => {
     if (this.state.map) {
       if (navigator.geolocation) {
+        this.onSpinner();
         navigator.geolocation.getCurrentPosition((position) => {
+          this.offSpinner();
           this.setState({ currentLat: position.coords.latitude, currentLong: position.coords.longitude });
           const latLng = new this.state.maps.LatLng(parseFloat(this.state.currentLat), parseFloat(this.state.currentLong)); // Makes a latlng
           //this.state.map.setZoom(15); zoom in not smooth will fix later
@@ -109,7 +121,7 @@ class GoogleMap extends Component {
           <MapControl map={this.state.map || null}
             controlPosition={this.state.maps ? this.state.maps.ControlPosition.RIGHT_BOTTOM : null}
           >
-            <LocationButton recenter={this.recenterToUser.bind(this)} />
+            <LocationButton recenter={this.recenterToUser.bind(this)} onRef={ref => (this.LocationButton = ref)}/>
           </MapControl>
         </GoogleMapReact>
       </div>
