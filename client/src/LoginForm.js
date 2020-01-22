@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button';
 class LoginForm extends Component {
     state = {
         validated : false,
+        users: [],
+        userID: ''
     };
 
     handleSubmit = event => {
@@ -15,14 +17,45 @@ class LoginForm extends Component {
         }
     
         this.setState({validated: true});
+        this.handleLogin();
+      };
+
+    handleLogin() {
+        let email = this.emailInput.current.value;
+        let password = this.passwordInput.current.value;
+        this.callAPI(email);
+        if (this.state.users.email === email && this.state.users.password === password) {
+            this.state.userID = this.state.users.userID;
+            console.log(this.state.userID);
+        }
+        console.log("finished");
+        
+    };
+
+    callAPI(email) {
+        let self = this;
+        fetch('http://localhost:5000/user/get/'+email+ {
+          method: 'GET'
+        }).then(function (response) {
+          if (response.status >= 400) {
+            throw new Error("Bad response from server");
+          }
+          return response.json();
+        }).then(function (data) {
+          self.setState({ users: data });
+        }).catch(err => {
+          console.log('caught it!', err);
+        })
       };
 
     render() {
+        this.emailInput = React.createRef();
+        this.passwordInput = React.createRef();
         return (
             <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit}>
                 <Form.Group controlId="formEmail">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" required/>
+                    <Form.Control ref={this.emailInput} type="email" placeholder="Enter email" required/>
                     <Form.Control.Feedback type="invalid">
                         Please enter a valid email.
                     </Form.Control.Feedback>
@@ -30,7 +63,7 @@ class LoginForm extends Component {
 
                 <Form.Group controlId="formPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" required/>
+                    <Form.Control ref={this.passwordInput} type="password" placeholder="Password" required/>
                     <Form.Control.Feedback type="invalid">
                         Please enter a valid password.
                     </Form.Control.Feedback>
