@@ -20,3 +20,30 @@
 .App-link {
   color: #09d3ac;
 }
+
+.sidebar {
+  position: absolute;
+  top: 60px;
+  left: -300px;
+  height: 100%;
+  width: 300px;
+  transition: left .3s ease-in-out;
+  background-color: white;
+}
+.sidebar-toggle {
+  position: absolute;
+  top: 20%;
+  right: -60px;
+  height: 60px;
+  width: 60px;
+  z-index: 1;
+}
+
+.sidebar.open {
+    position: absolute;
+    left: 0;
+}
+
+.conatiner {
+  position: relative;
+}
