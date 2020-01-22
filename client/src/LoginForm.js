@@ -10,14 +10,15 @@ class LoginForm extends Component {
     };
 
     handleSubmit = event => {
+        event.preventDefault();
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
-          event.preventDefault();
           event.stopPropagation();
         }
-    
-        this.setState({validated: true});
-        this.handleLogin();
+        else{
+            this.setState({validated: true});
+            this.handleLogin();
+        }
       };
 
     handleLogin() {
@@ -28,13 +29,13 @@ class LoginForm extends Component {
             this.state.userID = this.state.users.userID;
             console.log(this.state.userID);
         }
-        console.log("finished");
         
     };
 
     callAPI(email) {
         let self = this;
-        fetch('http://localhost:5000/user/get/'+email+ {
+        console.log(email);
+        fetch('http://localhost:5000/user/get/'+email, {
           method: 'GET'
         }).then(function (response) {
           if (response.status >= 400) {
