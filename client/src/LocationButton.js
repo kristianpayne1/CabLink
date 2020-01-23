@@ -28,7 +28,7 @@ class LocationButton extends Component {
         return (
             <Button variant="light" onClick={this.gpsClicked}>
                 { this.state.showSpinner ? <Spinner animation="border" size='sm'/> 
-                : <Image src={require('./images/gps-button.png')} height='25px' width='25px' /> }
+                : <Image src={require('./images/gps-button.png')} height='20px' width='20px'/> }
             </Button>
         );
     }

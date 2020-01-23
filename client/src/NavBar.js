@@ -23,7 +23,9 @@ class NavBar extends Component {
                                 <Nav.Link as={Link} to="/booking">Booking</Nav.Link>
                                 <Nav.Link as={Link} to="/help">Help</Nav.Link>
                             </Nav>
-                            <Button variant="outline-primary" onClick={this.loginClicked}>Login</Button>
+                            <div className="text-center">
+                                <Button variant="outline-primary" onClick={this.loginClicked}>Login</Button>
+                            </div>
                         </Navbar.Collapse>
                     </Navbar>
                 </div>
