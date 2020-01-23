@@ -47,3 +47,13 @@
 .conatiner {
   position: relative;
 }
+#gpsbutton {
+  width: 40px;
+  height: 40px;
+  padding: 10% 10% 10% 10%;
+  margin-right: 10px;
+}
+#gpsimg {
+  width: 100%;
+  height: 100%;
+}

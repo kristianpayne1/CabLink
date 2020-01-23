@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image'
 import Spinner from 'react-bootstrap/Spinner';
+import './App.css';
 
 class LocationButton extends Component {
     state = {
@@ -26,9 +27,9 @@ class LocationButton extends Component {
 
     render() {
         return (
-            <Button variant="light" onClick={this.gpsClicked}>
+            <Button id="gpsbutton" variant="light" onClick={this.gpsClicked}>
                 { this.state.showSpinner ? <Spinner animation="border" size='sm'/> 
-                : <Image src={require('./images/gps-button.png')} height='20px' width='20px'/> }
+                : <Image id ="gpsimg" src={require('./images/gps-button.png')}/> }
             </Button>
         );
     }
