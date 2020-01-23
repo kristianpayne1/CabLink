@@ -23,8 +23,8 @@ router.get('/get/:id', function(req, res, next) {
   });
 });
 
-router.get('/get/:email', function(req, res, next) {
-  mysqlconnection.query('SELECT * FROM c37_cablink.User INNER JOIN c37_cablink.Account ON User.userID=Account.userID WHERE email = '+req.params.email+';', (error, results) => {
+router.get('/get/email/:email', function(req, res, next) {
+  mysqlconnection.query('SELECT * FROM c37_cablink.User INNER JOIN c37_cablink.Account ON User.userID=Account.userID WHERE email = "'+req.params.email+'";', (error, results) => {
       if(error) throw error;
       res.send(results);
   });

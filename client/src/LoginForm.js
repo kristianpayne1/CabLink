@@ -26,7 +26,7 @@ class LoginForm extends Component {
         let password = this.passwordInput.current.value;
         this.callAPI(email);
         if (this.state.users.email === email && this.state.users.password === password) {
-            this.state.userID = this.state.users.userID;
+            this.setState({userID: this.state.users.userID}) ;
             console.log(this.state.userID);
         }
         
@@ -35,7 +35,7 @@ class LoginForm extends Component {
     callAPI(email) {
         let self = this;
         console.log(email);
-        fetch('http://localhost:5000/user/get/'+email, {
+        fetch('http://localhost:5000/user/get/email/'+email, {
           method: 'GET'
         }).then(function (response) {
           if (response.status >= 400) {
