@@ -16,9 +16,6 @@ class GoogleMap extends Component {
   };
 
   state = {
-    currentLat: 0,
-    currentLong: 0,
-    drivers: [],
     map: null,
     maps: null,
     mapControlShouldRender: false
@@ -34,7 +31,7 @@ class GoogleMap extends Component {
       }
       return response.json();
     }).then(function (data) {
-      self.setState({ drivers: data });
+      self.props.updateDrivers(data);
     }).catch(err => {
       console.log('caught it!', err);
     })
@@ -42,7 +39,7 @@ class GoogleMap extends Component {
 
   getDrivers() {
     return (
-      this.state.drivers.map(driver =>
+      this.props.drivers.map(driver =>
         <DriverPin
           lat={driver.currentLat}
           lng={driver.currentLong}
@@ -70,8 +67,8 @@ class GoogleMap extends Component {
         this.onSpinner();
         navigator.geolocation.getCurrentPosition((position) => {
           this.offSpinner();
-          this.setState({ currentLat: position.coords.latitude, currentLong: position.coords.longitude });
-          const latLng = new maps.LatLng(parseFloat(this.state.currentLat), parseFloat(this.state.currentLong)); // Makes a latlng
+          this.props.updateLocation(position.coords.latitude, position.coords.longitude);
+          const latLng = new maps.LatLng(parseFloat(this.props.currentLat), parseFloat(this.props.currentLong)); // Makes a latlng
           map.panTo(latLng);
         })
       } else {
@@ -87,8 +84,8 @@ class GoogleMap extends Component {
         this.onSpinner();
         navigator.geolocation.getCurrentPosition((position) => {
           this.offSpinner();
-          this.setState({ currentLat: position.coords.latitude, currentLong: position.coords.longitude });
-          const latLng = new this.state.maps.LatLng(parseFloat(this.state.currentLat), parseFloat(this.state.currentLong)); // Makes a latlng
+          this.props.updateLocation(position.coords.latitude, position.coords.longitude);
+          const latLng = new this.state.maps.LatLng(parseFloat(this.props.currentLat), parseFloat(this.props.currentLong)); // Makes a latlng
           //this.state.map.setZoom(15); zoom in not smooth will fix later
           this.state.map.panTo(latLng);
         });
@@ -112,8 +109,8 @@ class GoogleMap extends Component {
           onGoogleApiLoaded={({ map, maps }) => this.apiIsLoaded(map, maps)}
         >
           <CurrentPin
-            lat={this.state.currentLat}
-            lng={this.state.currentLong}
+            lat={this.props.currentLat}
+            lng={this.props.currentLong}
             name="You"
             color="deepskyblue"
           />

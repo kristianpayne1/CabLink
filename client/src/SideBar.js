@@ -30,6 +30,9 @@ class SideBar extends Component {
                                                 <Button variant="outline-primary">Search</Button>
                                             </InputGroup.Append>
                                         </InputGroup>
+                                        <Button variant="outline-primary" size="sm" block>
+                                            Use current location
+                                        </Button>
                                     </Form.Group>
                                     <Form.Group controlId="formDropOff">
                                         <InputGroup className="mb-3">

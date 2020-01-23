@@ -4,17 +4,29 @@ import SideBar from './SideBar.js';
 
 class Booking extends Component {
     state = {
-        sidebarOpen: false
+        sidebarOpen: false,
+        currentLat: 0,
+        currentLong: 0,
+        drivers: [],
     };
 
     handleViewSidebar = () => {
         this.setState({ sidebarOpen: !this.state.sidebarOpen });
     }
 
+    setDrivers = (data) => {
+        this.setState({ drivers: data })
+    }
+
+    setLocation = (lat, long) => {
+        console.log(lat + ' ' + long);
+        this.setState({ currentLat: lat, currentLong: long })
+    }
+
     render() {
         return (
             <div>
-                <GoogleMap />
+                <GoogleMap drivers={this.state.drivers} currentLat={this.state.currentLat} currentLong={this.state.currentLong} updateDrivers={this.setDrivers} updateLocation={this.setLocation} />
                 <SideBar isOpen={this.state.sidebarOpen} toggleSidebar={this.handleViewSidebar} />
             </div>
         );
