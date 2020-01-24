@@ -27,7 +27,7 @@ class Booking extends Component {
         return (
             <div>
                 <GoogleMap drivers={this.state.drivers} currentLat={this.state.currentLat} currentLong={this.state.currentLong} updateDrivers={this.setDrivers} updateLocation={this.setLocation} />
-                <SideBar isOpen={this.state.sidebarOpen} toggleSidebar={this.handleViewSidebar} />
+                <SideBar isOpen={this.state.sidebarOpen} drivers={this.state.drivers} currentLat={this.state.currentLat} currentLong={this.state.currentLong} toggleSidebar={this.handleViewSidebar} />
             </div>
         );
     }

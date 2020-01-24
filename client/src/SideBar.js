@@ -7,6 +7,12 @@ import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 
 class SideBar extends Component {
+
+    handleCurrentLocation = () => {
+        let pickupSearch = document.getElementById('Pickup');
+        pickupSearch.value = this.props.currentLat + ' ' + this.props.currentLong;
+    }
+
     render() {
         let sidebarClass = this.props.isOpen ? 'sidebar open' : 'sidebar';
         return (
@@ -21,16 +27,17 @@ class SideBar extends Component {
                                 <Form>
                                     <Form.Group controlId="formPickUp">
                                         <InputGroup className="mb-3">
-                                            <FormControl
+                                            <FormControl id="Pickup"
                                                 placeholder="Pick up location"
                                                 aria-label="Pick up location"
                                                 aria-describedby="basic-addon2"
+                                                value=''
                                             />
                                             <InputGroup.Append>
                                                 <Button variant="outline-primary">Search</Button>
                                             </InputGroup.Append>
                                         </InputGroup>
-                                        <Button variant="outline-primary" size="sm" block>
+                                        <Button variant="outline-primary" size="sm" onClick={this.handleCurrentLocation} block>
                                             Use current location
                                         </Button>
                                     </Form.Group>
