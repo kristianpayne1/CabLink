@@ -2,16 +2,9 @@ import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
-import Form from 'react-bootstrap/Form';
+import SearchLocationForm from './SearchLocationForm';
 
 class SideBar extends Component {
-
-    handleCurrentLocation = () => {
-        let pickupSearch = document.getElementById('Pickup');
-        pickupSearch.value = this.props.currentLat + ' ' + this.props.currentLong;
-    }
 
     render() {
         let sidebarClass = this.props.isOpen ? 'sidebar open' : 'sidebar';
@@ -24,36 +17,7 @@ class SideBar extends Component {
                          </Accordion.Toggle>
                         <Accordion.Collapse eventKey="0">
                             <Card.Body>
-                                <Form>
-                                    <Form.Group controlId="formPickUp">
-                                        <InputGroup className="mb-3">
-                                            <FormControl id="Pickup"
-                                                placeholder="Pick up location"
-                                                aria-label="Pick up location"
-                                                aria-describedby="basic-addon2"
-                                                value=''
-                                            />
-                                            <InputGroup.Append>
-                                                <Button variant="outline-primary">Search</Button>
-                                            </InputGroup.Append>
-                                        </InputGroup>
-                                        <Button variant="outline-primary" size="sm" onClick={this.handleCurrentLocation} block>
-                                            Use current location
-                                        </Button>
-                                    </Form.Group>
-                                    <Form.Group controlId="formDropOff">
-                                        <InputGroup className="mb-3">
-                                            <FormControl
-                                                placeholder="Drop off location"
-                                                aria-label="Drop off location"
-                                                aria-describedby="basic-addon2"
-                                            />
-                                            <InputGroup.Append>
-                                                <Button variant="outline-primary">Search</Button>
-                                            </InputGroup.Append>
-                                        </InputGroup>
-                                    </Form.Group>
-                                </Form>
+                                <SearchLocationForm currentLat={this.props.currentLat} currentLong={this.props.currentLong}/>
                             </Card.Body>
                         </Accordion.Collapse>
                     </Card>
