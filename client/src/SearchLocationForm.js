@@ -6,7 +6,7 @@ import SearchInput from './SearchInput.js';
 class SearchLocationForm extends Component {
 
     handleCurrentLocation = () => {
-        let pickupSearch = document.getElementById('pickUp');
+        let pickupSearch = document.getElementById('autocomplete');
         pickupSearch.value = this.props.currentLat + ' ' + this.props.currentLong;
     }
 
