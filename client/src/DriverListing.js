@@ -5,12 +5,13 @@ class DriverListing extends Component {
 
     listDrivers() {
         return (
-            this.props.drivers.map(driver =>
-                <div>
+            this.props.drivers.map((driver, i) =>
+                <div key={i}>
                     <DriverCard
                         name={driver.firstname + ' ' + driver.lastname}
                         company='Example company'
                         mobileNo={driver.mobileNo}
+                        key={i}
                     />
                     <br />
                 </div>

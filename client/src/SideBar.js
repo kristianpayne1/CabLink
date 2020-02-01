@@ -27,7 +27,7 @@ class SideBar extends Component {
                             Choose cab
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey="1">
-                            <Card.Body style={{'max-height': '70vh', 'overflow-y': 'auto'}}>
+                            <Card.Body style={{'maxHeight': '70vh', 'overflowY': 'auto'}}>
                                 <DriverListing drivers={this.props.drivers}/>
                             </Card.Body>
                         </Accordion.Collapse>

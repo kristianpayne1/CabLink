@@ -35,7 +35,7 @@ class HomeAccordion extends Component {
                 <p>If your question isn't answered above then please send us your question below and we will respond as soon as possible!</p>
 
                 <Form id="form">
-                    <Form.Group controlId="formQuestion">
+                    <Form.Group>
                         <Form.Control as="textarea" rows="4" placeholder="Enter question here..." id="questionfield"/>
                         <Form.Control type="email" placeholder="Email Address" id="emailfield"/>
                     </Form.Group>
