@@ -18,7 +18,7 @@ class SideBar extends Component {
                          </Accordion.Toggle>
                         <Accordion.Collapse eventKey="0">
                             <Card.Body>
-                                <SearchLocationForm currentLat={this.props.currentLat} currentLong={this.props.currentLong}/>
+                                <SearchLocationForm currentLat={this.props.currentLat} currentLong={this.props.currentLong} handlePickup={this.props.handlePickup}/>
                             </Card.Body>
                         </Accordion.Collapse>
                     </Card>

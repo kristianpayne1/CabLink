@@ -5,6 +5,7 @@ import CurrentPin from './CurrentPin.js';
 import DriverPin from './DriverPin.js';
 import LocationButton from './LocationButton.js';
 import MapControl from './MapControl.js';
+import PickupPin from './PickupPin.js';
 
 class GoogleMap extends Component {
   static defaultProps = {
@@ -18,7 +19,9 @@ class GoogleMap extends Component {
   state = {
     map: null,
     maps: null,
-    mapControlShouldRender: false
+    mapControlShouldRender: false,
+    pickupLat: 0,
+    pickupLong: 0,
   };
 
   callAPI() {
@@ -50,6 +53,13 @@ class GoogleMap extends Component {
         />
       )
     )
+  }
+
+  setPickupMarker = (lat, long) => {
+    if (!(lat === null && long === null)) {
+      console.log("Showing pickup location");
+      this.setState({pickupLat: lat, pickupLong: long});
+    }
   }
 
   onSpinner = () => {
@@ -116,10 +126,16 @@ class GoogleMap extends Component {
             color="deepskyblue"
           />
           {this.getDrivers()}
+          <PickupPin
+            lat={this.state.pickupLat}
+            lng={this.state.pickupLong}
+            name="Pick up location"
+            color="green"
+          />         
           <MapControl map={this.state.map || null}
             controlPosition={this.state.maps ? this.state.maps.ControlPosition.RIGHT_BOTTOM : null}
           >
-            <LocationButton recenter={this.recenterToUser.bind(this)} onRef={ref => (this.LocationButton = ref)}/>
+            <LocationButton recenter={this.recenterToUser.bind(this)} onRef={ref => (this.LocationButton = ref)} />
           </MapControl>
         </GoogleMapReact>
       </div>

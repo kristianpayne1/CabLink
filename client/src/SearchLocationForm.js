@@ -9,7 +9,10 @@ class SearchLocationForm extends Component {
 
     handleCurrentLocation = () => {
         let pickupSearch = document.getElementById('pickupLocation');
-        pickupSearch.value = this.props.currentLat + ' ' + this.props.currentLong;
+        if (!(this.props.currentLat === 0 && this.props.currentLong === 0)) {
+            pickupSearch.value = this.props.currentLat + ' ' + this.props.currentLong;
+            this.props.handlePickup(this.props.currentLat, this.props.currentLong);
+        }
     }
 
     render() {
@@ -19,7 +22,7 @@ class SearchLocationForm extends Component {
                     <InputGroup className="mb-3">
                         <FormControl id='pickupLocation'
                             placeholder='Pick up location'
-                            aria-label='Puck up location'
+                            aria-label='Pick up location'
                             aria-describedby="basic-addon2"
                             value=''
                         />
@@ -27,12 +30,12 @@ class SearchLocationForm extends Component {
                             <Button variant="outline-primary">Search</Button>
                         </InputGroup.Append>
                     </InputGroup>
-                    <Button variant="outline-primary" size="sm" onClick={this.handleCurrentLocation} block>
+                    <Button variant="outline-primary" size="sm" onClick={this.handleCurrentLocation} id='locationButton' block>
                         Use current location
                      </Button>
                 </Form.Group>
                 <Form.Group>
-                <InputGroup className="mb-3">
+                    <InputGroup className="mb-3">
                         <FormControl id='dropoffLocation'
                             placeholder='Drop off location'
                             aria-label='Drop off location'

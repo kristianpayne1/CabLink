@@ -3,6 +3,11 @@ import GoogleMap from './map.js';
 import SideBar from './SideBar.js';
 
 class Booking extends Component {
+    constructor(props){
+        super(props);
+        this.map = React.createRef();
+    }
+
     state = {
         sidebarOpen: false,
         currentLat: 0,
@@ -22,6 +27,10 @@ class Booking extends Component {
         this.setState({ currentLat: lat, currentLong: long })
     }
 
+    handlePickup = (lat, long) => {
+        this.map.current.setPickupMarker(lat, long);
+    }
+
     render() {
         return (
             <div>
@@ -31,13 +40,15 @@ class Booking extends Component {
                     currentLong={this.state.currentLong} 
                     updateDrivers={this.setDrivers} 
                     updateLocation={this.setLocation} 
+                    ref={this.map}
                 />
                 <SideBar
                     isOpen={this.state.sidebarOpen} 
                     drivers={this.state.drivers} 
                     currentLat={this.state.currentLat} 
                     currentLong={this.state.currentLong} 
-                    toggleSidebar={this.handleViewSidebar} 
+                    toggleSidebar={this.handleViewSidebar}
+                    handlePickup={this.handlePickup} 
                 />
             </div>
         );
