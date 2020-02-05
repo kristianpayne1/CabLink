@@ -54,7 +54,7 @@ router.get('/delete/:id', function(req, res, next) {
   });
 });
 
-
+ // Create a new user.
 router.post('/new', function(req, res, next) {
     mysqlconnection.query(
         'INSERT INTO c37_cablink.User (firstname, lastname, email, mobileNo, userType) VALUES ('
