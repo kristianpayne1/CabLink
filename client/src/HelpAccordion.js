@@ -32,19 +32,18 @@ class HomeAccordion extends Component {
                     </Card>
                 </Accordion>
 
-                <p>If your question isn't answered above then please send us your question below and we will respond as soon as possible!</p>
+                <p><b>If your question isn't answered above then please send us your question below and we will respond as soon as possible!</b></p>
 
                 <Form id="form">
                     <Form.Group controlId="formQuestion">
                         <Form.Control as="textarea" rows="4" placeholder="Enter question here..." id="questionfield"/>
                         <Form.Control type="email" placeholder="Email Address" id="emailfield"/>
                     </Form.Group>
-                    <Button variant="primary" type="submit" id="formbutton">submit</Button>
+                    <Button variant="primary" type="submit" id="formbutton">Submit</Button>
                 </Form>
                 
             </div>
         );
-
     }
 }
 export default HomeAccordion;
