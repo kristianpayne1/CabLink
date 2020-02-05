@@ -3,7 +3,6 @@ import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import './HelpAccordion.css';
 
 class HomeAccordion extends Component {
     render() {
@@ -36,8 +35,10 @@ class HomeAccordion extends Component {
 
                 <Form id="form">
                     <Form.Group>
-                        <Form.Control as="textarea" rows="4" placeholder="Enter question here..." id="questionfield"/>
+                        <Form.Control as="textarea" maxLength="150" rows="4" placeholder="Enter question here..." id="questionfield"/>
+                        <Form.Text className="text-muted">150 Character Limit</Form.Text>
                         <Form.Control type="email" placeholder="Email Address" id="emailfield"/>
+                        
                     </Form.Group>
                     <Button variant="primary" type="submit" id="formbutton">Submit</Button>
                 </Form>
