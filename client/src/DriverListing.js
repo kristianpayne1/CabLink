@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import DriverCard from './DriverCard.js';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 class DriverListing extends Component {
 
@@ -22,6 +24,17 @@ class DriverListing extends Component {
     render() {
         return (
             <div>
+                <DropdownButton
+                    key='dropdown'
+                    id={'sortby-dropdown'}
+                    size="sm"
+                    variant="secondary-light"
+                    title="Sort by"
+                >
+                    <Dropdown.Item eventKey="1">Recommended</Dropdown.Item>
+                    <Dropdown.Item eventKey="2">Fastest response</Dropdown.Item>
+                    <Dropdown.Item eventKey="3">Lowest price</Dropdown.Item>
+                </DropdownButton>
                 {this.listDrivers()}
             </div>
         );
