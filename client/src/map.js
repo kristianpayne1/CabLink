@@ -34,6 +34,7 @@ class GoogleMap extends Component {
       self.props.updateDrivers(data);
     }).catch(err => {
       console.log('caught it!', err);
+      console.log('Make sure database is connected');
     })
   };
 

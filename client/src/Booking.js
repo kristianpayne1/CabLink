@@ -19,15 +19,26 @@ class Booking extends Component {
     }
 
     setLocation = (lat, long) => {
-        console.log(lat + ' ' + long);
         this.setState({ currentLat: lat, currentLong: long })
     }
 
     render() {
         return (
             <div>
-                <GoogleMap drivers={this.state.drivers} currentLat={this.state.currentLat} currentLong={this.state.currentLong} updateDrivers={this.setDrivers} updateLocation={this.setLocation} />
-                <SideBar isOpen={this.state.sidebarOpen} drivers={this.state.drivers} currentLat={this.state.currentLat} currentLong={this.state.currentLong} toggleSidebar={this.handleViewSidebar} />
+                <GoogleMap 
+                    drivers={this.state.drivers} 
+                    currentLat={this.state.currentLat} 
+                    currentLong={this.state.currentLong} 
+                    updateDrivers={this.setDrivers} 
+                    updateLocation={this.setLocation} 
+                />
+                <SideBar
+                    isOpen={this.state.sidebarOpen} 
+                    drivers={this.state.drivers} 
+                    currentLat={this.state.currentLat} 
+                    currentLong={this.state.currentLong} 
+                    toggleSidebar={this.handleViewSidebar} 
+                />
             </div>
         );
     }
