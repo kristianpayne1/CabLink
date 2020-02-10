@@ -19,13 +19,13 @@ class SearchLocationForm extends Component {
         return (
             <Form>
                 <Form.Group>
-                    <SearchInput id='pickUp' name='Pick up location'/>
+                    <SearchInput id='pickupLocation' name='Pick up location'/>
                     <Button variant="outline-primary" size="sm" onClick={this.handleCurrentLocation} id='locationButton' block>
                         Use current location
                      </Button>
                 </Form.Group>
                 <Form.Group>
-                    <SearchInput id='dropOff' name='Drop off location'/>
+                    <SearchInput id='dropoffLocation' name='Drop off location'/>
                 </Form.Group>
             </Form>
         );
