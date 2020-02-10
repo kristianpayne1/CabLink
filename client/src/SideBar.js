@@ -19,7 +19,11 @@ class SideBar extends Component {
                          </Accordion.Toggle>
                         <Accordion.Collapse eventKey="0">
                             <Card.Body>
-                                <SearchLocationForm currentLat={this.props.currentLat} currentLong={this.props.currentLong} handlePickup={this.props.handlePickup}/>
+                                <SearchLocationForm 
+                                    currentLat={this.props.currentLat} 
+                                    currentLong={this.props.currentLong} 
+                                    handlePickup={this.props.handlePickup} 
+                                />
                             </Card.Body>
                         </Accordion.Collapse>
                     </Card>
@@ -28,8 +32,8 @@ class SideBar extends Component {
                             Choose cab
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey="1">
-                            <Card.Body style={{'maxHeight': '70vh', 'overflowY': 'auto'}}>
-                                <DriverListing drivers={this.props.drivers}/>
+                            <Card.Body style={{ 'maxHeight': '70vh', 'overflowY': 'auto' }}>
+                                <DriverListing drivers={this.props.drivers} />
                             </Card.Body>
                         </Accordion.Collapse>
                     </Card>

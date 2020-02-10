@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import Script from 'react-load-script';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
+
+const google = window.google;
 
 class SearchInput extends Component {
 
@@ -16,10 +17,9 @@ class SearchInput extends Component {
         };
     }
 
-    handleScriptLoad = () => {
+    componentDidMount = () => {
         const options = { types: ['address'] };
 
-        /*global google*/
         this.autocomplete = new google.maps.places.Autocomplete(
             document.getElementById(this.props.id),
             options);
