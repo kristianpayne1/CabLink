@@ -59,9 +59,6 @@ class SearchInput extends Component {
     render() {
         return (
             <InputGroup className="mb-3">
-                <Script url="https://maps.googleapis.com/maps/api/js?key=AIzaSyAb2fQDVRAkT8KMln_0HIX6s0zVcz06_3U&libraries=places"
-                    onLoad={this.handleScriptLoad}
-                />
                 <FormControl id={this.props.id}
                     placeholder={this.props.name}
                     aria-label={this.props.name}

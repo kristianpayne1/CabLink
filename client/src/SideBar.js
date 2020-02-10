@@ -9,6 +9,7 @@ class SideBar extends Component {
 
     render() {
         let sidebarClass = this.props.isOpen ? 'sidebar open' : 'sidebar';
+        let sidebarButton = this.props.isOpen ? 'sidebar-toggle open' : 'sidebar-toggle';
         return (
             <div className={sidebarClass}>
                 <Accordion defaultActiveKey="0">
@@ -41,7 +42,7 @@ class SideBar extends Component {
                         </Accordion.Collapse>
                     </Card>
                 </Accordion>
-                <Button variant="light" onClick={this.props.toggleSidebar} className="sidebar-toggle">Toggle Sidebar</Button>
+                <Button variant="light" onClick={this.props.toggleSidebar} className={sidebarButton}>></Button>
             </div>
         );
     }
