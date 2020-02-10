@@ -31,6 +31,10 @@ class Booking extends Component {
         this.map.current.setPickupMarker(lat, long);
     }
 
+    handleDropoff = (lat, long) => {
+        this.map.current.setDropoffMarker(lat, long);
+    }
+
     render() {
         return (
             <div>
@@ -49,6 +53,7 @@ class Booking extends Component {
                     currentLong={this.state.currentLong} 
                     toggleSidebar={this.handleViewSidebar}
                     handlePickup={this.handlePickup} 
+                    handleDropoff={this.handleDropoff}
                 />
             </div>
         );

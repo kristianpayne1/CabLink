@@ -6,6 +6,9 @@ import DriverPin from './DriverPin.js';
 import LocationButton from './LocationButton.js';
 import MapControl from './MapControl.js';
 import PickupPin from './PickupPin.js';
+import DropoffPin from './DropoffPin.js';
+
+const google = window.google;
 
 class GoogleMap extends Component {
   static defaultProps = {
@@ -20,8 +23,14 @@ class GoogleMap extends Component {
     map: null,
     maps: null,
     mapControlShouldRender: false,
-    pickupLat: 0,
-    pickupLong: 0,
+    pickupLocation: {
+      lat: null,
+      lng: null,
+    },
+    dropoffLocation: {
+      lat: null,
+      lng: null,
+    },
   };
 
   callAPI() {
@@ -57,8 +66,40 @@ class GoogleMap extends Component {
 
   setPickupMarker = (lat, long) => {
     if (!(lat === null && long === null)) {
-      console.log("Showing pickup location");
-      this.setState({pickupLat: lat, pickupLong: long});
+      console.log("Showing pick up location");
+      this.setState({ pickupLocation: { lat: lat, lng: long } });
+    }
+    this.drawRoute();
+  }
+
+  setDropoffMarker = (lat, long) => {
+    if (!(lat === null && long === null)) {
+      console.log("Showing drop off location");
+      this.setState({ dropoffLocation: { lat: lat, lng: long } });
+    }
+    this.drawRoute();
+  }
+
+  drawRoute = () => {
+    if (this.state.dropoffLocation.lat !== null && this.state.pickupLocation.lat !== null) {
+      let directionsService = new google.maps.DirectionsService();
+      let directionsDisplay = new google.maps.DirectionsRenderer();
+
+      directionsService.route({
+        origin : { lat: this.state.pickupLocation.lat, lng: this.state.pickupLocation.lng },
+        destination : { lat: this.state.dropoffLocation.lat, lng: this.state.dropoffLocation.lng },
+        travelMode: 'DRIVING'
+      }, (response, status) => {
+        if (status === 'OK') {
+          directionsDisplay.setDirections(response);
+          const routePolyline = new google.maps.Polyline({
+            path: response.routes[0].overview_path
+          });
+          routePolyline.setMap(this.state.map);
+        } else {
+          window.alert('Directions request failed due to ' + status);
+          }
+        });
     }
   }
 
@@ -127,11 +168,17 @@ class GoogleMap extends Component {
           />
           {this.getDrivers()}
           <PickupPin
-            lat={this.state.pickupLat}
-            lng={this.state.pickupLong}
+            lat={this.state.pickupLocation.lat}
+            lng={this.state.pickupLocation.lng}
             name="Pick up location"
             color="green"
-          />         
+          />
+          <DropoffPin
+            lat={this.state.dropoffLocation.lat}
+            lng={this.state.dropoffLocation.lng}
+            name="Drop off location"
+            color="red"
+          />
           <MapControl map={this.state.map || null}
             controlPosition={this.state.maps ? this.state.maps.ControlPosition.RIGHT_BOTTOM : null}
           >

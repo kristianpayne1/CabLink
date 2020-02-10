@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import FormControl from 'react-bootstrap/FormControl';
-import Button from 'react-bootstrap/Button';
+//import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 const google = window.google;
@@ -12,7 +12,10 @@ class SearchInput extends Component {
 
         this.state = {
             locationName: '',
-            location: '',
+            location: {
+                lat: 0,
+                lng: 0,
+            },
             query: ''
         };
     }
@@ -32,7 +35,6 @@ class SearchInput extends Component {
         this.autocomplete.addListener('place_changed',
             this.handlePlaceSelect);
 
-        console.log('Places API loaded');
     }
 
     handlePlaceSelect = () => {
@@ -45,10 +47,11 @@ class SearchInput extends Component {
             this.setState(
                 {
                     locationName: address[0].long_name,
-                    location: geometry.location,
+                    location: {lat: geometry.location.lat(), lng: geometry.location.lng()},
                     query: addressObject.formatted_address,
                 }
             );
+            this.props.setLocation(geometry.location);
         }
     }
 
@@ -66,9 +69,6 @@ class SearchInput extends Component {
                     value={this.state.query}
                     onChange={this.handleOnChange}
                 />
-                <InputGroup.Append>
-                    <Button variant="outline-primary">Search</Button>
-                </InputGroup.Append>
             </InputGroup>
         );
     }

@@ -23,6 +23,7 @@ class SideBar extends Component {
                                     currentLat={this.props.currentLat} 
                                     currentLong={this.props.currentLong} 
                                     handlePickup={this.props.handlePickup} 
+                                    handleDropoff={this.props.handleDropoff}
                                 />
                             </Card.Body>
                         </Accordion.Collapse>
