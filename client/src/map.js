@@ -64,10 +64,19 @@ class GoogleMap extends Component {
     )
   }
 
+  centerToPoint = (lat, lng) => {
+    const latLng = new this.state.maps.LatLng(parseFloat(lat), parseFloat(lng)); // Makes a latlng
+    //this.state.map.setZoom(15); zoom in not smooth will fix later
+    this.state.map.panTo(latLng);
+  }
+
   setPickupMarker = (lat, long) => {
     if (!(lat === null && long === null)) {
       console.log("Showing pick up location");
       this.setState({ pickupLocation: { lat: lat, lng: long } });
+      if (this.state.dropoffLocation.lat === null && this.state.dropoffLocation.lng === null) {
+        this.centerToPoint(lat, long);
+      }
     }
     this.drawRoute();
   }
@@ -76,18 +85,32 @@ class GoogleMap extends Component {
     if (!(lat === null && long === null)) {
       console.log("Showing drop off location");
       this.setState({ dropoffLocation: { lat: lat, lng: long } });
+      if (this.state.pickupLocation.lat === null && this.state.pickupLocation.lng === null) {
+        this.centerToPoint(lat, long);
+      }
     }
     this.drawRoute();
   }
 
+  viewRoute = () => {
+    let bounds = new google.maps.LatLngBounds();
+    bounds.extend(this.state.pickupLocation);
+    bounds.extend(this.state.dropoffLocation);
+    this.state.map.setCenter(bounds.getCenter());
+    this.state.map.fitBounds(bounds);
+    this.state.map.setZoom(this.state.map.getZoom()-1);
+  }
+
   drawRoute = () => {
     if (this.state.dropoffLocation.lat !== null && this.state.pickupLocation.lat !== null) {
+      console.log('Drawing ride route');
+      this.viewRoute();
       let directionsService = new google.maps.DirectionsService();
       let directionsDisplay = new google.maps.DirectionsRenderer();
 
       directionsService.route({
-        origin : { lat: this.state.pickupLocation.lat, lng: this.state.pickupLocation.lng },
-        destination : { lat: this.state.dropoffLocation.lat, lng: this.state.dropoffLocation.lng },
+        origin: { lat: this.state.pickupLocation.lat, lng: this.state.pickupLocation.lng },
+        destination: { lat: this.state.dropoffLocation.lat, lng: this.state.dropoffLocation.lng },
         travelMode: 'DRIVING'
       }, (response, status) => {
         if (status === 'OK') {
@@ -98,8 +121,8 @@ class GoogleMap extends Component {
           routePolyline.setMap(this.state.map);
         } else {
           window.alert('Directions request failed due to ' + status);
-          }
-        });
+        }
+      });
     }
   }
 
