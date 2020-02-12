@@ -38,7 +38,10 @@ class SideBar extends Component {
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey="1">
                             <Card.Body style={{ 'maxHeight': '70vh', 'overflowY': 'auto' }}>
-                                <DriverListing drivers={this.props.drivers} />
+                                <DriverListing 
+                                    drivers={this.props.drivers} 
+                                    showDriver={this.props.showDriver}
+                                />
                             </Card.Body>
                         </Accordion.Collapse>
                     </Card>

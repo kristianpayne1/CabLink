@@ -51,6 +51,10 @@ class Booking extends Component {
         this.map.current.removeExtraStopMarkers(id);
     }
 
+    showDriver = (lat, lng) => {
+        this.map.current.centerToPoint(lat, lng)
+    }
+
     render() {
         return (
             <div>
@@ -74,6 +78,7 @@ class Booking extends Component {
                     removePickup={this.removePickup}
                     removeDropoff={this.removeDropoff}
                     removeExtraSteps={this.removeExtraSteps}
+                    showDriver={this.showDriver}
                 />
             </div>
         );
