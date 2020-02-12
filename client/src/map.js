@@ -85,7 +85,6 @@ class GoogleMap extends Component {
 
   setPickupMarker = (lat, long) => {
     if (!(lat === null && long === null)) {
-      console.log("Showing pick up location");
       this.setState({ pickupLocation: { lat: lat, lng: long } });
       if (this.state.dropoffLocation.lat === null && this.state.dropoffLocation.lng === null) {
         this.centerToPoint(lat, long);
@@ -95,7 +94,6 @@ class GoogleMap extends Component {
   }
 
   removePickupMarker = () => {
-    console.log("Removing pick up location");
     this.setState({ pickupLocation: { lat: null, lng: null } });
   }
 
@@ -136,7 +134,6 @@ class GoogleMap extends Component {
 
   setDropoffMarker = (lat, long) => {
     if (!(lat === null && long === null)) {
-      console.log("Showing drop off location");
       this.setState({ dropoffLocation: { lat: lat, lng: long } });
       if (this.state.pickupLocation.lat === null && this.state.pickupLocation.lng === null) {
         this.centerToPoint(lat, long);
@@ -145,8 +142,7 @@ class GoogleMap extends Component {
     this.drawRoute();
   }
 
-  removeDropOffMarker = () => {
-    console.log("Removing drop off location");
+  removeDropoffMarker = () => {
     this.setState({ dropoffLocation: { lat: null, lng: null } });
   }
 
@@ -157,10 +153,10 @@ class GoogleMap extends Component {
     if (!(this.state.extraStopLocation1.lat === null && this.state.extraStopLocation1.lng === null)) {
       bounds.extend(this.state.extraStopLocation1);
     }
-    if (!(this.state.extraStopLocation2.lat === null && this.state.location2.lng === null)) {
+    if (!(this.state.extraStopLocation2.lat === null && this.state.extraStopLocation2.lng === null)) {
       bounds.extend(this.state.extraStopLocation2);
     }
-    if (!(this.state.location3.lat === null && this.state.location3.lng === null)) {
+    if (!(this.state.extraStopLocation3.lat === null && this.state.extraStopLocation3.lng === null)) {
       bounds.extend(this.state.extraStopLocation3);
     }
     this.state.map.setCenter(bounds.getCenter());
@@ -174,10 +170,24 @@ class GoogleMap extends Component {
       this.viewRoute();
       let directionsService = new google.maps.DirectionsService();
       let directionsDisplay = new google.maps.DirectionsRenderer();
+      let waypoints = [];
+      if (!(this.state.extraStopLocation1.lat === null && this.state.extraStopLocation1.lat === null)) {
+        let stop = new this.state.maps.LatLng(parseFloat(this.state.extraStopLocation1.lat), parseFloat(this.state.extraStopLocation1.lng));
+        waypoints.push({location: stop});
+      }
+      if (!(this.state.extraStopLocation2.lat === null && this.state.extraStopLocation2.lat === null)) {
+        let stop = new this.state.maps.LatLng(parseFloat(this.state.extraStopLocation2.lat), parseFloat(this.state.extraStopLocation2.lng));
+        waypoints.push({location: stop});
+      }
+      if (!(this.state.extraStopLocation3.lat === null && this.state.extraStopLocation3.lat === null)) {
+        let stop = new this.state.maps.LatLng(parseFloat(this.state.extraStopLocation3.lat), parseFloat(this.state.extraStopLocation3.lng));
+        waypoints.push({location: stop});
+      }
 
       directionsService.route({
         origin: { lat: this.state.pickupLocation.lat, lng: this.state.pickupLocation.lng },
         destination: { lat: this.state.dropoffLocation.lat, lng: this.state.dropoffLocation.lng },
+        waypoints: waypoints,
         travelMode: 'DRIVING'
       }, (response, status) => {
         if (status === 'OK') {
