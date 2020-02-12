@@ -7,6 +7,7 @@ import LocationButton from './LocationButton.js';
 import MapControl from './MapControl.js';
 import PickupPin from './PickupPin.js';
 import DropoffPin from './DropoffPin.js';
+import ExtraStopPin from './ExtraStopPin';
 
 const google = window.google;
 
@@ -28,6 +29,18 @@ class GoogleMap extends Component {
       lng: null,
     },
     dropoffLocation: {
+      lat: null,
+      lng: null,
+    },
+    extraStopLocation1: {
+      lat: null,
+      lng: null,
+    },
+    extraStopLocation2: {
+      lat: null,
+      lng: null,
+    },
+    extraStopLocation3: {
       lat: null,
       lng: null,
     },
@@ -81,6 +94,46 @@ class GoogleMap extends Component {
     this.drawRoute();
   }
 
+  removePickupMarker = () => {
+    console.log("Removing pick up location");
+    this.setState({ pickupLocation: { lat: null, lng: null } });
+  }
+
+  setExtraStopMarkers = (id, location) => {
+    switch (id) {
+      case '1':
+        this.setState({ extraStopLocation1: { lat: location.lat, lng: location.lng } });
+        this.centerToPoint(location.lat, location.lng);
+        break;
+      case '2':
+        this.setState({ extraStopLocation2: { lat: location.lat, lng: location.lng } });
+        this.centerToPoint(location.lat, location.lng);
+        break;
+      case '3':
+        this.setState({ extraStopLocation3: { lat: location.lat, lng: location.lng } });
+        this.centerToPoint(location.lat, location.lng);
+        break;
+      default:
+        console.log('Something went wrong');
+    }
+  }
+
+  removeExtraStopMarkers = (id) => {
+    switch (id) {
+      case '1':
+        this.setState({ extraStopLocation1: { lat: null, lng: null } });
+        break;
+      case '2':
+        this.setState({ extraStopLocation2: { lat: null, lng: null } });
+        break;
+      case '3':
+        this.setState({ extraStopLocation3: { lat: null, lng: null } });
+        break;
+      default:
+        console.log('Something went wrong');
+    }
+  }
+
   setDropoffMarker = (lat, long) => {
     if (!(lat === null && long === null)) {
       console.log("Showing drop off location");
@@ -92,13 +145,27 @@ class GoogleMap extends Component {
     this.drawRoute();
   }
 
+  removeDropOffMarker = () => {
+    console.log("Removing drop off location");
+    this.setState({ dropoffLocation: { lat: null, lng: null } });
+  }
+
   viewRoute = () => {
     let bounds = new google.maps.LatLngBounds();
     bounds.extend(this.state.pickupLocation);
     bounds.extend(this.state.dropoffLocation);
+    if (!(this.state.extraStopLocation1.lat === null && this.state.extraStopLocation1.lng === null)) {
+      bounds.extend(this.state.extraStopLocation1);
+    }
+    if (!(this.state.extraStopLocation2.lat === null && this.state.location2.lng === null)) {
+      bounds.extend(this.state.extraStopLocation2);
+    }
+    if (!(this.state.location3.lat === null && this.state.location3.lng === null)) {
+      bounds.extend(this.state.extraStopLocation3);
+    }
     this.state.map.setCenter(bounds.getCenter());
     this.state.map.fitBounds(bounds);
-    this.state.map.setZoom(this.state.map.getZoom()-1);
+    this.state.map.setZoom(this.state.map.getZoom() - 1);
   }
 
   drawRoute = () => {
@@ -201,6 +268,27 @@ class GoogleMap extends Component {
             lng={this.state.dropoffLocation.lng}
             name="Drop off location"
             color="red"
+          />
+          <ExtraStopPin
+            lat={this.state.extraStopLocation1.lat}
+            lng={this.state.extraStopLocation1.lng}
+            name="Extra stop location"
+            color="yellow"
+            key='1'
+          />
+          <ExtraStopPin
+            lat={this.state.extraStopLocation2.lat}
+            lng={this.state.extraStopLocation2.lng}
+            name="Extra stop location"
+            color="yellow"
+            key='2'
+          />
+          <ExtraStopPin
+            lat={this.state.extraStopLocation3.lat}
+            lng={this.state.extraStopLocation3.lng}
+            name="Extra stop location"
+            color="yellow"
+            key='3'
           />
           <MapControl map={this.state.map || null}
             controlPosition={this.state.maps ? this.state.maps.ControlPosition.RIGHT_BOTTOM : null}

@@ -52,12 +52,13 @@ class ExtraSearchInput extends Component {
                     query: addressObject.formatted_address,
                 }
             );
-            this.props.setLocation(geometry.location);
+            this.props.setLocation(this.props.id, this.state.location);
         }
     }
 
     handleOnChange = (event) => {
         this.setState({ query: event.target.value });
+        this.props.removeAddtionalDest(this.props.id);
     }
 
     handleOnClick = () => {
@@ -65,6 +66,8 @@ class ExtraSearchInput extends Component {
             this.setState({disabled: false});
         } else {
             this.setState({disabled: true});
+            this.setState({query: ''});
+            this.props.removeAddtionalDest(this.props.id);
         }
     }
 

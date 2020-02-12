@@ -57,6 +57,7 @@ class SearchInput extends Component {
 
     handleOnChange = (event) => {
         this.setState({ query: event.target.value });
+        this.props.removeMarker();
     }
 
     render() {
