@@ -44,6 +44,7 @@ class GoogleMap extends Component {
       lat: null,
       lng: null,
     },
+    routePolyline: null,
   };
 
   callAPI() {
@@ -95,6 +96,7 @@ class GoogleMap extends Component {
 
   removePickupMarker = () => {
     this.setState({ pickupLocation: { lat: null, lng: null } });
+    this.removeRoute();
   }
 
   setExtraStopMarkers = (id, location) => {
@@ -114,6 +116,7 @@ class GoogleMap extends Component {
       default:
         console.log('Something went wrong');
     }
+    this.drawRoute();
   }
 
   removeExtraStopMarkers = (id) => {
@@ -130,6 +133,7 @@ class GoogleMap extends Component {
       default:
         console.log('Something went wrong');
     }
+    this.drawRoute();
   }
 
   setDropoffMarker = (lat, long) => {
@@ -144,6 +148,7 @@ class GoogleMap extends Component {
 
   removeDropoffMarker = () => {
     this.setState({ dropoffLocation: { lat: null, lng: null } });
+    this.removeRoute();
   }
 
   viewRoute = () => {
@@ -166,6 +171,7 @@ class GoogleMap extends Component {
 
   drawRoute = () => {
     if (this.state.dropoffLocation.lat !== null && this.state.pickupLocation.lat !== null) {
+      this.removeRoute();
       console.log('Drawing ride route');
       this.viewRoute();
       let directionsService = new google.maps.DirectionsService();
@@ -173,15 +179,15 @@ class GoogleMap extends Component {
       let waypoints = [];
       if (!(this.state.extraStopLocation1.lat === null && this.state.extraStopLocation1.lat === null)) {
         let stop = new this.state.maps.LatLng(parseFloat(this.state.extraStopLocation1.lat), parseFloat(this.state.extraStopLocation1.lng));
-        waypoints.push({location: stop});
+        waypoints.push({ location: stop });
       }
       if (!(this.state.extraStopLocation2.lat === null && this.state.extraStopLocation2.lat === null)) {
         let stop = new this.state.maps.LatLng(parseFloat(this.state.extraStopLocation2.lat), parseFloat(this.state.extraStopLocation2.lng));
-        waypoints.push({location: stop});
+        waypoints.push({ location: stop });
       }
       if (!(this.state.extraStopLocation3.lat === null && this.state.extraStopLocation3.lat === null)) {
         let stop = new this.state.maps.LatLng(parseFloat(this.state.extraStopLocation3.lat), parseFloat(this.state.extraStopLocation3.lng));
-        waypoints.push({location: stop});
+        waypoints.push({ location: stop });
       }
 
       directionsService.route({
@@ -192,14 +198,24 @@ class GoogleMap extends Component {
       }, (response, status) => {
         if (status === 'OK') {
           directionsDisplay.setDirections(response);
-          const routePolyline = new google.maps.Polyline({
-            path: response.routes[0].overview_path
+          this.setState({
+            routePolyline: new google.maps.Polyline({
+              path: response.routes[0].overview_path
+            })
           });
-          routePolyline.setMap(this.state.map);
+          this.state.routePolyline.setMap(this.state.map);
         } else {
           window.alert('Directions request failed due to ' + status);
         }
       });
+    }
+  }
+
+  removeRoute = () => {
+    if (!(this.state.routePolyline === null)) {
+      console.log('Removing route');
+      this.state.routePolyline.setMap(null);
+      this.setState({routePolyline: null});
     }
   }
 
