@@ -171,7 +171,7 @@ class GoogleMap extends Component {
 
   drawRoute = () => {
     if (this.state.dropoffLocation.lat !== null && this.state.pickupLocation.lat !== null) {
-      this.removeRoute();
+      //this.removeRoute();
       console.log('Drawing ride route');
       this.viewRoute();
       let directionsService = new google.maps.DirectionsService();
@@ -198,6 +198,7 @@ class GoogleMap extends Component {
       }, (response, status) => {
         if (status === 'OK') {
           directionsDisplay.setDirections(response);
+          this.removeRoute();
           this.setState({
             routePolyline: new google.maps.Polyline({
               path: response.routes[0].overview_path
@@ -213,7 +214,6 @@ class GoogleMap extends Component {
 
   removeRoute = () => {
     if (!(this.state.routePolyline === null)) {
-      console.log('Removing route');
       this.state.routePolyline.setMap(null);
       this.setState({routePolyline: null});
     }
@@ -299,21 +299,21 @@ class GoogleMap extends Component {
             lat={this.state.extraStopLocation1.lat}
             lng={this.state.extraStopLocation1.lng}
             name="Extra stop location"
-            color="yellow"
+            color="blue"
             key='1'
           />
           <ExtraStopPin
             lat={this.state.extraStopLocation2.lat}
             lng={this.state.extraStopLocation2.lng}
             name="Extra stop location"
-            color="yellow"
+            color="blue"
             key='2'
           />
           <ExtraStopPin
             lat={this.state.extraStopLocation3.lat}
             lng={this.state.extraStopLocation3.lng}
             name="Extra stop location"
-            color="yellow"
+            color="blue"
             key='3'
           />
           <MapControl map={this.state.map || null}
