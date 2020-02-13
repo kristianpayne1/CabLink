@@ -31,8 +31,28 @@ class Booking extends Component {
         this.map.current.setPickupMarker(lat, long);
     }
 
+    removePickup = () => {
+        this.map.current.removePickupMarker();
+    }
+
     handleDropoff = (lat, long) => {
         this.map.current.setDropoffMarker(lat, long);
+    }
+    
+    removeDropoff = () => {
+        this.map.current.removeDropoffMarker();
+    }
+
+    handleExtraStops = (id, location) => {
+        this.map.current.setExtraStopMarkers(id, location);
+    }
+
+    removeExtraSteps = (id) => {
+        this.map.current.removeExtraStopMarkers(id);
+    }
+
+    showDriver = (lat, lng) => {
+        this.map.current.centerToPoint(lat, lng)
     }
 
     render() {
@@ -54,6 +74,11 @@ class Booking extends Component {
                     toggleSidebar={this.handleViewSidebar}
                     handlePickup={this.handlePickup} 
                     handleDropoff={this.handleDropoff}
+                    handleExtraStops={this.handleExtraStops}
+                    removePickup={this.removePickup}
+                    removeDropoff={this.removeDropoff}
+                    removeExtraSteps={this.removeExtraSteps}
+                    showDriver={this.showDriver}
                 />
             </div>
         );

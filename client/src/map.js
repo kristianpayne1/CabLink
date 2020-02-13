@@ -7,6 +7,7 @@ import LocationButton from './LocationButton.js';
 import MapControl from './MapControl.js';
 import PickupPin from './PickupPin.js';
 import DropoffPin from './DropoffPin.js';
+import ExtraStopPin from './ExtraStopPin';
 
 const google = window.google;
 
@@ -31,6 +32,19 @@ class GoogleMap extends Component {
       lat: null,
       lng: null,
     },
+    extraStopLocation1: {
+      lat: null,
+      lng: null,
+    },
+    extraStopLocation2: {
+      lat: null,
+      lng: null,
+    },
+    extraStopLocation3: {
+      lat: null,
+      lng: null,
+    },
+    routePolyline: null,
   };
 
   callAPI() {
@@ -72,7 +86,6 @@ class GoogleMap extends Component {
 
   setPickupMarker = (lat, long) => {
     if (!(lat === null && long === null)) {
-      console.log("Showing pick up location");
       this.setState({ pickupLocation: { lat: lat, lng: long } });
       if (this.state.dropoffLocation.lat === null && this.state.dropoffLocation.lng === null) {
         this.centerToPoint(lat, long);
@@ -81,9 +94,50 @@ class GoogleMap extends Component {
     this.drawRoute();
   }
 
+  removePickupMarker = () => {
+    this.setState({ pickupLocation: { lat: null, lng: null } });
+    this.removeRoute();
+  }
+
+  setExtraStopMarkers = (id, location) => {
+    switch (id) {
+      case '1':
+        this.setState({ extraStopLocation1: { lat: location.lat, lng: location.lng } });
+        this.centerToPoint(location.lat, location.lng);
+        break;
+      case '2':
+        this.setState({ extraStopLocation2: { lat: location.lat, lng: location.lng } });
+        this.centerToPoint(location.lat, location.lng);
+        break;
+      case '3':
+        this.setState({ extraStopLocation3: { lat: location.lat, lng: location.lng } });
+        this.centerToPoint(location.lat, location.lng);
+        break;
+      default:
+        console.log('Something went wrong');
+    }
+    this.drawRoute();
+  }
+
+  removeExtraStopMarkers = (id) => {
+    switch (id) {
+      case '1':
+        this.setState({ extraStopLocation1: { lat: null, lng: null } });
+        break;
+      case '2':
+        this.setState({ extraStopLocation2: { lat: null, lng: null } });
+        break;
+      case '3':
+        this.setState({ extraStopLocation3: { lat: null, lng: null } });
+        break;
+      default:
+        console.log('Something went wrong');
+    }
+    this.drawRoute();
+  }
+
   setDropoffMarker = (lat, long) => {
     if (!(lat === null && long === null)) {
-      console.log("Showing drop off location");
       this.setState({ dropoffLocation: { lat: lat, lng: long } });
       if (this.state.pickupLocation.lat === null && this.state.pickupLocation.lng === null) {
         this.centerToPoint(lat, long);
@@ -92,37 +146,76 @@ class GoogleMap extends Component {
     this.drawRoute();
   }
 
+  removeDropoffMarker = () => {
+    this.setState({ dropoffLocation: { lat: null, lng: null } });
+    this.removeRoute();
+  }
+
   viewRoute = () => {
     let bounds = new google.maps.LatLngBounds();
     bounds.extend(this.state.pickupLocation);
     bounds.extend(this.state.dropoffLocation);
+    if (!(this.state.extraStopLocation1.lat === null && this.state.extraStopLocation1.lng === null)) {
+      bounds.extend(this.state.extraStopLocation1);
+    }
+    if (!(this.state.extraStopLocation2.lat === null && this.state.extraStopLocation2.lng === null)) {
+      bounds.extend(this.state.extraStopLocation2);
+    }
+    if (!(this.state.extraStopLocation3.lat === null && this.state.extraStopLocation3.lng === null)) {
+      bounds.extend(this.state.extraStopLocation3);
+    }
     this.state.map.setCenter(bounds.getCenter());
     this.state.map.fitBounds(bounds);
-    this.state.map.setZoom(this.state.map.getZoom()-1);
+    this.state.map.setZoom(this.state.map.getZoom() - 1);
   }
 
   drawRoute = () => {
     if (this.state.dropoffLocation.lat !== null && this.state.pickupLocation.lat !== null) {
+      //this.removeRoute();
       console.log('Drawing ride route');
       this.viewRoute();
       let directionsService = new google.maps.DirectionsService();
       let directionsDisplay = new google.maps.DirectionsRenderer();
+      let waypoints = [];
+      if (!(this.state.extraStopLocation1.lat === null && this.state.extraStopLocation1.lat === null)) {
+        let stop = new this.state.maps.LatLng(parseFloat(this.state.extraStopLocation1.lat), parseFloat(this.state.extraStopLocation1.lng));
+        waypoints.push({ location: stop });
+      }
+      if (!(this.state.extraStopLocation2.lat === null && this.state.extraStopLocation2.lat === null)) {
+        let stop = new this.state.maps.LatLng(parseFloat(this.state.extraStopLocation2.lat), parseFloat(this.state.extraStopLocation2.lng));
+        waypoints.push({ location: stop });
+      }
+      if (!(this.state.extraStopLocation3.lat === null && this.state.extraStopLocation3.lat === null)) {
+        let stop = new this.state.maps.LatLng(parseFloat(this.state.extraStopLocation3.lat), parseFloat(this.state.extraStopLocation3.lng));
+        waypoints.push({ location: stop });
+      }
 
       directionsService.route({
         origin: { lat: this.state.pickupLocation.lat, lng: this.state.pickupLocation.lng },
         destination: { lat: this.state.dropoffLocation.lat, lng: this.state.dropoffLocation.lng },
+        waypoints: waypoints,
         travelMode: 'DRIVING'
       }, (response, status) => {
         if (status === 'OK') {
           directionsDisplay.setDirections(response);
-          const routePolyline = new google.maps.Polyline({
-            path: response.routes[0].overview_path
+          this.removeRoute();
+          this.setState({
+            routePolyline: new google.maps.Polyline({
+              path: response.routes[0].overview_path
+            })
           });
-          routePolyline.setMap(this.state.map);
+          this.state.routePolyline.setMap(this.state.map);
         } else {
           window.alert('Directions request failed due to ' + status);
         }
       });
+    }
+  }
+
+  removeRoute = () => {
+    if (!(this.state.routePolyline === null)) {
+      this.state.routePolyline.setMap(null);
+      this.setState({routePolyline: null});
     }
   }
 
@@ -201,6 +294,27 @@ class GoogleMap extends Component {
             lng={this.state.dropoffLocation.lng}
             name="Drop off location"
             color="red"
+          />
+          <ExtraStopPin
+            lat={this.state.extraStopLocation1.lat}
+            lng={this.state.extraStopLocation1.lng}
+            name="Extra stop location"
+            color="blue"
+            key='1'
+          />
+          <ExtraStopPin
+            lat={this.state.extraStopLocation2.lat}
+            lng={this.state.extraStopLocation2.lng}
+            name="Extra stop location"
+            color="blue"
+            key='2'
+          />
+          <ExtraStopPin
+            lat={this.state.extraStopLocation3.lat}
+            lng={this.state.extraStopLocation3.lng}
+            name="Extra stop location"
+            color="blue"
+            key='3'
           />
           <MapControl map={this.state.map || null}
             controlPosition={this.state.maps ? this.state.maps.ControlPosition.RIGHT_BOTTOM : null}

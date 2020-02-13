@@ -48,24 +48,56 @@ class SearchLocationForm extends Component {
         this.props.handlePickup(this.state.pickupLocation.lat, this.state.pickupLocation.lng);
     }
 
+    removePickupLocation = () => {
+        this.setState({ pickupLocation: { lat: null, lng: null } });
+        this.props.removePickup();
+    }
+
     setDropoffLocation = (location) => {
         this.setState({ dropoffLocation: { lat: location.lat(), lng: location.lng() } });
         this.props.handleDropoff(this.state.dropoffLocation.lat, this.state.dropoffLocation.lng);
+    }
+
+    removeDropoffLocation = () => {
+        this.setState({ dropoffLocation: { lat: null, lng: null } });
+        this.props.removeDropoff();
     }
 
     setAddtionalDest = (id, location) => {
         switch (id) {
             case '1':
                 this.setState({ extraDestination: { stop1: { lat: location.lat, lng: location.lng } } });
+                this.props.handleExtraStops(id, location);
                 break;
             case '2':
                 this.setState({ extraDestination: { stop2: { lat: location.lat, lng: location.lng } } });
+                this.props.handleExtraStops(id, location);
                 break;
             case '3':
                 this.setState({ extraDestination: { stop3: { lat: location.lat, lng: location.lng } } });
+                this.props.handleExtraStops(id, location);
                 break;
             default:
-                console.log("Error in setDisable: wrong id")
+                console.log("Error in setAdditionalDest: wrong id")
+        }
+    }
+
+    removeAddtionalDest = (id) => {
+        switch (id) {
+            case '1':
+                this.setState({ extraDestination: { stop1: { lat: null, lng: null } } });
+                this.props.removeExtraSteps(id);
+                break;
+            case '2':
+                this.setState({ extraDestination: { stop2: { lat: null, lng: null } } });
+                this.props.removeExtraSteps(id);
+                break;
+            case '3':
+                this.setState({ extraDestination: { stop3: { lat: null, lng: null } } });
+                this.props.removeExtraSteps(id);
+                break;
+            default:
+                console.log("Error in removeAdditionalDest: wrong id")
         }
     }
 
@@ -77,6 +109,7 @@ class SearchLocationForm extends Component {
                         id='pickupLocation'
                         name='Pick up location'
                         setLocation={this.setPickupLocation}
+                        removeMarker={this.removePickupLocation}
                     />
                     <Button variant="outline-primary" size="sm" onClick={this.handleCurrentLocation} id='locationButton' block>
                         Use current location
@@ -87,16 +120,19 @@ class SearchLocationForm extends Component {
                         id='1'
                         name='Add destination'
                         setLocation={this.setAddtionalDest}
+                        removeAddtionalDest={this.removeAddtionalDest}
                     />
                     <ExtraSearchInput
                         id='2'
                         name='Add destination'
                         setLocation={this.setAddtionalDest}
+                        removeAddtionalDest={this.removeAddtionalDest}
                     />
                     <ExtraSearchInput
                         id='3'
                         name='Add destination'
                         setLocation={this.setAddtionalDest}
+                        removeAddtionalDest={this.removeAddtionalDest}
                     />
                 </Form.Group>
                 <Form.Group>
@@ -104,6 +140,7 @@ class SearchLocationForm extends Component {
                         id='dropoffLocation'
                         name='Drop off location'
                         setLocation={this.setDropoffLocation}
+                        removeMarker={this.removeDropoffLocation}
                     />
                 </Form.Group>
             </Form >

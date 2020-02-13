@@ -5,6 +5,10 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 
 class DriverListing extends Component {
 
+    handleOnHover = (driver) => {
+        this.props.showDriver(driver.currentLat, driver.currentLong);
+    }
+
     listDrivers() {
         return (
             this.props.drivers.map((driver, i) =>
@@ -14,6 +18,8 @@ class DriverListing extends Component {
                         company='Example company'
                         mobileNo={driver.mobileNo}
                         key={i}
+                        driver={driver}
+                        handleOnHover={this.handleOnHover}
                     />
                     <br />
                 </div>
