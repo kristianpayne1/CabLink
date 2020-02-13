@@ -47,7 +47,7 @@ class RegisterForm extends Component {
 
     callAPI(){
         // Put registered user data into User table
-        fetch("http://localhost:5000/users/new", {
+        fetch("http://localhost:5000/user/new", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(this.state.dataSet)
