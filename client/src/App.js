@@ -11,7 +11,9 @@ import { Route } from "react-router-dom";
 class App extends Component {
 
   state = {
-    showModal: false
+    showModal: false,
+    activeUser: [],
+    loggedIn: false
   };
 
   handleLoginShow() {
