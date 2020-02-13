@@ -24,14 +24,17 @@ class LoginForm extends Component {
     handleLogin() {
         let email = this.emailInput.current.value;
         let password = this.passwordInput.current.value;
-        this.callAPI(email);
-        if (this.state.users[0].email === email && this.state.users[0].password === password) {
-            this.setState({userID: this.state.users[0].userID}) ;
-            console.log(this.state.userID);
-        }
+        this.callAPI(email, password);
     };
 
-    callAPI(email) {
+    verifyLogin = (email, password) => {
+      if (this.state.users[0].email === email && this.state.users[0].password === password) {
+        this.setState({userID: this.state.users[0].userID}) ;
+        console.log(this.state.userID);
+    }
+    }
+
+    callAPI(email, password) {
         let self = this;
         console.log(email);
         fetch('http://localhost:5000/user/get/email/'+email, {
@@ -43,6 +46,7 @@ class LoginForm extends Component {
           return response.json();
         }).then(function (data) {
           self.setState({ users: data });
+          self.verifyLogin(email, password)
         }).catch(err => {
           console.log('caught it!', err);
         })
