@@ -5,7 +5,6 @@ import Button from 'react-bootstrap/Button';
 //import FormControl from 'react-bootstrap/FormControl';
 import SearchInput from './SearchInput.js';
 import ExtraSearchInput from './ExtraSearchInput.js';
-import DatePicker from 'react-bootstrap-date-picker';
 
 class SearchLocationForm extends Component {
     constructor(props) {
@@ -143,9 +142,6 @@ class SearchLocationForm extends Component {
                         setLocation={this.setDropoffLocation}
                         removeMarker={this.removeDropoffLocation}
                     />
-                </Form.Group>
-                <Form.Group>
-                    <DatePicker/>
                 </Form.Group>
             </Form >
         );
