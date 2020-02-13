@@ -51,6 +51,7 @@ class LoginForm extends Component {
           self.verifyLogin(email, password)
           var activeUser = self.state.users;
           self.props.handleLoginComplete({activeUser: activeUser, loggedIn: true});
+          self.props.closeClicked();
         }).catch(err => {
           console.log('caught it!', err);
         })

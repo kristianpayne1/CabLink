@@ -21,10 +21,10 @@ class Login extends Component {
                 <Modal.Body>
                     <Tabs defaultActiveKey="login" id="uncontrolled-tab-example" fill>
                         <Tab eventKey="login" title="Login">
-                            <LoginForm handleLoginComplete={this.props.handleLoginComplete}/>
+                            <LoginForm handleLoginComplete={this.props.handleLoginComplete} closeClicked={this.closeClicked}/>
                         </Tab>
                         <Tab eventKey="register" title="Register">
-                            <RegisterForm handleLoginComplete={this.props.handleLoginComplete}/>
+                            <RegisterForm handleLoginComplete={this.props.handleLoginComplete} closeClicked={this.closeClicked}/>
                         </Tab>
                     </Tabs>
                 </Modal.Body>

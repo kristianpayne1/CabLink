@@ -26,31 +26,28 @@ class RegisterForm extends Component {
           event.stopPropagation();
         } else {
             this.setState({validated: true});
-            this.handleRegister();
+            let firstName =  this.firstNameInput.current.value;
+            let lastName = this.lastNameInput.current.value;
+            let regEmail= this.regEmailInput.current.value;
+            let mobileNo = "+44" + this.mobileInput.current.value;
+            let regPassword = this.regPasswordInput.current.value;
+            let userType = "Perm";
+            let userID = '';
+            let lastLogin = '';
+            
+            this.callAPI(firstName, lastName, regEmail, mobileNo, regPassword, userType, userID, lastLogin);
         }
       };
 
-    handleRegister() {
-        this.setState({dataSet:{
-            firstName: this.firstNameInput.current.value,
-            lastName: this.lastNameInput.current.value,
-            regEmail: this.regEmailInput.current.value,
-            mobileNo: "+44" + this.mobileInput.current.value,
-            regPassword: this.regPasswordInput.current.value,
-            userType: "Perm",
-            userID: '',
-            lastLogin: ''
-        }});
-        console.log(this.state.dataSet);
-        this.callAPI();
-    };
-
-    callAPI(){
+    callAPI(firstName, lastName, regEmail, mobileNo, regPassword, userType, userID, lastLogin){
+        let accountData = {firstName, lastName, regEmail, mobileNo, regPassword, userType, userID, lastLogin};
+        console.log(JSON.stringify(accountData));
+        let self = this;
         // Put registered user data into User table
         fetch("http://localhost:5000/user/new", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(this.state.dataSet)
+            body: JSON.stringify(accountData)
         }).then(function(response) {
             if(response.status >= 400){
                 throw new Error("Bad response from server");
@@ -58,18 +55,22 @@ class RegisterForm extends Component {
             return response.json();
         }).then(function(data) {
             console.log(data)
-            if(data === "success"){
-                this.setState({registered: "Registration complete!"});
-                this.fetchID();
+            if(data.serverStatus === 2){
+                console.log('Success');
+                self.setState({registered: "Registration complete!"});
+                self.fetchID(accountData);
             }
+            console.log('Nah');
         }).catch(function(err) {
             console.log(err)
         });
     };
 
-    fetchID() {
+    fetchID(accountData) {
         // Get the userID using user email
-        fetch('http://localhost:5000/user/get/id/'+this.state.dataSet.regEmail, {
+        let self = this;
+        console.log("pls");
+        fetch('http://localhost:5000/user/get/id/'+accountData.regEmail, {
           method: 'GET'
         }).then(function (response) {
           if (response.status >= 400) {
@@ -77,25 +78,27 @@ class RegisterForm extends Component {
           }
           return response.json();
         }).then(function (data) {
-            this.setState({dataSet: {userID : data[0].userID}});
-            this.createNewAccount();
+            accountData.userID = data[0].userID;
+            self.createNewAccount(accountData);
         }).catch(err => {
           console.log('caught it!', err);
         });
     }
 
-    createNewAccount() {
+    createNewAccount(accountData) {
         // Put registered user account into Account table
         var today = new Date();
         var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         var dateTime = date + ' ' + time;
-        this.setState({dataSet: {lastLogin: dateTime}});
+        accountData.lastLogin = dateTime;
+
+        let self = this;
 
         fetch("http://localhost:5000/account/new", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(this.state.dataSet)
+            body: JSON.stringify(accountData)
         }).then(function(response) {
             if(response.status >= 400){
                 throw new Error("Bad response from server");
@@ -103,15 +106,16 @@ class RegisterForm extends Component {
             return response.json();
         }).then(function(data) {
             console.log(data)
-            if(data === "success"){
-                this.setState({registered: "Registration complete!"});
+            if(data.serverStatus === 2){
+                self.setState({registered: "Registration complete!"});
             }
         }).catch(function(err) {
             console.log(err)
         });
 
-        var activeUser = this.state.dataSet;
+        var activeUser = accountData;
         this.props.handleLoginComplete({activeUser: activeUser, loggedIn: true});
+        this.props.closeClicked();
     }
 
     render() {
