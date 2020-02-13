@@ -25,14 +25,14 @@ class App extends Component {
   }
 
   handleLoginComplete = (activeUser) => {
-      this.setState({activeUser: activeUser});
+      this.setState({activeUser: activeUser, loggedIn: true});
       console.log(this.state.activeUser);
   };
 
   render() {
     return (
       <div>
-        <NavBar handleShow={this.handleLoginShow.bind(this)} />
+        <NavBar handleShow={this.handleLoginShow.bind(this)} loggedIn={this.state.loggedIn} activeUser={this.state.activeUser}/>
         <Login handleShow={this.state.showModal} handleLoginClose={this.handleLoginClose.bind(this)} handleLoginComplete={this.handleLoginComplete}/>
         <div className="content">
           <Route exact path="/" component={Home} />
