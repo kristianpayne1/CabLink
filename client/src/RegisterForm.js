@@ -15,7 +15,7 @@ class RegisterForm extends Component {
             regPassword: '',
             userType: '',
             userID: '',
-            lastLogin: ''
+            lastLogin: '',
         },
     };
 
@@ -42,7 +42,7 @@ class RegisterForm extends Component {
             lastLogin: ''
         }});
         console.log(this.state.dataSet);
-        //this.callAPI();
+        this.callAPI();
     };
 
     callAPI(){

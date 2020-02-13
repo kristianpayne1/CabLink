@@ -26,6 +26,7 @@ class App extends Component {
 
   handleLoginComplete = (activeUser) => {
       this.setState({activeUser: activeUser});
+      console.log(this.state.activeUser);
   };
 
   render() {
