@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import GoogleMap from './map.js';
+import GoogleMap from './Map.js';
 import SideBar from './SideBar.js';
 
 class Booking extends Component {
