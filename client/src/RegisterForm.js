@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
-import App from './App.js';
 
 class RegisterForm extends Component {
     state = {
         validated: false,
-        registered: ''
+        registered: '',
+        dataSet: null,
     };
 
     handleSubmit = event => {
@@ -27,20 +27,22 @@ class RegisterForm extends Component {
             lastName: this.lastNameInput.current.value,
             regEmail: this.regEmailInput.current.value,
             mobileNo: "+44" + this.mobileInput.current.value,
-            regPassword: this.regPasswordInput,
+            regPassword: this.regPasswordInput.current.value,
             userType: "Perm",
             userID: '',
             lastLogin: ''
         }
-        this.callAPI(data);
+        this.setState({dataSet: data});
+        console.log(this.state.dataSet);
+        //this.callAPI();
     };
 
-    callAPI(dataSet){
+    callAPI(){
         // Put registered user data into User table
         fetch("http://localhost:5000/users/new", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(dataSet)
+            body: JSON.stringify(this.state.dataSet)
         }).then(function(response) {
             if(response.status >= 400){
                 throw new Error("Bad response from server");
@@ -50,13 +52,16 @@ class RegisterForm extends Component {
             console.log(data)
             if(data === "success"){
                 this.setState({registered: "Registration complete!"});
+                this.fetchID();
             }
         }).catch(function(err) {
             console.log(err)
         });
+    };
 
+    fetchID() {
         // Get the userID using user email
-        fetch('http://localhost:5000/user/get/id/'+dataSet.regEmail, {
+        fetch('http://localhost:5000/user/get/id/'+this.state.dataSet.regEmail, {
           method: 'GET'
         }).then(function (response) {
           if (response.status >= 400) {
@@ -64,23 +69,25 @@ class RegisterForm extends Component {
           }
           return response.json();
         }).then(function (data) {
-            dataSet.userID = data;
+            this.setState({dataSet: {userID : data[0].userID}});
+            this.createNewAccount();
         }).catch(err => {
           console.log('caught it!', err);
         });
+    }
 
+    createNewAccount() {
         // Put registered user account into Account table
         var today = new Date();
         var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         var dateTime = date + ' ' + time;
-        dataSet.lastLogin = dateTime;
-
+        this.setState({dataSet: {lastLogin: dateTime}});
 
         fetch("http://localhost:5000/account/new", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(dataSet)
+            body: JSON.stringify(this.state.dataSet)
         }).then(function(response) {
             if(response.status >= 400){
                 throw new Error("Bad response from server");
@@ -95,16 +102,9 @@ class RegisterForm extends Component {
             console.log(err)
         });
 
-        var activeUser = {
-            userID: dataSet.userID,
-            firstName: dataSet.firstName,
-            lastName: dataSet.lastName,
-            email: dataSet.regEmail,
-            mobileNo: dataSet.mobileNo,
-            userType: dataSet.userType
-        }
-        App.setState({activeUser: activeUser, loggedIn: true});
-    };
+        var activeUser = this.state.dataSet;
+        this.props.handleLoginComplete({activeUser: activeUser, loggedIn: true});
+    }
 
     render() {
         this.firstNameInput = React.createRef();
