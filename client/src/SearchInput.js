@@ -21,7 +21,7 @@ class SearchInput extends Component {
     }
 
     componentDidMount = () => {
-        const options = { types: ['address'] };
+        const options = { types: ['address'], componentRestrictions: {country: 'uk'} };
 
         this.autocomplete = new google.maps.places.Autocomplete(
             document.getElementById(this.props.id),
