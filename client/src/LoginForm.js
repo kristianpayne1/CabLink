@@ -25,11 +25,10 @@ class LoginForm extends Component {
         let email = this.emailInput.current.value;
         let password = this.passwordInput.current.value;
         this.callAPI(email);
-        if (this.state.users.email === email && this.state.users.password === password) {
-            this.setState({userID: this.state.users.userID}) ;
+        if (this.state.users[0].email === email && this.state.users[0].password === password) {
+            this.setState({userID: this.state.users[0].userID}) ;
             console.log(this.state.userID);
         }
-        
     };
 
     callAPI(email) {
