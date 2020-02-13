@@ -8,5 +8,8 @@
     "scripts": {
         "test": "(cd ./api && npm start) & (cd ./client && npm install && npm run build)",
         "start": "(cd ./api && npm start) & (cd ./client && npm start)"
+    },
+    "devDependencies": {
+        "react-docgen-markdown-renderer": "^2.1.3"
     }
 }

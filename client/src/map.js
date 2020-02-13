@@ -8,7 +8,6 @@ import MapControl from './MapControl.js';
 import PickupPin from './PickupPin.js';
 import DropoffPin from './DropoffPin.js';
 import ExtraStopPin from './ExtraStopPin';
-
 const google = window.google;
 
 class GoogleMap extends Component {
@@ -201,7 +200,8 @@ class GoogleMap extends Component {
           this.removeRoute();
           this.setState({
             routePolyline: new google.maps.Polyline({
-              path: response.routes[0].overview_path
+              path: response.routes[0].overview_path,
+              strokeColor: '#007bff'
             })
           });
           this.state.routePolyline.setMap(this.state.map);

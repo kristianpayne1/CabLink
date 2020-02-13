@@ -6,10 +6,7 @@ import {Link } from "react-router-dom";
 
 class NavBar extends Component {
 
-    loginClicked = () => {
-        this.props.handleShow();
-    }
-
+    
     render() {
         return (
             <div>
