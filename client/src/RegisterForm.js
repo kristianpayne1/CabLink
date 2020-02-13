@@ -7,7 +7,16 @@ class RegisterForm extends Component {
     state = {
         validated: false,
         registered: '',
-        dataSet: null,
+        dataSet: {
+            firstname: '',
+            lastName: '',
+            regEmail: '',
+            mobileNo: '',
+            regPassword: '',
+            userType: '',
+            userID: '',
+            lastLogin: ''
+        },
     };
 
     handleSubmit = event => {
@@ -22,7 +31,7 @@ class RegisterForm extends Component {
       };
 
     handleRegister() {
-        var data = {
+        this.setState({dataSet:{
             firstName: this.firstNameInput.current.value,
             lastName: this.lastNameInput.current.value,
             regEmail: this.regEmailInput.current.value,
@@ -31,8 +40,7 @@ class RegisterForm extends Component {
             userType: "Perm",
             userID: '',
             lastLogin: ''
-        }
-        this.setState({dataSet: data});
+        }});
         console.log(this.state.dataSet);
         //this.callAPI();
     };
