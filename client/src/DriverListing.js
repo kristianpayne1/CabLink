@@ -4,6 +4,9 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
 class DriverListing extends Component {
+    state = {
+        driverOrder: [],
+    };
 
     handleOnHover = (driver) => {
         this.props.showDriver(driver.currentLat, driver.currentLong);
@@ -15,7 +18,7 @@ class DriverListing extends Component {
                 <div key={i}>
                     <DriverCard
                         name={driver.firstname + ' ' + driver.lastname}
-                        company='Example company'
+                        company={driver.companyName}
                         mobileNo={driver.mobileNo}
                         key={i}
                         driver={driver}

@@ -48,7 +48,7 @@ class GoogleMap extends Component {
 
   callAPI() {
     let self = this;
-    fetch('http://localhost:5000/driver/get', {
+    fetch('http://localhost:5000/driver/get/all/info', {
       method: 'GET'
     }).then(function (response) {
       if (response.status >= 400) {

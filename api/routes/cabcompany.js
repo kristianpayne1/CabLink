@@ -15,7 +15,7 @@ router.get('/get', function(req, res, next) {
   });
 });
 
-// get user by id
+// get company by id
 router.get('/get/:id', function(req, res, next) {
   mysqlconnection.query('SELECT * FROM c37_cablink.Cab_Company WHERE companyID = '+req.params.id+';', (error, results) => {
       if(error) throw error;
