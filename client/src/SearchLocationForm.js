@@ -36,6 +36,7 @@ class SearchLocationForm extends Component {
                 },
             },
             date: new Date(),
+            showDatetime: false,
         };
     }
 
@@ -107,7 +108,24 @@ class SearchLocationForm extends Component {
 
     onChange = date => this.setState({ date });
 
+    handleChange = value => {
+        if (value === 1) {
+            this.setState({ showDatetime: false });
+        } else {
+            this.setState({ showDatetime: true });
+        }
+    }
+
     render() {
+        let dateTime = this.state.showDatetime ?
+        <div className='datepicker'>
+            <br />
+            <DateTimePicker
+                onChange={this.onChange}
+                value={this.state.date}
+            />
+            </div>: null;
+        
         return (
             <Form>
                 <Form.Group>
@@ -150,18 +168,12 @@ class SearchLocationForm extends Component {
                     />
                 </Form.Group>
                 <Form.Group>
-                    <ToggleButtonGroup type="radio" name="options" defaultValue={1} size='sm'>
+                    <ToggleButtonGroup type="radio" name="options" defaultValue={1} size='sm' onChange={this.handleChange}>
                         <ToggleButton value={1} variant="outline-primary">Leave ASAP</ToggleButton>
                         <ToggleButton value={2} variant="outline-primary">Depart by</ToggleButton>
                         <ToggleButton value={3} variant="outline-primary">Arrive by</ToggleButton>
                     </ToggleButtonGroup>
-                    <div className='datepicker'>
-                        <br/>
-                        <DateTimePicker
-                            onChange={this.onChange}
-                            value={this.state.date}
-                        />
-                    </div>
+                        {dateTime}
                 </Form.Group>
             </Form >
         );
