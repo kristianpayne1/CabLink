@@ -5,6 +5,9 @@ import Button from 'react-bootstrap/Button';
 //import FormControl from 'react-bootstrap/FormControl';
 import SearchInput from './SearchInput.js';
 import ExtraSearchInput from './ExtraSearchInput.js';
+import DateTimePicker from 'react-datetime-picker';
+import ToggleButton from 'react-bootstrap/ToggleButton';
+import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 
 class SearchLocationForm extends Component {
     constructor(props) {
@@ -32,6 +35,7 @@ class SearchLocationForm extends Component {
                     lng: null,
                 },
             },
+            date: new Date(),
         };
     }
 
@@ -101,6 +105,8 @@ class SearchLocationForm extends Component {
         }
     }
 
+    onChange = date => this.setState({ date });
+
     render() {
         return (
             <Form>
@@ -142,6 +148,20 @@ class SearchLocationForm extends Component {
                         setLocation={this.setDropoffLocation}
                         removeMarker={this.removeDropoffLocation}
                     />
+                </Form.Group>
+                <Form.Group>
+                    <ToggleButtonGroup type="radio" name="options" defaultValue={1} size='sm'>
+                        <ToggleButton value={1} variant="outline-primary">Leave ASAP</ToggleButton>
+                        <ToggleButton value={2} variant="outline-primary">Depart by</ToggleButton>
+                        <ToggleButton value={3} variant="outline-primary">Arrive by</ToggleButton>
+                    </ToggleButtonGroup>
+                    <div className='datepicker'>
+                        <br/>
+                        <DateTimePicker
+                            onChange={this.onChange}
+                            value={this.state.date}
+                        />
+                    </div>
                 </Form.Group>
             </Form >
         );

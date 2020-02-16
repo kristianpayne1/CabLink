@@ -31,6 +31,7 @@
   background-color: white;
   border-radius: 5px;
 }
+
 .sidebar-toggle {
   position: absolute;
   top: 40%;
@@ -56,6 +57,10 @@
 
 .driverCard:hover {
   box-shadow: -1px 5px 5px grey;
+}
+
+.datepicker {
+  text-align: center;
 }
 
 #gpsbutton {
