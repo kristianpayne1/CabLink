@@ -30,6 +30,19 @@ class DriverListing extends Component {
         )
     }
 
+    orderDrivers = (orderBy) => {
+        switch (orderBy) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            default:
+                break;
+        }
+    }
+
     render() {
         return (
             <div>
@@ -40,9 +53,9 @@ class DriverListing extends Component {
                     variant="secondary-light"
                     title="Sort by"
                 >
-                    <Dropdown.Item eventKey="1">Recommended</Dropdown.Item>
-                    <Dropdown.Item eventKey="2">Fastest response</Dropdown.Item>
-                    <Dropdown.Item eventKey="3">Lowest price</Dropdown.Item>
+                    <Dropdown.Item>Recommended</Dropdown.Item>
+                    <Dropdown.Item>Fastest response</Dropdown.Item>
+                    <Dropdown.Item>Lowest price</Dropdown.Item>
                 </DropdownButton>
                 {this.listDrivers()}
             </div>

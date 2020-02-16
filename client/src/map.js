@@ -171,7 +171,7 @@ class GoogleMap extends Component {
   drawRoute = () => {
     if (this.state.dropoffLocation.lat !== null && this.state.pickupLocation.lat !== null) {
       //this.removeRoute();
-      console.log('Drawing ride route');
+      //console.log('Drawing ride route');
       this.viewRoute();
       let directionsService = new google.maps.DirectionsService();
       let directionsDisplay = new google.maps.DirectionsRenderer();
@@ -197,6 +197,7 @@ class GoogleMap extends Component {
       }, (response, status) => {
         if (status === 'OK') {
           directionsDisplay.setDirections(response);
+          console.log(directionsDisplay.directions.routes[0].legs[0].duration.text);
           this.removeRoute();
           this.setState({
             routePolyline: new google.maps.Polyline({
