@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import DriverCard from './DriverCard.js';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import SelectableContext from "react-bootstrap/SelectableContext";
+import SelectableContext from 'react-bootstrap/SelectableContext';
+import Card from 'react-bootstrap/Card';
+
 const google = window.google;
 
 class DriverListing extends Component {
@@ -29,7 +31,7 @@ class DriverListing extends Component {
                         driver={driver}
                         handleOnHover={this.handleOnHover}
                         selectedDriver={this.state.selectedDriver}
-                        currentLocation={{ lat: this.props.currentLat, lng: this.props.currentLong }}
+                        route={this.props.route}
                         callAPI={this.callAPI}
                     />
                     <br />
@@ -103,21 +105,32 @@ class DriverListing extends Component {
     }
 
     render() {
+        let showWarning = (this.props.route.pickupLocation.lat === null && this.props.route.pickupLocation.lat === null) ?
+            <Card border="warning" text="black">
+                <Card.Body>
+                    <Card.Text style={{ fontSize: '15px' }}>
+                        Please choose a pick up location to display price, distance and response time.
+            </Card.Text>
+                </Card.Body>
+            </Card> : null;
         return (
-            <SelectableContext.Provider value={false}>
-                <DropdownButton
-                    key='dropdown'
-                    id={'sortby-dropdown'}
-                    size="sm"
-                    variant="secondary-light"
-                    title="Sort by"
-                >
-                    <Dropdown.Item onSelect={() => this.handleSortBy(1)}>Recommended</Dropdown.Item>
-                    <Dropdown.Item onSelect={() => this.handleSortBy(2)}>Fastest response</Dropdown.Item>
-                    <Dropdown.Item onSelect={() => this.handleSortBy(3)}>Lowest price</Dropdown.Item>
-                </DropdownButton>
-                {this.listDrivers()}
-            </SelectableContext.Provider>
+            <div>
+                {showWarning}
+                <SelectableContext.Provider value={false}>
+                    <DropdownButton
+                        key='dropdown'
+                        id={'sortby-dropdown'}
+                        size="sm"
+                        variant="secondary-light"
+                        title="Sort by"
+                    >
+                        <Dropdown.Item onSelect={() => this.handleSortBy(1)}>Recommended</Dropdown.Item>
+                        <Dropdown.Item onSelect={() => this.handleSortBy(2)}>Fastest response</Dropdown.Item>
+                        <Dropdown.Item onSelect={() => this.handleSortBy(3)}>Lowest price</Dropdown.Item>
+                    </DropdownButton>
+                    {this.listDrivers()}
+                </SelectableContext.Provider>
+            </div>
         );
     }
 }
