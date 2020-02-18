@@ -57,6 +57,7 @@
 
 .driverCard:hover {
   box-shadow: -1px 5px 5px grey;
+  cursor:pointer;
 }
 
 .datepicker {

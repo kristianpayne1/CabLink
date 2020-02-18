@@ -134,6 +134,8 @@ class SearchLocationForm extends Component {
                         name='Pick up location'
                         setLocation={this.setPickupLocation}
                         removeMarker={this.removePickupLocation}
+                        currentLat={this.props.currentLat}
+                        currentLong={this.props.currentLong}
                     />
                     <Button variant="outline-primary" size="sm" onClick={this.handleCurrentLocation} id='locationButton' block>
                         Use current location
@@ -145,18 +147,24 @@ class SearchLocationForm extends Component {
                         name='Add destination'
                         setLocation={this.setAddtionalDest}
                         removeAddtionalDest={this.removeAddtionalDest}
+                        currentLat={this.props.currentLat}
+                        currentLong={this.props.currentLong}
                     />
                     <ExtraSearchInput
                         id='2'
                         name='Add destination'
                         setLocation={this.setAddtionalDest}
                         removeAddtionalDest={this.removeAddtionalDest}
+                        currentLat={this.props.currentLat}
+                        currentLong={this.props.currentLong}
                     />
                     <ExtraSearchInput
                         id='3'
                         name='Add destination'
                         setLocation={this.setAddtionalDest}
                         removeAddtionalDest={this.removeAddtionalDest}
+                        currentLat={this.props.currentLat}
+                        currentLong={this.props.currentLong}
                     />
                 </Form.Group>
                 <Form.Group>
@@ -165,6 +173,8 @@ class SearchLocationForm extends Component {
                         name='Drop off location'
                         setLocation={this.setDropoffLocation}
                         removeMarker={this.removeDropoffLocation}
+                        currentLat={this.props.currentLat}
+                        currentLong={this.props.currentLong}
                     />
                 </Form.Group>
                 <Form.Group>

@@ -41,12 +41,15 @@ class SideBar extends Component {
                                 <DriverListing 
                                     drivers={this.props.drivers} 
                                     showDriver={this.props.showDriver}
+                                    route={this.props.route}
+                                    currentLat={this.props.currentLat}
+                                    currentLong={this.props.currentLong}
                                 />
                             </Card.Body>
                         </Accordion.Collapse>
                     </Card>
                     <Card>
-                        <Accordion.Toggle as={Card.Header} eventKey="2">
+                        <Accordion.Toggle as={Card.Header} eventKey="2" >
                             Payment
                         </Accordion.Toggle>
                         <Accordion.Collapse eventKey="2">
