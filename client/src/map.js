@@ -115,30 +115,51 @@ class GoogleMap extends Component {
       default:
         console.log('Something went wrong');
     }
-    this.drawRoute();
+    this.drawRoute(function (err, directions) {
+      if (!err) {
+        console.log('ye');
+      }
+    });
   }
 
   removeExtraStopMarkers = (id) => {
     switch (id) {
       case '1':
-        this.setState({ extraStopLocation1: { lat: null, lng: null } });
+        this.setState({ extraStopLocation1: { lat: null, lng: null } }, () => {
+          this.drawRoute(function (err, directions) {
+            if (!err) {
+              console.log('ye');
+            }
+          });
+        });
         break;
       case '2':
-        this.setState({ extraStopLocation2: { lat: null, lng: null } });
+        this.setState({ extraStopLocation2: { lat: null, lng: null } }, () => {
+          this.drawRoute(function (err, directions) {
+            if (!err) {
+              console.log('ye');
+            }
+          });
+        });
         break;
       case '3':
-        this.setState({ extraStopLocation3: { lat: null, lng: null } });
+        this.setState({ extraStopLocation3: { lat: null, lng: null } }, () => {
+          this.drawRoute(function (err, directions) {
+            if (!err) {
+              console.log('ye');
+            }
+          });
+        });
         break;
       default:
         console.log('Something went wrong');
     }
-    this.drawRoute();
   }
 
   setDropoffMarker = (lat, long) => {
     let self = this;
     if (!(lat === null && long === null)) {
-      this.setState({ dropoffLocation: { lat: lat, lng: long } }, () =>{
+      this.setState({ dropoffLocation: { lat: lat, lng: long } }, () => {
         this.drawRoute(function (err, directions) {
           if (!err) {
             self.handleRouteInfo(directions);
@@ -233,7 +254,7 @@ class GoogleMap extends Component {
     if (!(this.state.routePolyline === null)) {
       this.state.routePolyline.setMap(null);
       this.setState({ routePolyline: null });
-      this.props.setRouteInfo({duration: null, distance: null});
+      this.props.setRouteInfo({ duration: null, distance: null });
     }
   }
 
