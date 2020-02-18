@@ -14,7 +14,7 @@ class DriverListing extends Component {
         selectedDriver: null,
     };
 
-    handleOnHover = async (driver, cb) => {
+    handleOnHover = async (driver) => {
         this.props.showDriver(driver.currentLat, driver.currentLong);
         this.setState({ selectedDriver: driver });
     }
@@ -31,8 +31,13 @@ class DriverListing extends Component {
                         driver={driver}
                         handleOnHover={this.handleOnHover}
                         selectedDriver={this.state.selectedDriver}
-                        route={this.props.route}
                         callAPI={this.callAPI}
+                        pickupLocation={this.props.pickupLocation}
+                        dropoffLocation={this.props.dropoffLocation}
+                        distance={this.props.distance}
+                        duration={this.props.duration}
+                        setPrice={this.props.setPrice}
+                        removePrice={this.props.removePrice}
                     />
                     <br />
                 </div>
@@ -73,8 +78,8 @@ class DriverListing extends Component {
         if (found === false) {
             let driverLatLng = { lat: driver.currentLat, lng: driver.currentLong };
             let pickUpLatLng = { lat: this.props.currentLat, lng: this.props.currentLong };
-            if (this.props.route.pickupLocation.lat !== null && this.props.route.pickupLocation.lng !== null) {
-                pickUpLatLng = { lat: this.props.route.pickupLocation.lat, lng: this.props.route.pickupLocation.lng };
+            if (this.props.pickupLocation.lat !== null && this.props.pickupLocation.lng !== null) {
+                pickUpLatLng = { lat: this.props.pickupLocation.lat, lng: this.props.pickupLocation.lng };
             }
 
             let directionsService = new google.maps.DirectionsService();
@@ -85,9 +90,11 @@ class DriverListing extends Component {
                 destination: pickUpLatLng,
                 travelMode: 'DRIVING',
                 drivingOptions: {
+                    // TODO change to depature time
                     departureTime: new Date(/* now, or future date */),
                     trafficModel: 'bestguess'
                 },
+                unitSystem: google.maps.UnitSystem.IMPERIAL,
             }, (response, status) => {
                 if (status === 'OK') {
                     directionsDisplay.setDirections(response);
@@ -105,31 +112,33 @@ class DriverListing extends Component {
     }
 
     render() {
-        let showWarning = (this.props.route.pickupLocation.lat === null && this.props.route.pickupLocation.lat === null) ?
+        let showWarning = ((this.props.pickupLocation.lat === null && this.props.pickupLocation.lng === null)
+            && (this.props.dropoffLocation.lat === null && this.props.dropoffLocation.lng == null)) ?
             <Card border="warning" text="black">
                 <Card.Body>
-                    <Card.Text style={{ fontSize: '15px' }}>
-                        Please choose a pick up location to display price, distance and response time.
+                    <Card.Text style={{ fontSize: '18px' }}>
+                        Please choose a pick up & drop off location.
             </Card.Text>
                 </Card.Body>
-            </Card> : null;
+            </Card>
+            :
+            <SelectableContext.Provider value={false}>
+                <DropdownButton
+                    key='dropdown'
+                    id={'sortby-dropdown'}
+                    size="sm"
+                    variant="secondary-light"
+                    title="Sort by"
+                >
+                    <Dropdown.Item onSelect={() => this.handleSortBy(1)}>Recommended</Dropdown.Item>
+                    <Dropdown.Item onSelect={() => this.handleSortBy(2)}>Fastest response</Dropdown.Item>
+                    <Dropdown.Item onSelect={() => this.handleSortBy(3)}>Lowest price</Dropdown.Item>
+                </DropdownButton>
+                {this.listDrivers()}
+            </SelectableContext.Provider>;
         return (
             <div>
                 {showWarning}
-                <SelectableContext.Provider value={false}>
-                    <DropdownButton
-                        key='dropdown'
-                        id={'sortby-dropdown'}
-                        size="sm"
-                        variant="secondary-light"
-                        title="Sort by"
-                    >
-                        <Dropdown.Item onSelect={() => this.handleSortBy(1)}>Recommended</Dropdown.Item>
-                        <Dropdown.Item onSelect={() => this.handleSortBy(2)}>Fastest response</Dropdown.Item>
-                        <Dropdown.Item onSelect={() => this.handleSortBy(3)}>Lowest price</Dropdown.Item>
-                    </DropdownButton>
-                    {this.listDrivers()}
-                </SelectableContext.Provider>
             </div>
         );
     }

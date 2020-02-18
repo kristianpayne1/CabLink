@@ -6,6 +6,7 @@ class DriverCard extends Component {
     state = {
         distance: null,
         time: null,
+        price: null,
     }
 
     showDriver = () => {
@@ -13,18 +14,50 @@ class DriverCard extends Component {
     }
 
     showDistTime = () => {
-        if (this.props.route.pickupLocation.lat !== null && this.props.route.pickupLocation.lng !== null) {
+        if (this.props.pickupLocation.lat !== null && this.props.pickupLocation.lng !== null) {
             let self = this;
             this.props.callAPI(this.props.driver, function (err, dist, time) {
                 if (!err) {
                     self.setState({ distance: dist.text, time: time.text });
                 }
             });
+        } else if (this.state.time !== null && this.state.time !== null) {
+            this.setState({time: null, distance: null});
+        }
+    }
+
+    showPrice = () => {
+        if (this.state.price === null) {
+            if ((this.props.dropoffLocation.lat !== null && this.props.dropoffLocation.lng !== null) && this.props.distance !== null) {
+                let price = '£' + (Math.round((this.props.driver.base_charge + ((this.props.distance.value / 5280) / this.props.driver.mile_charge)) * 100) / 100);
+                console.log(price);
+                this.setState({ price: price });
+            }
+        } else if (this.state.price !== null) {
+            if ((this.props.dropoffLocation.lat === null && this.props.dropoffLocation.lng === null) ||
+                (this.props.pickupLocation.lat === null && this.props.pickupLocation.lng === null)) {
+                this.setState({ price: null });
+            }
+        }
+    }
+
+    componentDidMount() {
+        this.showDistTime();
+        this.showPrice();
+    }
+
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.pickupLocation !== prevProps.pickupLocation) {
+            this.showDistTime();
+        }
+
+        if (this.props.distance !== prevProps.distance) {
+            this.showPrice();
         }
     }
 
     render() {
-        this.showDistTime();
         let isSelected = false;
         if (this.props.selectedDriver === this.props.driver) { isSelected = true; }
         let isSelectedCard = isSelected ? 'success' : null;
@@ -35,7 +68,7 @@ class DriverCard extends Component {
                     <Card.Subtitle className="mb-2 text-muted">{this.props.company}</Card.Subtitle>
                     <Card.Text>
                         Mobile: {this.props.mobileNo} {''}
-                        Price: <br />
+                        Price: {this.state.price} <br />
                         Distance: {this.state.distance} <br />
                         Response time: {this.state.time}
                     </Card.Text>

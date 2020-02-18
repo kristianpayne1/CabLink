@@ -13,28 +13,29 @@ class Booking extends Component {
         currentLat: 0,
         currentLong: 0,
         drivers: [],
-        route: {
-            pickupLocation: {
-                lat: null,
-                lng: null,
-            },
-            dropoffLocation: {
-                lat: null,
-                lng: null,
-            },
-            extraStopLocation1: {
-                lat: null,
-                lng: null,
-            },
-            extraStopLocation2: {
-                lat: null,
-                lng: null,
-            },
-            extraStopLocation3: {
-                lat: null,
-                lng: null,
-            },
+        pickupLocation: {
+            lat: null,
+            lng: null,
         },
+        dropoffLocation: {
+            lat: null,
+            lng: null,
+        },
+        extraStopLocation1: {
+            lat: null,
+            lng: null,
+        },
+        extraStopLocation2: {
+            lat: null,
+            lng: null,
+        },
+        extraStopLocation3: {
+            lat: null,
+            lng: null,
+        },
+        distance: null,
+        duration: null,
+        price: null,
     };
 
     handleViewSidebar = () => {
@@ -51,22 +52,26 @@ class Booking extends Component {
 
     handlePickup = (lat, long) => {
         this.map.current.setPickupMarker(lat, long);
-        this.setState({ route: { pickupLocation: { lat: lat, lng: long } } });
+        this.setState({pickupLocation: { lat: lat, lng: long } });
     }
 
     removePickup = () => {
         this.map.current.removePickupMarker();
-        this.setState({ route: { pickupLocation: { lat: null, lng: null } } });
+        this.setState({ pickupLocation: { lat: null, lng: null } });
     }
 
     handleDropoff = (lat, long) => {
         this.map.current.setDropoffMarker(lat, long);
-        this.setState({ route: { dropoffLocation: { lat: lat, lng: long } } });
+        this.setState({ dropoffLocation: { lat: lat, lng: long } });
     }
 
     removeDropoff = () => {
         this.map.current.removeDropoffMarker();
-        this.setState({ route: { dropoffLocation: { lat: null, lng: null } } });
+        this.setState({ dropoffLocation: { lat: null, lng: null } });
+    }
+
+    setRouteInfo = (info) => {
+        this.setState({ duration: info.duration, distance: info.distance })
     }
 
     handleExtraStops = (id, location) => {
@@ -107,6 +112,14 @@ class Booking extends Component {
         this.map.current.centerToPoint(lat, lng)
     }
 
+    setPrice = (price) => {
+        this.setState({price: price});
+    }
+
+    removePrice = () => {
+        this.setState({price: null})
+    }
+
     render() {
         return (
             <div>
@@ -116,6 +129,7 @@ class Booking extends Component {
                     currentLong={this.state.currentLong}
                     updateDrivers={this.setDrivers}
                     updateLocation={this.setLocation}
+                    setRouteInfo={this.setRouteInfo}
                     ref={this.map}
                 />
                 <SideBar
@@ -131,7 +145,15 @@ class Booking extends Component {
                     removeDropoff={this.removeDropoff}
                     removeExtraSteps={this.removeExtraSteps}
                     showDriver={this.showDriver}
-                    route={this.state.route}
+                    pickupLocation= {this.state.pickupLocation}
+                    dropoffLocation = {this.state.dropoffLocation}
+                    extraStopLocation1= {this.state.extraStopLocation1}
+                    extraStopLocation2 = {this.state.extraStopLocation2}
+                    extraStopLocation3 = {this.state.extraStopLocation3}
+                    distance = {this.state.distance}
+                    duration = {this.state.duration}
+                    setPrice={this.setPrice}
+                    removePrice={this.removePrice}
                 />
             </div>
         );

@@ -136,13 +136,19 @@ class GoogleMap extends Component {
   }
 
   setDropoffMarker = (lat, long) => {
+    let self = this;
     if (!(lat === null && long === null)) {
-      this.setState({ dropoffLocation: { lat: lat, lng: long } });
+      this.setState({ dropoffLocation: { lat: lat, lng: long } }, () =>{
+        this.drawRoute(function (err, directions) {
+          if (!err) {
+            self.handleRouteInfo(directions);
+          }
+        });
+      });
       if (this.state.pickupLocation.lat === null && this.state.pickupLocation.lng === null) {
         this.centerToPoint(lat, long);
       }
     }
-    this.drawRoute();
   }
 
   removeDropoffMarker = () => {
@@ -168,7 +174,11 @@ class GoogleMap extends Component {
     this.state.map.setZoom(this.state.map.getZoom() - 1);
   }
 
-  drawRoute = () => {
+  handleRouteInfo = (directions) => {
+    this.props.setRouteInfo({ duration: directions.routes[0].legs[0].duration, distance: directions.routes[0].legs[0].distance });
+  }
+
+  drawRoute = (cd) => {
     if (this.state.dropoffLocation.lat !== null && this.state.pickupLocation.lat !== null) {
       //this.removeRoute();
       //console.log('Drawing ride route');
@@ -193,11 +203,17 @@ class GoogleMap extends Component {
         origin: { lat: this.state.pickupLocation.lat, lng: this.state.pickupLocation.lng },
         destination: { lat: this.state.dropoffLocation.lat, lng: this.state.dropoffLocation.lng },
         waypoints: waypoints,
-        travelMode: 'DRIVING'
+        travelMode: 'DRIVING',
+        drivingOptions: {
+          // TODO change to depature time
+          departureTime: new Date(/* now, or future date */),
+          trafficModel: 'bestguess'
+        },
+        unitSystem: google.maps.UnitSystem.IMPERIAL,
       }, (response, status) => {
         if (status === 'OK') {
           directionsDisplay.setDirections(response);
-          console.log(directionsDisplay.directions.routes[0].legs[0].duration.text);
+          cd(null, directionsDisplay.directions)
           this.removeRoute();
           this.setState({
             routePolyline: new google.maps.Polyline({
@@ -216,7 +232,8 @@ class GoogleMap extends Component {
   removeRoute = () => {
     if (!(this.state.routePolyline === null)) {
       this.state.routePolyline.setMap(null);
-      this.setState({routePolyline: null});
+      this.setState({ routePolyline: null });
+      this.props.setRouteInfo({duration: null, distance: null});
     }
   }
 
