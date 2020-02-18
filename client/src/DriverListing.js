@@ -14,12 +14,6 @@ class DriverListing extends Component {
     handleOnHover = async (driver, cb) => {
         this.props.showDriver(driver.currentLat, driver.currentLong);
         this.setState({ selectedDriver: driver });
-        this.callAPI(driver, function (err, dist, time) {
-            if (!err) {
-                console.log(dist.text +'' + time.text);
-                cb(null, {distance: dist, time:time});
-            }
-        });
     }
 
     listDrivers() {
@@ -34,6 +28,8 @@ class DriverListing extends Component {
                         driver={driver}
                         handleOnHover={this.handleOnHover}
                         selectedDriver={this.state.selectedDriver}
+                        currentLocation={{lat: this.props.currentLat, lng: this.props.currentLong}}
+                        callAPI={this.callAPI}
                     />
                     <br />
                 </div>
@@ -86,7 +82,6 @@ class DriverListing extends Component {
                     window.alert('Directions request failed due to ' + status);
                 }
             });
-            console.log('API called');
         }
     }
 
