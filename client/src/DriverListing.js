@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import DriverCard from './DriverCard.js';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import SelectableContext from "react-bootstrap/SelectableContext";
 const google = window.google;
 
 class DriverListing extends Component {
@@ -28,7 +29,7 @@ class DriverListing extends Component {
                         driver={driver}
                         handleOnHover={this.handleOnHover}
                         selectedDriver={this.state.selectedDriver}
-                        currentLocation={{lat: this.props.currentLat, lng: this.props.currentLong}}
+                        currentLocation={{ lat: this.props.currentLat, lng: this.props.currentLong }}
                         callAPI={this.callAPI}
                     />
                     <br />
@@ -46,6 +47,22 @@ class DriverListing extends Component {
             }
         });
         return found;
+    }
+
+    handleSortBy = (num) => {
+        switch (num) {
+            case 1:
+                console.log(num);
+                break;
+            case 2:
+                console.log(num);
+                break;
+            case 3:
+                console.log(num);
+                break;
+            default:
+                break;
+        }
     }
 
     // get the distance and time between driver and pickup location
@@ -76,7 +93,7 @@ class DriverListing extends Component {
                     let distance = directionsDisplay.directions.routes[0].legs[0].distance;
                     // expressed in secs
                     let time = directionsDisplay.directions.routes[0].legs[0].duration_in_traffic;
-                    this.state.driverDistanceTime.push({driver: driver, distance: distance, time: time});
+                    this.state.driverDistanceTime.push({ driver: driver, distance: distance, time: time });
                     cb(null, distance, time);
                 } else {
                     window.alert('Directions request failed due to ' + status);
@@ -87,7 +104,7 @@ class DriverListing extends Component {
 
     render() {
         return (
-            <div>
+            <SelectableContext.Provider value={false}>
                 <DropdownButton
                     key='dropdown'
                     id={'sortby-dropdown'}
@@ -95,12 +112,12 @@ class DriverListing extends Component {
                     variant="secondary-light"
                     title="Sort by"
                 >
-                    <Dropdown.Item>Recommended</Dropdown.Item>
-                    <Dropdown.Item>Fastest response</Dropdown.Item>
-                    <Dropdown.Item>Lowest price</Dropdown.Item>
+                    <Dropdown.Item onSelect={() => this.handleSortBy(1)}>Recommended</Dropdown.Item>
+                    <Dropdown.Item onSelect={() => this.handleSortBy(2)}>Fastest response</Dropdown.Item>
+                    <Dropdown.Item onSelect={() => this.handleSortBy(3)}>Lowest price</Dropdown.Item>
                 </DropdownButton>
                 {this.listDrivers()}
-            </div>
+            </SelectableContext.Provider>
         );
     }
 }

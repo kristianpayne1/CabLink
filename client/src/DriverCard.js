@@ -13,7 +13,7 @@ class DriverCard extends Component {
     }
 
     showDistTime = () => {
-        if (this.props.currentLocation.lat !== null && this.props.currentLocation.lng !== null) {
+        if (this.props.currentLocation.lat !== 0 && this.props.currentLocation.lng !== 0) {
             let self = this;
             this.props.callAPI(this.props.driver, function (err, dist, time) {
                 if (!err) {
