@@ -21,8 +21,6 @@ class DriverListing extends Component {
 
     loadDrivers = () => {
         let self = this;
-        console.log('Pick up and drop off location set');
-        console.log(this.props.drivers);
         this.props.drivers.map((driver) =>
             this.callAPI(driver, function (err, dist, time) {
                 if (!err) {
@@ -30,10 +28,9 @@ class DriverListing extends Component {
                     let price_text = '£' + price;
                     self.state.driverDistanceTime.push({ driver: driver, distance: dist, time: time, price: { value: price, text: price_text } });
                 }
-            })
+            }),
+            this.handleSortBy(1)
         );
-        this.handleSortBy(1);
-
     }
 
     handleOnHover = async (driver) => {
@@ -75,40 +72,55 @@ class DriverListing extends Component {
     }
 
     sortByPrice = () => {
-        let sorted = this.state.driverDistanceTime.sort(function (a, b) {
+        let sorted = this.state.driverDistanceTime.slice(0);
+        sorted.sort(function (a, b) {
             return a.price.value - b.price.value
         });
-        console.log(sorted);
         return sorted;
     }
 
     sortByResponse = () => {
-        let sorted = this.state.driverDistanceTime.sort(function (a, b) {
+        let sorted = this.state.driverDistanceTime.slice(0);
+        sorted.sort(function (a, b) {
             return a.time.value - b.time.value
         });
-        console.log(sorted);
         return sorted;
     }
 
     sortByRecommend = () => {
-        let list = this.state.driverDistanceTime;
+        console.log("Sorting by recommended")
+        let recommendList = [];
         let priceList = this.sortByPrice();
-        let responseList = this.sortByResponse();
         for (let i = 0; i < priceList.length; i++) {
-            list.driver.point = i;
+            recommendList.push({item: {driver: priceList[i], points: priceList.length-i}});
         }
-        for (let i = 0; i < responseList.length; i++) {
-            list.driver.point += i;
+        let responseList = this.sortByResponse();
+        for(let i =0; i < responseList.length; i++) {
+            let index = this.findWithAttr(recommendList, responseList[i]);
+            recommendList[index].item.points += responseList.length - i;
         }
-        let sorted = list.sort(function (a, b) {
-            return a.driver.point - b.driver.point
+        recommendList = recommendList.sort(function (a, b) {
+            return b.item.points - a.item.points
         });
-        console.log(sorted);
+        let sorted = [];
+        recommendList.forEach(item => {
+            sorted.push(item.item.driver);
+        });
+        console.log(recommendList);
         return sorted;
     }
 
+    findWithAttr(array, driver) {
+        for(var i = 0; i < array.length; i++) {
+            if(array[i].item["driver"] === driver) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     handleSortBy = (num) => {
-        let list = this.state.driverOrder;
+        let list = [];
         switch (num) {
             case 1:
                 list = this.sortByRecommend();
@@ -123,7 +135,7 @@ class DriverListing extends Component {
                 list = this.sortByRecommend();
                 break;
         }
-        this.setState({ driverOrder: list }, () => {
+        this.setState({ driverDistanceTime: list }, () => {
             this.listDrivers();
         });
     }

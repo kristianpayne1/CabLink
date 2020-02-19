@@ -7,6 +7,14 @@ import DriverListing from './DriverListing.js';
 import CustomToggle from './CustomToggle.js';
 
 class SideBar extends Component {
+    constructor(props) {
+        super(props);
+        this.DriverListing = React.createRef();
+    }
+
+    showDrivers =() => {
+        this.DriverListing.current.handleSortBy();
+    }
 
     render() {
         let disableContinueCab = ((this.props.pickupLocation.lat === null && this.props.pickupLocation.lng === null)
@@ -37,6 +45,7 @@ class SideBar extends Component {
                                     disabled={disableContinueCab}
                                     eventKey="1"
                                     content="Continue to choose cab"
+                                    showDrivers={this.showDrivers}
                                 />
                             </Card.Body>
                         </Accordion.Collapse>
@@ -51,6 +60,7 @@ class SideBar extends Component {
                                     disabled={false}
                                     eventKey="0"
                                     content="Return to pick up & drop off"
+                                    showDrivers={null}
                                 />
                                 <DriverListing
                                     drivers={this.props.drivers}
@@ -66,6 +76,7 @@ class SideBar extends Component {
                                     duration={this.props.duration}
                                     setPrice={this.props.setPrice}
                                     removePrice={this.props.removePrice}
+                                    ref={this.DriverListing}
                                 />
                             </Card.Body>
                         </Accordion.Collapse>

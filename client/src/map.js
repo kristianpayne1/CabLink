@@ -90,7 +90,11 @@ class GoogleMap extends Component {
         this.centerToPoint(lat, long);
       }
     }
-    this.drawRoute();
+    this.drawRoute(function (err, directions) {
+      if (!err) {
+        console.log('ye');
+      }
+    });
   }
 
   removePickupMarker = () => {
