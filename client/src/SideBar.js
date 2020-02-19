@@ -7,21 +7,6 @@ import DriverListing from './DriverListing.js';
 import CustomToggle from './CustomToggle.js';
 
 class SideBar extends Component {
-    state = {
-        key: '0',
-    }
-
-    showPickupDropoff = () => {
-        this.setState({ key: '0' })
-    }
-
-    showCabs = () => {
-        this.setState({ key: '1' })
-    }
-
-    showPayment = () => {
-        this.setState({ key: '2' })
-    }
 
     render() {
         let disableContinueCab = ((this.props.pickupLocation.lat === null && this.props.pickupLocation.lng === null)
@@ -31,7 +16,7 @@ class SideBar extends Component {
         let sidebarButton = this.props.isOpen ? 'sidebar-toggle open' : 'sidebar-toggle';
         return (
             <div className={sidebarClass}>
-                <Accordion defaultActiveKey={this.state.key}>
+                <Accordion defaultActiveKey="0">
                     <Card>
                         <Card.Header>
                             Choose pick-up & drop off

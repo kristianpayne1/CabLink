@@ -4,8 +4,7 @@ import Button from 'react-bootstrap/Button';
 
 function CustomToggle({eventKey, disabled, content}) {
 
-    const stuff = useAccordionToggle(eventKey, () =>
-        console.log('toggling accordian'));
+    const stuff = useAccordionToggle(eventKey);
 
     return (
         <Button

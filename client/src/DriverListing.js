@@ -9,10 +9,32 @@ const google = window.google;
 
 class DriverListing extends Component {
     state = {
-        driverOrder: [],
         driverDistanceTime: [],
         selectedDriver: null,
     };
+
+    componentDidUpdate(prevProps) {
+        if (this.props.pickupLocation !== prevProps.pickupLocation) {
+            this.loadDrivers();
+        }
+    }
+
+    loadDrivers = () => {
+        let self = this;
+        console.log('Pick up and drop off location set');
+        console.log(this.props.drivers);
+        this.props.drivers.map((driver) =>
+            this.callAPI(driver, function (err, dist, time) {
+                if (!err) {
+                    let price = driver.base_charge + ((driver.mile_charge / 5280) * self.props.distance);
+                    let price_text = '£' + price;
+                    self.state.driverDistanceTime.push({ driver: driver, distance: dist, time: time, price: { value: price, text: price_text } });
+                }
+            })
+        );
+        this.handleSortBy(1);
+
+    }
 
     handleOnHover = async (driver) => {
         this.props.showDriver(driver.currentLat, driver.currentLong);
@@ -21,23 +43,19 @@ class DriverListing extends Component {
 
     listDrivers() {
         return (
-            this.props.drivers.map((driver) =>
-                <div key={driver.driverID}>
+            this.state.driverDistanceTime.map((item) =>
+                <div key={item.driver.driverID}>
                     <DriverCard
-                        name={driver.firstname + ' ' + driver.lastname}
-                        company={driver.companyName}
-                        mobileNo={driver.mobileNo}
-                        key={driver.driverID}
-                        driver={driver}
+                        name={item.driver.firstname + ' ' + item.driver.lastname}
+                        company={item.driver.companyName}
+                        mobileNo={item.driver.mobileNo}
+                        key={item.driver.driverID}
+                        driver={item.driver}
                         handleOnHover={this.handleOnHover}
                         selectedDriver={this.state.selectedDriver}
-                        callAPI={this.callAPI}
-                        pickupLocation={this.props.pickupLocation}
-                        dropoffLocation={this.props.dropoffLocation}
-                        distance={this.props.distance}
-                        duration={this.props.duration}
-                        setPrice={this.props.setPrice}
-                        removePrice={this.props.removePrice}
+                        response={item.time.text}
+                        distance={item.distance.text}
+                        price={item.price.text}
                     />
                     <br />
                 </div>
@@ -56,20 +74,58 @@ class DriverListing extends Component {
         return found;
     }
 
+    sortByPrice = () => {
+        let sorted = this.state.driverDistanceTime.sort(function (a, b) {
+            return a.price.value - b.price.value
+        });
+        console.log(sorted);
+        return sorted;
+    }
+
+    sortByResponse = () => {
+        let sorted = this.state.driverDistanceTime.sort(function (a, b) {
+            return a.time.value - b.time.value
+        });
+        console.log(sorted);
+        return sorted;
+    }
+
+    sortByRecommend = () => {
+        let list = this.state.driverDistanceTime;
+        let priceList = this.sortByPrice();
+        let responseList = this.sortByResponse();
+        for (let i = 0; i < priceList.length; i++) {
+            list.driver.point = i;
+        }
+        for (let i = 0; i < responseList.length; i++) {
+            list.driver.point += i;
+        }
+        let sorted = list.sort(function (a, b) {
+            return a.driver.point - b.driver.point
+        });
+        console.log(sorted);
+        return sorted;
+    }
+
     handleSortBy = (num) => {
+        let list = this.state.driverOrder;
         switch (num) {
             case 1:
-                console.log(num);
+                list = this.sortByRecommend();
                 break;
             case 2:
-                console.log(num);
+                list = this.sortByResponse();
                 break;
             case 3:
-                console.log(num);
+                list = this.sortByPrice();
                 break;
             default:
+                list = this.sortByRecommend();
                 break;
         }
+        this.setState({ driverOrder: list }, () => {
+            this.listDrivers();
+        });
     }
 
     // get the distance and time between driver and pickup location
@@ -102,7 +158,6 @@ class DriverListing extends Component {
                     let distance = directionsDisplay.directions.routes[0].legs[0].distance;
                     // expressed in secs
                     let time = directionsDisplay.directions.routes[0].legs[0].duration_in_traffic;
-                    this.state.driverDistanceTime.push({ driver: driver, distance: distance, time: time });
                     cb(null, distance, time);
                 } else {
                     window.alert('Directions request failed due to ' + status);
