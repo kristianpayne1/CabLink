@@ -12,8 +12,8 @@ class SideBar extends Component {
         this.DriverListing = React.createRef();
     }
 
-    showDrivers =() => {
-        this.DriverListing.current.handleSortBy();
+    showDrivers = async () => {
+        await this.DriverListing.current.loadDrivers();
     }
 
     render() {

@@ -13,23 +13,31 @@ class DriverListing extends Component {
         selectedDriver: null,
     };
 
-    componentDidUpdate(prevProps) {
-        if (this.props.pickupLocation !== prevProps.pickupLocation) {
-            this.loadDrivers();
-        }
-    }
-
-    loadDrivers = () => {
+    loadDrivers = async () => {
         let self = this;
         this.props.drivers.map((driver) =>
             this.callAPI(driver, function (err, dist, time) {
                 if (!err) {
-                    let price = driver.base_charge + ((driver.mile_charge / 5280) * self.props.distance);
+                    console.log(self.props.distance);
+                    let price = driver.base_charge + ((driver.mile_charge / 5280) * self.props.distance.value);
+                    price = Math.round(price * 100) / 100;
                     let price_text = '£' + price;
-                    self.state.driverDistanceTime.push({ driver: driver, distance: dist, time: time, price: { value: price, text: price_text } });
+                    let found = self.checkIfLoaded(driver);
+                    if (!found) {
+                        self.state.driverDistanceTime.push({ driver: driver, distance: dist, time: time, price: { value: price, text: price_text } });
+                    }else{
+                        self.state.driverDistanceTime.forEach(item => {
+                            if(item.driver === driver){
+                                item.distance = dist;
+                                item.time = time;
+                                item.price.value = price;
+                                item.price.text = price_text;
+                            }
+                        })
+                    }
+                    self.handleSortBy(1);
                 }
             }),
-            this.handleSortBy(1)
         );
     }
 
@@ -92,12 +100,12 @@ class DriverListing extends Component {
         let recommendList = [];
         let priceList = this.sortByPrice();
         for (let i = 0; i < priceList.length; i++) {
-            recommendList.push({item: {driver: priceList[i], points: priceList.length-i}});
+            recommendList.push({ item: { driver: priceList[i], points: priceList.length - i } });
         }
         let responseList = this.sortByResponse();
-        for(let i =0; i < responseList.length; i++) {
+        for (let i = 0; i < responseList.length; i++) {
             let index = this.findWithAttr(recommendList, responseList[i]);
-            recommendList[index].item.points += responseList.length - i;
+            recommendList[index].item.points += (responseList.length - i) * 2;
         }
         recommendList = recommendList.sort(function (a, b) {
             return b.item.points - a.item.points
@@ -111,8 +119,8 @@ class DriverListing extends Component {
     }
 
     findWithAttr(array, driver) {
-        for(var i = 0; i < array.length; i++) {
-            if(array[i].item["driver"] === driver) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i].item["driver"] === driver) {
                 return i;
             }
         }
@@ -142,40 +150,37 @@ class DriverListing extends Component {
 
     // get the distance and time between driver and pickup location
     callAPI = async (driver, cb) => {
-        let found = this.checkIfLoaded(driver);
-        if (found === false) {
-            let driverLatLng = { lat: driver.currentLat, lng: driver.currentLong };
-            let pickUpLatLng = { lat: this.props.currentLat, lng: this.props.currentLong };
-            if (this.props.pickupLocation.lat !== null && this.props.pickupLocation.lng !== null) {
-                pickUpLatLng = { lat: this.props.pickupLocation.lat, lng: this.props.pickupLocation.lng };
-            }
-
-            let directionsService = new google.maps.DirectionsService();
-            let directionsDisplay = new google.maps.DirectionsRenderer();
-
-            directionsService.route({
-                origin: driverLatLng,
-                destination: pickUpLatLng,
-                travelMode: 'DRIVING',
-                drivingOptions: {
-                    // TODO change to depature time
-                    departureTime: new Date(/* now, or future date */),
-                    trafficModel: 'bestguess'
-                },
-                unitSystem: google.maps.UnitSystem.IMPERIAL,
-            }, (response, status) => {
-                if (status === 'OK') {
-                    directionsDisplay.setDirections(response);
-                    // expressed in meters
-                    let distance = directionsDisplay.directions.routes[0].legs[0].distance;
-                    // expressed in secs
-                    let time = directionsDisplay.directions.routes[0].legs[0].duration_in_traffic;
-                    cb(null, distance, time);
-                } else {
-                    window.alert('Directions request failed due to ' + status);
-                }
-            });
+        let driverLatLng = { lat: driver.currentLat, lng: driver.currentLong };
+        let pickUpLatLng = { lat: this.props.currentLat, lng: this.props.currentLong };
+        if (this.props.pickupLocation.lat !== null && this.props.pickupLocation.lng !== null) {
+            pickUpLatLng = { lat: this.props.pickupLocation.lat, lng: this.props.pickupLocation.lng };
         }
+
+        let directionsService = new google.maps.DirectionsService();
+        let directionsDisplay = new google.maps.DirectionsRenderer();
+
+        directionsService.route({
+            origin: driverLatLng,
+            destination: pickUpLatLng,
+            travelMode: 'DRIVING',
+            drivingOptions: {
+                // TODO change to depature time
+                departureTime: new Date(/* now, or future date */),
+                trafficModel: 'bestguess'
+            },
+            unitSystem: google.maps.UnitSystem.IMPERIAL,
+        }, (response, status) => {
+            if (status === 'OK') {
+                directionsDisplay.setDirections(response);
+                // expressed in meters
+                let distance = directionsDisplay.directions.routes[0].legs[0].distance;
+                // expressed in secs
+                let time = directionsDisplay.directions.routes[0].legs[0].duration_in_traffic;
+                cb(null, distance, time);
+            } else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        });
     }
 
     render() {

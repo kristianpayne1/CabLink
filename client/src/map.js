@@ -84,6 +84,7 @@ class GoogleMap extends Component {
   }
 
   setPickupMarker = (lat, long) => {
+    let self = this;
     if (!(lat === null && long === null)) {
       this.setState({ pickupLocation: { lat: lat, lng: long } });
       if (this.state.dropoffLocation.lat === null && this.state.dropoffLocation.lng === null) {
@@ -92,7 +93,7 @@ class GoogleMap extends Component {
     }
     this.drawRoute(function (err, directions) {
       if (!err) {
-        console.log('ye');
+        self.handleRouteInfo(directions);
       }
     });
   }
