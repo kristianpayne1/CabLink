@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 class ConfirmBooking extends Component {
 
     render() {
-        console.log(this.props.price);
         let showConfirmation = (this.props.driver && this.props.price) ?
             <div>
                 <h5>Confirm booking</h5>
