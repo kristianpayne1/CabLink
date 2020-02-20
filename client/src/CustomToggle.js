@@ -2,21 +2,22 @@ import React from 'react';
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 import Button from 'react-bootstrap/Button';
 
-function CustomToggle({eventKey, disabled, content, showDrivers}) {
+function CustomToggle({ eventKey, disabled, content, showDrivers, variant, block, size}) {
 
     const stuff = useAccordionToggle(eventKey, () => {
-        if(showDrivers) {
+        if (showDrivers) {
             showDrivers();
         }
     });
 
     return (
         <Button
-            variant="outline-primary"
+            variant={variant}
             disabled={disabled}
             onClick={stuff}
-            block
-            size='sm'>
+            size={size}
+            block={block}
+        >
             {content}
         </Button>
     );

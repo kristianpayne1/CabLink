@@ -5,6 +5,7 @@ import Card from 'react-bootstrap/Card';
 import SearchLocationForm from './SearchLocationForm';
 import DriverListing from './DriverListing.js';
 import CustomToggle from './CustomToggle.js';
+import ConfirmBooking from './ConfirmBooking.js';
 
 class SideBar extends Component {
     constructor(props) {
@@ -46,6 +47,9 @@ class SideBar extends Component {
                                     eventKey="1"
                                     content="Continue to choose cab"
                                     showDrivers={this.showDrivers}
+                                    variant="outline-primary"
+                                    block={true}
+                                    size="sm"
                                 />
                             </Card.Body>
                         </Accordion.Collapse>
@@ -61,6 +65,7 @@ class SideBar extends Component {
                                     eventKey="0"
                                     content="Return to pick up & drop off"
                                     showDrivers={null}
+                                    variant="outline-primary"
                                 />
                                 <DriverListing
                                     drivers={this.props.drivers}
@@ -87,15 +92,12 @@ class SideBar extends Component {
                         </Card.Header>
                         <Accordion.Collapse eventKey="2">
                             <Card.Body>
-                                <Button variant="outline-primary" disabled block size='sm'>
-                                    Change pick up & drop off
-                                </Button>
-                                <Button variant="outline-primary" disabled block size='sm'>
-                                    Change cab
-                                </Button>
-                                <Button variant="outline-success" disabled block>
-                                    Continue to payment
-                                </Button>
+                                <ConfirmBooking 
+                                    pickupLocation={this.props.pickupLocation}
+                                    dropoffLocation={this.props.dropoffLocation}
+                                    price={this.props.price}
+                                    driver={this.props.selectedDriver}
+                                />
                             </Card.Body>
                         </Accordion.Collapse>
                     </Card>

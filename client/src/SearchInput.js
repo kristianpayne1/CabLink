@@ -50,7 +50,7 @@ class SearchInput extends Component {
                     query: addressObject.formatted_address,
                 }
             );
-            this.props.setLocation(geometry.location);
+            this.props.setLocation(geometry.location, address[0].long_name);
         }
     }
 

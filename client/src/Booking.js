@@ -16,26 +16,32 @@ class Booking extends Component {
         pickupLocation: {
             lat: null,
             lng: null,
+            address: '',
         },
         dropoffLocation: {
             lat: null,
             lng: null,
+            address: '',
         },
         extraStopLocation1: {
             lat: null,
             lng: null,
+            address: '',
         },
         extraStopLocation2: {
             lat: null,
             lng: null,
+            address: '',
         },
         extraStopLocation3: {
             lat: null,
             lng: null,
+            address: '',
         },
         distance: null,
         duration: null,
         price: null,
+        selectedDriver: null,
     };
 
     handleViewSidebar = () => {
@@ -50,41 +56,41 @@ class Booking extends Component {
         this.setState({ currentLat: lat, currentLong: long })
     }
 
-    handlePickup = (lat, long) => {
+    handlePickup = (lat, long, name) => {
         this.map.current.setPickupMarker(lat, long);
-        this.setState({pickupLocation: { lat: lat, lng: long } });
+        this.setState({pickupLocation: { lat: lat, lng: long, address: name} });
     }
 
     removePickup = () => {
         this.map.current.removePickupMarker();
-        this.setState({ pickupLocation: { lat: null, lng: null } });
+        this.setState({ pickupLocation: { lat: null, lng: null, name: '' } });
     }
 
-    handleDropoff = (lat, long) => {
+    handleDropoff = (lat, long, name) => {
         this.map.current.setDropoffMarker(lat, long);
-        this.setState({ dropoffLocation: { lat: lat, lng: long } });
+        this.setState({ dropoffLocation: { lat: lat, lng: long, address: name } });
     }
 
     removeDropoff = () => {
         this.map.current.removeDropoffMarker();
-        this.setState({ dropoffLocation: { lat: null, lng: null } });
+        this.setState({ dropoffLocation: { lat: null, lng: null, name: '' } });
     }
 
     setRouteInfo = (info) => {
         this.setState({ duration: info.duration, distance: info.distance })
     }
 
-    handleExtraStops = (id, location) => {
+    handleExtraStops = (id, location, name) => {
         this.map.current.setExtraStopMarkers(id, location);
         switch (id) {
             case '1':
-                this.setState({ route: { extraStop1Location: { lat: location.lat, lng: location.long } } });
+                this.setState({ route: { extraStop1Location: { lat: location.lat, lng: location.long, address: name } } });
                 break;
             case '2':
-                this.setState({ route: { extraStop2Location: { lat: location.lat, lng: location.long } } });
+                this.setState({ route: { extraStop2Location: { lat: location.lat, lng: location.long, address: name } } });
                 break;
             case '3':
-                this.setState({ route: { extraStop3Location: { lat: location.lat, lng: location.long } } });
+                this.setState({ route: { extraStop3Location: { lat: location.lat, lng: location.long, address: name } } });
                 break;
             default:
                 console.log('Something went wrong')
@@ -95,21 +101,22 @@ class Booking extends Component {
         this.map.current.removeExtraStopMarkers(id);
         switch (id) {
             case '1':
-                this.setState({ route: { extraStopLocation1: { lat: null, lng: null } } });
+                this.setState({ route: { extraStopLocation1: { lat: null, lng: null, name: '' } } });
                 break;
             case '2':
-                this.setState({ route: { extraStopLocation2: { lat: null, lng: null } } });
+                this.setState({ route: { extraStopLocation2: { lat: null, lng: null, name: '' } } });
                 break;
             case '3':
-                this.setState({ route: { extraStopLocation3: { lat: null, lng: null } } });
+                this.setState({ route: { extraStopLocation3: { lat: null, lng: null, name: '' } } });
                 break;
             default:
                 console.log('Something went wrong');
         }
     }
 
-    showDriver = (lat, lng) => {
-        this.map.current.centerToPoint(lat, lng)
+    showDriver = (lat, lng, driver) => {
+        this.map.current.centerToPoint(lat, lng);
+        this.setState({selectedDriver: driver});
     }
 
     setPrice = (price) => {
@@ -153,7 +160,9 @@ class Booking extends Component {
                     distance = {this.state.distance}
                     duration = {this.state.duration}
                     setPrice={this.setPrice}
+                    price={this.state.price}
                     removePrice={this.removePrice}
+                    selectedDriver={this.state.selectedDriver}
                 />
             </div>
         );

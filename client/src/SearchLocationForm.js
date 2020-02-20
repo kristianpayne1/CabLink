@@ -16,23 +16,28 @@ class SearchLocationForm extends Component {
             pickupLocation: {
                 lat: 0,
                 lng: 0,
+                address: '',
             },
             dropoffLocation: {
                 lat: 0,
                 lng: 0,
+                address: '',
             },
             extraDestination: {
                 stop1: {
                     lat: null,
                     lng: null,
+                    address: '',
                 },
                 stop2: {
                     lat: null,
                     lng: null,
+                    address: '',
                 },
                 stop3: {
                     lat: null,
                     lng: null,
+                    address: '',
                 },
             },
             date: new Date(),
@@ -44,43 +49,43 @@ class SearchLocationForm extends Component {
         let pickupSearch = document.getElementById('pickupLocation');
         if (!(this.props.currentLat === 0 && this.props.currentLong === 0)) {
             pickupSearch.value = this.props.currentLat + ' ' + this.props.currentLong;
-            this.props.handlePickup(this.props.currentLat, this.props.currentLong);
+            this.props.handlePickup(this.props.currentLat, this.props.currentLong, 'Your location');
         }
     }
 
-    setPickupLocation = (location) => {
-        this.setState({ pickupLocation: { lat: location.lat(), lng: location.lng() } });
-        this.props.handlePickup(this.state.pickupLocation.lat, this.state.pickupLocation.lng);
+    setPickupLocation = (location, name) => {
+        this.setState({ pickupLocation: { lat: location.lat(), lng: location.lng(), address: name } });
+        this.props.handlePickup(this.state.pickupLocation.lat, this.state.pickupLocation.lng, name);
     }
 
     removePickupLocation = () => {
-        this.setState({ pickupLocation: { lat: null, lng: null } });
+        this.setState({ pickupLocation: { lat: null, lng: null, address: '' } });
         this.props.removePickup();
     }
 
-    setDropoffLocation = (location) => {
-        this.setState({ dropoffLocation: { lat: location.lat(), lng: location.lng() } });
-        this.props.handleDropoff(this.state.dropoffLocation.lat, this.state.dropoffLocation.lng);
+    setDropoffLocation = (location, name) => {
+        this.setState({ dropoffLocation: { lat: location.lat(), lng: location.lng(), address: name } });
+        this.props.handleDropoff(this.state.dropoffLocation.lat, this.state.dropoffLocation.lng, name);
     }
 
     removeDropoffLocation = () => {
-        this.setState({ dropoffLocation: { lat: null, lng: null } });
+        this.setState({ dropoffLocation: { lat: null, lng: null, address: ''} });
         this.props.removeDropoff();
     }
 
-    setAddtionalDest = (id, location) => {
+    setAddtionalDest = (id, location, name) => {
         switch (id) {
             case '1':
-                this.setState({ extraDestination: { stop1: { lat: location.lat, lng: location.lng } } });
-                this.props.handleExtraStops(id, location);
+                this.setState({ extraDestination: { stop1: { lat: location.lat, lng: location.lng, address: name } } });
+                this.props.handleExtraStops(id, location, name);
                 break;
             case '2':
-                this.setState({ extraDestination: { stop2: { lat: location.lat, lng: location.lng } } });
-                this.props.handleExtraStops(id, location);
+                this.setState({ extraDestination: { stop2: { lat: location.lat, lng: location.lng, address: name } } });
+                this.props.handleExtraStops(id, location, name);
                 break;
             case '3':
-                this.setState({ extraDestination: { stop3: { lat: location.lat, lng: location.lng } } });
-                this.props.handleExtraStops(id, location);
+                this.setState({ extraDestination: { stop3: { lat: location.lat, lng: location.lng, address: name } } });
+                this.props.handleExtraStops(id, location, name);
                 break;
             default:
                 console.log("Error in setAdditionalDest: wrong id")
@@ -90,15 +95,15 @@ class SearchLocationForm extends Component {
     removeAddtionalDest = (id) => {
         switch (id) {
             case '1':
-                this.setState({ extraDestination: { stop1: { lat: null, lng: null } } });
+                this.setState({ extraDestination: { stop1: { lat: null, lng: null, address: '' } } });
                 this.props.removeExtraSteps(id);
                 break;
             case '2':
-                this.setState({ extraDestination: { stop2: { lat: null, lng: null } } });
+                this.setState({ extraDestination: { stop2: { lat: null, lng: null, address: '' } } });
                 this.props.removeExtraSteps(id);
                 break;
             case '3':
-                this.setState({ extraDestination: { stop3: { lat: null, lng: null } } });
+                this.setState({ extraDestination: { stop3: { lat: null, lng: null, address: '' } } });
                 this.props.removeExtraSteps(id);
                 break;
             default:

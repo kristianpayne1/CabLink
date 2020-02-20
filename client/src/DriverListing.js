@@ -18,16 +18,15 @@ class DriverListing extends Component {
         this.props.drivers.map((driver) =>
             this.callAPI(driver, function (err, dist, time) {
                 if (!err) {
-                    console.log(self.props.distance);
                     let price = driver.base_charge + ((driver.mile_charge / 5280) * self.props.distance.value);
                     price = Math.round(price * 100) / 100;
                     let price_text = '£' + price;
                     let found = self.checkIfLoaded(driver);
                     if (!found) {
                         self.state.driverDistanceTime.push({ driver: driver, distance: dist, time: time, price: { value: price, text: price_text } });
-                    }else{
+                    } else {
                         self.state.driverDistanceTime.forEach(item => {
-                            if(item.driver === driver){
+                            if (item.driver === driver) {
                                 item.distance = dist;
                                 item.time = time;
                                 item.price.value = price;
@@ -42,7 +41,12 @@ class DriverListing extends Component {
     }
 
     handleOnHover = async (driver) => {
-        this.props.showDriver(driver.currentLat, driver.currentLong);
+        this.props.showDriver(driver.currentLat, driver.currentLong, driver);
+        this.state.driverDistanceTime.forEach(item => {
+            if (item.driver === driver) {
+                this.props.setPrice(item.price);
+            }
+        })
         this.setState({ selectedDriver: driver });
     }
 
@@ -96,7 +100,6 @@ class DriverListing extends Component {
     }
 
     sortByRecommend = () => {
-        console.log("Sorting by recommended")
         let recommendList = [];
         let priceList = this.sortByPrice();
         for (let i = 0; i < priceList.length; i++) {
@@ -114,7 +117,6 @@ class DriverListing extends Component {
         recommendList.forEach(item => {
             sorted.push(item.item.driver);
         });
-        console.log(recommendList);
         return sorted;
     }
 
@@ -194,20 +196,22 @@ class DriverListing extends Component {
                 </Card.Body>
             </Card>
             :
-            <SelectableContext.Provider value={false}>
-                <DropdownButton
-                    key='dropdown'
-                    id={'sortby-dropdown'}
-                    size="sm"
-                    variant="secondary-light"
-                    title="Sort by"
-                >
-                    <Dropdown.Item onSelect={() => this.handleSortBy(1)}>Recommended</Dropdown.Item>
-                    <Dropdown.Item onSelect={() => this.handleSortBy(2)}>Fastest response</Dropdown.Item>
-                    <Dropdown.Item onSelect={() => this.handleSortBy(3)}>Lowest price</Dropdown.Item>
-                </DropdownButton>
+            <div>
+                <SelectableContext.Provider value={false}>
+                    <DropdownButton
+                        key='dropdown'
+                        id={'sortby-dropdown'}
+                        size="sm"
+                        variant="secondary-light"
+                        title="Sort by"
+                    >
+                        <Dropdown.Item onSelect={() => this.handleSortBy(1)}>Recommended</Dropdown.Item>
+                        <Dropdown.Item onSelect={() => this.handleSortBy(2)}>Fastest response</Dropdown.Item>
+                        <Dropdown.Item onSelect={() => this.handleSortBy(3)}>Lowest price</Dropdown.Item>
+                    </DropdownButton>
+                </SelectableContext.Provider>
                 {this.listDrivers()}
-            </SelectableContext.Provider>;
+            </div>
         return (
             <div>
                 {showWarning}
