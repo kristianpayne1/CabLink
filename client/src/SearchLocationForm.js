@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 //import FormControl from 'react-bootstrap/FormControl';
 import SearchInput from './SearchInput.js';
 import ExtraSearchInput from './ExtraSearchInput.js';
-import DateTimePicker from 'react-datetime-picker';
+import TimePicker from 'react-bootstrap-time-picker';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 
@@ -40,7 +40,7 @@ class SearchLocationForm extends Component {
                     address: '',
                 },
             },
-            date: new Date(),
+            time: '',
             showDatetime: false,
         };
     }
@@ -69,7 +69,7 @@ class SearchLocationForm extends Component {
     }
 
     removeDropoffLocation = () => {
-        this.setState({ dropoffLocation: { lat: null, lng: null, address: ''} });
+        this.setState({ dropoffLocation: { lat: null, lng: null, address: '' } });
         this.props.removeDropoff();
     }
 
@@ -111,8 +111,6 @@ class SearchLocationForm extends Component {
         }
     }
 
-    onChange = date => this.setState({ date });
-
     handleChange = value => {
         if (value === 1) {
             this.setState({ showDatetime: false });
@@ -121,16 +119,25 @@ class SearchLocationForm extends Component {
         }
     }
 
+    handleTimeChange = (time) => {
+        this.props.handleTimeChange(time);
+      }
+
     render() {
+        let time = this.props.time === 'ASAP' ? 
+            new Date().getHours() + ':' + (Math.round(new Date().getMinutes()/15) * 15) % 60 : this.props.time;
         let dateTime = this.state.showDatetime ?
-        <div className='datepicker'>
-            <br />
-            <DateTimePicker
-                onChange={this.onChange}
-                value={this.state.date}
-            />
-            </div>: null;
-        
+            <div className='datepicker'>
+                <TimePicker 
+                    format={24} 
+                    start="00:00" 
+                    end="23:59" 
+                    step={15} 
+                    onChange={this.handleTimeChange}
+                    value={time}
+                />
+            </div> : null
+
         return (
             <Form>
                 <Form.Group>
@@ -184,11 +191,11 @@ class SearchLocationForm extends Component {
                 </Form.Group>
                 <Form.Group>
                     <ToggleButtonGroup type="radio" name="options" defaultValue={1} size='sm' onChange={this.handleChange}>
-                        <ToggleButton value={1} variant="outline-primary">Leave ASAP</ToggleButton>
+                        <ToggleButton value={1} variant="outline-primary" onClick={() => this.handleTimeChange('ASAP')}>Leave ASAP</ToggleButton>
                         <ToggleButton value={2} variant="outline-primary">Depart by</ToggleButton>
                         <ToggleButton value={3} variant="outline-primary">Arrive by</ToggleButton>
                     </ToggleButtonGroup>
-                        {dateTime}
+                    {dateTime}
                 </Form.Group>
             </Form >
         );

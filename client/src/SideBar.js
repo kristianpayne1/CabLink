@@ -41,6 +41,8 @@ class SideBar extends Component {
                                     removePickup={this.props.removePickup}
                                     removeDropoff={this.props.removeDropoff}
                                     removeExtraSteps={this.props.removeExtraSteps}
+                                    handleTimeChange={this.props.handleTimeChange}
+                                    time={this.props.time}                                    
                                 />
                                 <CustomToggle
                                     disabled={disableContinueCab}
@@ -66,6 +68,8 @@ class SideBar extends Component {
                                     content="Return to pick up & drop off"
                                     showDrivers={null}
                                     variant="outline-primary"
+                                    block={true}
+                                    size="sm"
                                 />
                                 <DriverListing
                                     drivers={this.props.drivers}
@@ -96,6 +100,7 @@ class SideBar extends Component {
                                     pickupLocation={this.props.pickupLocation}
                                     dropoffLocation={this.props.dropoffLocation}
                                     price={this.props.price}
+                                    time={this.props.time}
                                     driver={this.props.selectedDriver}
                                 />
                             </Card.Body>

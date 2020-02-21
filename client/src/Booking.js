@@ -40,6 +40,7 @@ class Booking extends Component {
         },
         distance: null,
         duration: null,
+        time: 'ASAP',
         price: null,
         selectedDriver: null,
     };
@@ -127,6 +128,10 @@ class Booking extends Component {
         this.setState({price: null})
     }
 
+    handleTimeChange = (time) => {
+        this.setState({time: time});
+    }
+
     render() {
         return (
             <div>
@@ -159,6 +164,8 @@ class Booking extends Component {
                     extraStopLocation3 = {this.state.extraStopLocation3}
                     distance = {this.state.distance}
                     duration = {this.state.duration}
+                    time= {this.state.time}
+                    handleTimeChange={this.handleTimeChange}
                     setPrice={this.setPrice}
                     price={this.state.price}
                     removePrice={this.removePrice}
