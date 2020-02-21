@@ -197,7 +197,16 @@ class GoogleMap extends Component {
   }
 
   handleRouteInfo = (directions) => {
-    this.props.setRouteInfo({ duration: directions.routes[0].legs[0].duration, distance: directions.routes[0].legs[0].distance });
+    let totalDistance = 0;
+    let totalDuration = 0;
+    let legs = directions.routes[0].legs;
+    for (var i = 0; i < legs.length; ++i) {
+      totalDistance += legs[i].distance.value;
+      totalDuration += legs[i].duration_in_traffic.value;
+    }
+    let totalDistanceText = totalDistance * 0.00018939 + ' miles';
+    let totalDurationText = totalDuration / 60 + ' mins';
+    this.props.setRouteInfo({ duration: {value: totalDuration, text: totalDurationText}, distance: {value: totalDistance, text: totalDistanceText} });
   }
 
   drawRoute = (cd) => {

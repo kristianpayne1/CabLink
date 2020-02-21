@@ -16,14 +16,14 @@ class DriverListing extends Component {
     loadDrivers = async () => {
         let self = this;
         this.props.drivers.map((driver) =>
-            this.callAPI(driver, function (err, dist, time) {
+            this.callAPI(driver, function (err, time, dist) {
                 if (!err) {
                     let price = driver.base_charge + ((driver.mile_charge / 5280) * self.props.distance.value);
                     price = Math.round(price * 100) / 100;
                     let price_text = '£' + price;
                     let found = self.checkIfLoaded(driver);
                     if (!found) {
-                        self.state.driverDistanceTime.push({ driver: driver, distance: dist, time: time, price: { value: price, text: price_text } });
+                        self.state.driverDistanceTime.push({ driver: driver, distance: dist.distance, time: time.duration, price: { value: price, text: price_text } });
                     } else {
                         self.state.driverDistanceTime.forEach(item => {
                             if (item.driver === driver) {
@@ -174,11 +174,17 @@ class DriverListing extends Component {
         }, (response, status) => {
             if (status === 'OK') {
                 directionsDisplay.setDirections(response);
-                // expressed in meters
-                let distance = directionsDisplay.directions.routes[0].legs[0].distance;
-                // expressed in secs
-                let time = directionsDisplay.directions.routes[0].legs[0].duration_in_traffic;
-                cb(null, distance, time);
+                let directions = directionsDisplay.directions;
+                let totalDistance = 0;
+                let totalDuration = 0;
+                let legs = directions.routes[0].legs;
+                for (var i = 0; i < legs.length; ++i) {
+                    totalDistance += legs[i].distance.value;
+                    totalDuration += legs[i].duration_in_traffic.value;
+                }
+                let totalDistanceText = (Math.round((totalDistance * 0.00018939) * 100 )/100) + ' miles';
+                let totalDurationText = Math.round(totalDuration / 60) + ' mins';
+                cb(null, { duration: { value: totalDuration, text: totalDurationText } }, { distance: { value: totalDistance, text: totalDistanceText } });
             } else {
                 window.alert('Directions request failed due to ' + status);
             }
