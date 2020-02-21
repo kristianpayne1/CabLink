@@ -19,6 +19,10 @@ class SearchInput extends Component {
         };
     }
 
+    handleShowCurrentLocation = () => {
+        this.setState({query: this.props.currentLat + ' ' + this.props.currentLong})
+    }
+
     componentDidMount = () => {
         const options = { types: ['address'], componentRestrictions: {country: 'uk'} };
 

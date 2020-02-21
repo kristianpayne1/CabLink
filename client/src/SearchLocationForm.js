@@ -12,6 +12,7 @@ import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 class SearchLocationForm extends Component {
     constructor(props) {
         super(props);
+        this.SearchInput = React.createRef();
         this.state = {
             pickupLocation: {
                 lat: 0,
@@ -46,9 +47,8 @@ class SearchLocationForm extends Component {
     }
 
     handleCurrentLocation = () => {
-        let pickupSearch = document.getElementById('pickupLocation');
         if (!(this.props.currentLat === 0 && this.props.currentLong === 0)) {
-            pickupSearch.value = this.props.currentLat + ' ' + this.props.currentLong;
+            this.SearchInput.current.handleShowCurrentLocation();
             this.props.handlePickup(this.props.currentLat, this.props.currentLong, 'Your location');
         }
     }
@@ -148,6 +148,7 @@ class SearchLocationForm extends Component {
                         removeMarker={this.removePickupLocation}
                         currentLat={this.props.currentLat}
                         currentLong={this.props.currentLong}
+                        ref={this.SearchInput}
                     />
                     <Button variant="outline-primary" size="sm" onClick={this.handleCurrentLocation} id='locationButton' block>
                         Use current location
