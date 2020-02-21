@@ -24,11 +24,11 @@ router.get('/get/:id', function(req, res, next) {
 });
 
 // update a account by id 
-router.post('/update', function(req, res, next) {
+router.post('/update/:id', function(req, res, next) {
   mysqlconnection.query(
     'UPDATE c37_cablink.Account SET password='+req.body.password+
     ', lastLogin='+req.body.lastLogin+
-    ' WHERE accountID='+req.params.accountID+';', 
+    ' WHERE accountID='+req.params.id+';', 
   function (error, results) {
     if(error) throw error;
     res.send(JSON.stringify(results));
@@ -48,7 +48,7 @@ router.get('/delete/:id', function(req, res, next) {
 router.post('/new', function(req, res, next) {
     mysqlconnection.query(
         'INSERT INTO c37_cablink.Account (userID, password, lastLogin) VALUES ('
-        +req.body.userID+', '+req.body.password+', '+req.body.lastLogin+');', (error, results) => {
+        +req.body.userID+', "'+req.body.regPassword+'", "'+req.body.lastLogin+'");', (error, results) => {
             if(error) throw error;
             res.send(JSON.stringify(results));
         });
