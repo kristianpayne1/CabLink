@@ -19,7 +19,7 @@ class DriverListing extends Component {
         this.props.drivers.map((driver) =>
             this.callAPI(driver, function (err, dist, time) {
                 if (!err) {
-                    let price = driver.base_charge + ((driver.mile_charge / 5280) * (self.props.distance.value+dist.value));
+                    let price = driver.base_charge + ((driver.mile_charge / 5280) * (self.props.distance.value + dist.value));
                     price = Math.round(price * 100) / 100;
                     let price_text = '£' + price;
                     let found = self.checkIfLoaded(driver);
@@ -135,15 +135,15 @@ class DriverListing extends Component {
         switch (num) {
             case 1:
                 list = this.sortByRecommend();
-                this.setState({sortByText: 'Recommended'})
+                this.setState({ sortByText: 'Recommended' })
                 break;
             case 2:
                 list = this.sortByResponse();
-                this.setState({sortByText: 'Fastest response'})
+                this.setState({ sortByText: 'Fastest response' })
                 break;
             case 3:
                 list = this.sortByPrice();
-                this.setState({sortByText: 'Lowest price'})
+                this.setState({ sortByText: 'Lowest price' })
                 break;
             default:
                 list = this.sortByRecommend();
@@ -162,6 +162,17 @@ class DriverListing extends Component {
             pickUpLatLng = { lat: this.props.pickupLocation.lat, lng: this.props.pickupLocation.lng };
         }
 
+        let date = new Date();
+        if (this.props.time !== 'ASAP') {
+            if (this.props.isArrivingLater !== false) {
+                date.setHours(0, 0, 0, 0);
+                date.setSeconds(date.getSeconds() + (this.props.time - this.props.duration.value));
+            }else{
+                date.setHours(0, 0, 0, 0);
+                date.setSeconds(date.getSeconds() + this.props.time);
+            }
+        }
+
         let directionsService = new google.maps.DirectionsService();
         let directionsDisplay = new google.maps.DirectionsRenderer();
 
@@ -171,7 +182,7 @@ class DriverListing extends Component {
             travelMode: 'DRIVING',
             drivingOptions: {
                 // TODO change to depature time
-                departureTime: new Date(/* now, or future date */),
+                departureTime: date,
                 trafficModel: 'bestguess'
             },
             unitSystem: google.maps.UnitSystem.IMPERIAL,
@@ -215,8 +226,8 @@ class DriverListing extends Component {
                             <Dropdown.Item onSelect={() => this.handleSortBy(3)}>Lowest price</Dropdown.Item>
                         </DropdownButton>
                     </div>
-                    <div style={{ display: 'inline-block', color: 'grey'}}>
-                        <p style={{ 'margin-bottom': '0px'}}>{this.state.sortByText}</p>
+                    <div style={{ display: 'inline-block', color: 'grey' }}>
+                        <p style={{ 'margin-bottom': '0px' }}>{this.state.sortByText}</p>
                     </div>
                 </SelectableContext.Provider>
                 {this.listDrivers()}

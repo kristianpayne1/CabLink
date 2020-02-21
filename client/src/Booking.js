@@ -43,6 +43,7 @@ class Booking extends Component {
         time: 'ASAP',
         price: null,
         selectedDriver: null,
+        isArrivingLater: false,
     };
 
     handleViewSidebar = () => {
@@ -132,6 +133,10 @@ class Booking extends Component {
         this.setState({time: time});
     }
 
+    handleIsArrivingLater = (isArriving) => {
+        this.setState({isArrivingLater: isArriving});
+    }
+
     render() {
         return (
             <div>
@@ -170,6 +175,8 @@ class Booking extends Component {
                     price={this.state.price}
                     removePrice={this.removePrice}
                     selectedDriver={this.state.selectedDriver}
+                    isArrivingLater={this.state.isArrivingLater}
+                    handleIsArrivingLater={this.handleIsArrivingLater}
                 />
             </div>
         );
