@@ -11,6 +11,7 @@ class DriverListing extends Component {
     state = {
         driverDistanceTime: [],
         selectedDriver: null,
+        sortByText: '',
     };
 
     loadDrivers = async () => {
@@ -134,12 +135,15 @@ class DriverListing extends Component {
         switch (num) {
             case 1:
                 list = this.sortByRecommend();
+                this.setState({sortByText: 'Recommended'})
                 break;
             case 2:
                 list = this.sortByResponse();
+                this.setState({sortByText: 'Fastest response'})
                 break;
             case 3:
                 list = this.sortByPrice();
+                this.setState({sortByText: 'Lowest price'})
                 break;
             default:
                 list = this.sortByRecommend();
@@ -198,17 +202,22 @@ class DriverListing extends Component {
             :
             <div>
                 <SelectableContext.Provider value={false}>
-                    <DropdownButton
-                        key='dropdown'
-                        id={'sortby-dropdown'}
-                        size="sm"
-                        variant="secondary-light"
-                        title="Sort by"
-                    >
-                        <Dropdown.Item onSelect={() => this.handleSortBy(1)}>Recommended</Dropdown.Item>
-                        <Dropdown.Item onSelect={() => this.handleSortBy(2)}>Fastest response</Dropdown.Item>
-                        <Dropdown.Item onSelect={() => this.handleSortBy(3)}>Lowest price</Dropdown.Item>
-                    </DropdownButton>
+                    <div style={{ display: 'inline-block' }}>
+                        <DropdownButton
+                            key='dropdown'
+                            id={'sortby-dropdown'}
+                            size="sm"
+                            variant="secondary-light"
+                            title="Sort by"
+                        >
+                            <Dropdown.Item onSelect={() => this.handleSortBy(1)}>Recommended</Dropdown.Item>
+                            <Dropdown.Item onSelect={() => this.handleSortBy(2)}>Fastest response</Dropdown.Item>
+                            <Dropdown.Item onSelect={() => this.handleSortBy(3)}>Lowest price</Dropdown.Item>
+                        </DropdownButton>
+                    </div>
+                    <div style={{ display: 'inline-block', color: 'grey'}}>
+                        <p style={{ 'margin-bottom': '0px'}}>{this.state.sortByText}</p>
+                    </div>
                 </SelectableContext.Provider>
                 {this.listDrivers()}
             </div>
