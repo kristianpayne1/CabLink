@@ -227,7 +227,7 @@ class DriverListing extends Component {
                         </DropdownButton>
                     </div>
                     <div style={{ display: 'inline-block', color: 'grey' }}>
-                        <p style={{ 'margin-bottom': '0px' }}>{this.state.sortByText}</p>
+                        <p>{this.state.sortByText}</p>
                     </div>
                 </SelectableContext.Provider>
                 {this.listDrivers()}
