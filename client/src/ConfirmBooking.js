@@ -7,10 +7,18 @@ class ConfirmBooking extends Component {
     render() {
         let time = '';
         if (this.props.time !== 'ASAP') {
-            let hours = Math.floor(this.props.time / 60 / 60);
-            let mins = Math.floor(this.props.time / 60) - (hours * 60);
-            time = hours.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
-        }else{
+            if (this.props.isArrivingLater === false) {
+                let hours = Math.floor(this.props.time / 60 / 60);
+                let mins = Math.floor(this.props.time / 60) - (hours * 60);
+                time = hours.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
+            }else{
+                console.log('Arriving later')
+                let totalSecs = this.props.time - this.props.duration.value;
+                let hours = Math.floor(totalSecs / 60 / 60);
+                let mins = Math.floor(totalSecs / 60) - (hours * 60);
+                time = hours.toString().padStart(2, '0') + ":" + mins.toString().padStart(2, '0');
+            }
+        } else {
             time = this.props.time;
         }
         let showConfirmation = (this.props.driver && this.props.price) ?

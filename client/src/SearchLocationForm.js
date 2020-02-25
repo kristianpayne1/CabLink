@@ -121,18 +121,19 @@ class SearchLocationForm extends Component {
 
     handleTimeChange = (time) => {
         this.props.handleTimeChange(time);
-      }
+        this.props.handleIsArrivingLater(false)
+    }
 
     render() {
-        let time = this.props.time === 'ASAP' ? 
-            new Date().getHours() + ':' + (Math.round(new Date().getMinutes()/15) * 15) % 60 : this.props.time;
+        let time = this.props.time === 'ASAP' ?
+            new Date().getHours() + ':' + (Math.round(new Date().getMinutes() / 15) * 15) % 60 : this.props.time;
         let dateTime = this.state.showDatetime ?
             <div className='datepicker'>
-                <TimePicker 
-                    format={24} 
-                    start="00:00" 
-                    end="23:59" 
-                    step={15} 
+                <TimePicker
+                    format={24}
+                    start="00:00"
+                    end="23:59"
+                    step={15}
                     onChange={this.handleTimeChange}
                     value={time}
                 />
@@ -193,8 +194,8 @@ class SearchLocationForm extends Component {
                 <Form.Group>
                     <ToggleButtonGroup type="radio" name="options" defaultValue={1} size='sm' onChange={this.handleChange}>
                         <ToggleButton value={1} variant="outline-primary" onClick={() => this.handleTimeChange('ASAP')}>Leave ASAP</ToggleButton>
-                        <ToggleButton value={2} variant="outline-primary">Depart by</ToggleButton>
-                        <ToggleButton value={3} variant="outline-primary">Arrive by</ToggleButton>
+                        <ToggleButton value={2} variant="outline-primary" onClick={() => this.props.handleIsArrivingLater(false)}>Depart by</ToggleButton>
+                        <ToggleButton value={3} variant="outline-primary" onClick={() => this.props.handleIsArrivingLater(true)}>Arrive by</ToggleButton>
                     </ToggleButtonGroup>
                     {dateTime}
                 </Form.Group>

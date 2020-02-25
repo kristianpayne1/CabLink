@@ -219,15 +219,15 @@ class GoogleMap extends Component {
       let waypoints = [];
       if (!(this.state.extraStopLocation1.lat === null && this.state.extraStopLocation1.lat === null)) {
         let stop = new this.state.maps.LatLng(parseFloat(this.state.extraStopLocation1.lat), parseFloat(this.state.extraStopLocation1.lng));
-        waypoints.push({ location: stop });
+        waypoints.push({ location: stop , stopover: false});
       }
       if (!(this.state.extraStopLocation2.lat === null && this.state.extraStopLocation2.lat === null)) {
         let stop = new this.state.maps.LatLng(parseFloat(this.state.extraStopLocation2.lat), parseFloat(this.state.extraStopLocation2.lng));
-        waypoints.push({ location: stop });
+        waypoints.push({ location: stop , stopover: false});
       }
       if (!(this.state.extraStopLocation3.lat === null && this.state.extraStopLocation3.lat === null)) {
         let stop = new this.state.maps.LatLng(parseFloat(this.state.extraStopLocation3.lat), parseFloat(this.state.extraStopLocation3.lng));
-        waypoints.push({ location: stop });
+        waypoints.push({ location: stop , stopover: false});
       }
 
       directionsService.route({

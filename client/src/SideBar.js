@@ -42,6 +42,7 @@ class SideBar extends Component {
                                     removeDropoff={this.props.removeDropoff}
                                     removeExtraSteps={this.props.removeExtraSteps}
                                     handleTimeChange={this.props.handleTimeChange}
+                                    handleIsArrivingLater={this.props.handleIsArrivingLater}
                                     time={this.props.time}                                    
                                 />
                                 <CustomToggle
@@ -85,6 +86,8 @@ class SideBar extends Component {
                                     duration={this.props.duration}
                                     setPrice={this.props.setPrice}
                                     removePrice={this.props.removePrice}
+                                    time={this.props.time}
+                                    isArrivingLater={this.props.isArrivingLater}
                                     ref={this.DriverListing}
                                 />
                             </Card.Body>
@@ -101,7 +104,9 @@ class SideBar extends Component {
                                     dropoffLocation={this.props.dropoffLocation}
                                     price={this.props.price}
                                     time={this.props.time}
+                                    isArrivingLater={this.props.isArrivingLater}
                                     driver={this.props.selectedDriver}
+                                    duration={this.props.duration}
                                 />
                             </Card.Body>
                         </Accordion.Collapse>
