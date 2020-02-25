@@ -36,8 +36,8 @@ class App extends Component {
   }
 
   handleLoginComplete = (activeUser) => {
-      this.setState({activeUser: activeUser, loggedIn: true});
-      console.log(this.state.activeUser);
+    this.setState({ activeUser: activeUser, loggedIn: true });
+    console.log(this.state.activeUser);
   };
 
 
@@ -49,9 +49,9 @@ class App extends Component {
         <Login handleShow={this.state.showModal} handleLoginClose={this.handleLoginClose.bind(this)} handleLoginComplete={this.handleLoginComplete}/>
         <Account handleAccount={this.state.showAccount} handleAccountClose={this.handleLoginClose.bind(this)}/>
         <div className="content">
-          <Route exact path="/" component={Home} />
-          <Route path="/booking" component={Booking} />
-          <Route path="/help" component={Help} />
+          <Route exact path="/proj/co600/project/c37_cablink/" component={Home} />
+          <Route path="/proj/co600/project/c37_cablink/booking" component={Booking} />
+          <Route path="/proj/co600/project/c37_cablink/help" component={Help} />
         </div>
       </div>
     );

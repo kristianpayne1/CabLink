@@ -41,7 +41,6 @@ class SearchInput extends Component {
     }
 
     handlePlaceSelect = () => {
-
         const addressObject = this.autocomplete.getPlace();
         const address = addressObject.address_components;
         const geometry = addressObject.geometry;

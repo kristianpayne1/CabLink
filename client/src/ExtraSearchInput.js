@@ -17,7 +17,7 @@ class ExtraSearchInput extends Component {
                 lng: 0,
             },
             query: '',
-            disabled:true,
+            disabled: true,
         };
     }
 
@@ -58,15 +58,18 @@ class ExtraSearchInput extends Component {
 
     handleOnChange = (event) => {
         this.setState({ query: event.target.value });
-        this.props.removeAddtionalDest(this.props.id);
+        if (this.state.locationName !== '') {
+            this.props.removeAddtionalDest(this.props.id);
+            this.setState({locationName: ''});
+        }
     }
 
     handleOnClick = () => {
         if (this.state.disabled === true) {
-            this.setState({disabled: false});
+            this.setState({ disabled: false });
         } else {
-            this.setState({disabled: true});
-            this.setState({query: ''});
+            this.setState({ disabled: true });
+            this.setState({ query: '' });
             this.props.removeAddtionalDest(this.props.id);
         }
     }
