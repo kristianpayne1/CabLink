@@ -14,6 +14,11 @@ class NavBar extends Component {
         this.props.handleShow();
     }
 
+
+    accountClicked = () => {
+        this.props.handleAccountShow();
+    }
+
     render() {
         let showLoginButton = this.props.loggedIn ? <>
         <ButtonToolbar>
@@ -25,7 +30,7 @@ class NavBar extends Component {
               id={`dropdown-button-drop-${idx}`}
               key={idx}
             >
-              <Dropdown.Item eventKey="1">View Account</Dropdown.Item>
+              <Dropdown.Item eventKey="1" onClick={this.accountClicked}>View Account</Dropdown.Item>
               <Dropdown.Item eventKey="2">Change Payment Details</Dropdown.Item>
               <Dropdown.Item eventKey="3">Check Recent Bookings</Dropdown.Item>
               <Dropdown.Divider />

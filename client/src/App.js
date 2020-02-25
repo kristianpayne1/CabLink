@@ -6,12 +6,14 @@ import Home from './Home.js';
 import Help from './Help.js';
 import NavBar from './NavBar.js';
 import Login from './Login.js';
+import Account from './Account.js';
 import { Route } from "react-router-dom";
 
 class App extends Component {
 
   state = {
     showModal: false,
+    showAccount: false,
     activeUser: [],
     loggedIn: false
   };
@@ -24,16 +26,28 @@ class App extends Component {
     this.setState({ showModal: false });
   }
 
+  handleAccountShow() {
+    this.setState({ showAccount: true });
+    console.log(this.state.showAccount);
+  }
+
+  handleAccountClose() {
+    this.setState({ showAccount: false });
+  }
+
   handleLoginComplete = (activeUser) => {
       this.setState({activeUser: activeUser, loggedIn: true});
       console.log(this.state.activeUser);
   };
 
+
+
   render() {
     return (
       <div>
-        <NavBar handleShow={this.handleLoginShow.bind(this)} loggedIn={this.state.loggedIn} activeUser={this.state.activeUser}/>
+        <NavBar handleShow={this.handleLoginShow.bind(this)} loggedIn={this.state.loggedIn} activeUser={this.state.activeUser} handleAccountShow={this.handleAccountShow.bind(this)}/>
         <Login handleShow={this.state.showModal} handleLoginClose={this.handleLoginClose.bind(this)} handleLoginComplete={this.handleLoginComplete}/>
+        <Account handleAccount={this.state.showAccount} handleAccountClose={this.handleLoginClose.bind(this)}/>
         <div className="content">
           <Route exact path="/" component={Home} />
           <Route path="/booking" component={Booking} />
