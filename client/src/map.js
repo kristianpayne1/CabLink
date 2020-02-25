@@ -48,7 +48,7 @@ class GoogleMap extends Component {
 
   callAPI() {
     let self = this;
-    fetch('https://raptor.kent.ac.uk/proj/co600/project/c37_cablink/:5000/driver/get/all/info', {
+    fetch('http://localhost:5000/driver/get/all/info', {
       method: 'GET'
     }).then(function (response) {
       if (response.status >= 400) {
