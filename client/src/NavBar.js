@@ -9,6 +9,9 @@ import { Link } from "react-router-dom";
 
 class NavBar extends Component {
 
+    loginClicked = () => {
+        this.props.handleShow();
+    }
 
     accountClicked = () => {
         this.props.handleAccountShow();
