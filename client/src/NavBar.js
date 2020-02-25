@@ -4,7 +4,6 @@ import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import SplitButton from 'react-bootstrap/SplitButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Link } from "react-router-dom";
 
@@ -42,7 +41,7 @@ class NavBar extends Component {
       <div>
         <div>
           <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-            <Navbar.Brand as={Link} to="/">
+            <Navbar.Brand as={Link} to="/proj/co600/project/c37_cablink/">
               <img
                 src={require('./images/logo.png')}
                 width="80"
@@ -54,9 +53,9 @@ class NavBar extends Component {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="mr-auto">
-                <Nav.Link as={Link} to="/">Home</Nav.Link>
-                <Nav.Link as={Link} to="/booking">Booking</Nav.Link>
-                <Nav.Link as={Link} to="/help">Help</Nav.Link>
+                <Nav.Link as={Link} to="/proj/co600/project/c37_cablink/">Home</Nav.Link>
+                <Nav.Link as={Link} to="/proj/co600/project/c37_cablink/booking">Booking</Nav.Link>
+                <Nav.Link as={Link} to="/proj/co600/project/c37_cablink/help">Help</Nav.Link>
               </Nav>
               <div className="text-center">
                 {showLoginButton}
