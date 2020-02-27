@@ -15,7 +15,9 @@ class App extends Component {
     showModal: false,
     showAccount: false,
     activeUser: [],
-    loggedIn: false
+    loggedIn: false,
+    eventKey: 1,
+    editClicked: false
   };
 
   handleLoginShow() {
@@ -26,8 +28,8 @@ class App extends Component {
     this.setState({ showModal: false });
   }
 
-  handleAccountShow() {
-    this.setState({ showAccount: true });
+  handleAccountShow(eventKey) {
+    this.setState({ showAccount: true, eventKey: eventKey});
     console.log(this.state.showAccount);
   }
 
@@ -40,6 +42,14 @@ class App extends Component {
     console.log(this.state.activeUser);
   };
 
+  handleEditShow() {
+      this.setState({editClicked: true});
+  }
+
+  handleEditClose() {
+      this.setState({editClicked: false});
+  }
+
 
 
   render() {
@@ -47,7 +57,7 @@ class App extends Component {
       <div>
         <NavBar handleShow={this.handleLoginShow.bind(this)} loggedIn={this.state.loggedIn} activeUser={this.state.activeUser} handleAccountShow={this.handleAccountShow.bind(this)}/>
         <Login handleShow={this.state.showModal} handleLoginClose={this.handleLoginClose.bind(this)} handleLoginComplete={this.handleLoginComplete}/>
-        <Account handleAccount={this.state.showAccount} handleAccountClose={this.handleLoginClose.bind(this)}/>
+        <Account handleAccount={this.state.showAccount} handleAccountClose={this.handleAccountClose.bind(this)} activeUser={this.state.activeUser} eventKey={this.state.eventKey} editClicked={this.state.editClicked} handleEditShow={this.handleEditShow.bind(this)} handleEditClose={this.handleEditClose.bind(this)}/>
         <div className="content">
           <Route exact path="/proj/co600/project/c37_cablink/" component={Home} />
           <Route path="/proj/co600/project/c37_cablink/booking" component={Booking} />

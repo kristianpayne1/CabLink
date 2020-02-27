@@ -13,12 +13,12 @@ class NavBar extends Component {
         this.props.handleShow();
     }
 
-    accountClicked = () => {
-        this.props.handleAccountShow();
+    accountClicked = (eventKey) => {
+        this.props.handleAccountShow(eventKey);
     }
 
     render() {
-        let showLoginButton = this.props.loggedIn ? <>
+        let showLoginButton = this.props.loggedIn ? <div style={{float:"right"}}>
         <ButtonToolbar>
           {[DropdownButton].map((DropdownType, idx) => (
             <DropdownType
@@ -28,16 +28,16 @@ class NavBar extends Component {
               id={`dropdown-button-drop-${idx}`}
               key={idx}
             >
-              <Dropdown.Item eventKey="1" onClick={this.accountClicked}>View Account</Dropdown.Item>
-              <Dropdown.Item eventKey="2">Change Payment Details</Dropdown.Item>
-              <Dropdown.Item eventKey="3">Check Recent Bookings</Dropdown.Item>
+              <Dropdown.Item eventKey="1" onClick={() => this.accountClicked(1)}>View Account</Dropdown.Item>
+              <Dropdown.Item eventKey="2"  onClick={() =>this.accountClicked(2)}>Change Payment Details</Dropdown.Item>
+              <Dropdown.Item eventKey="3"  onClick={() => this.accountClicked(3)}>Check Recent Bookings</Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item eventKey="4">Logout</Dropdown.Item>
             </DropdownType>
           ))}
         </ButtonToolbar>
-      </>
-        : <Button variant="outline-primary" onClick={this.loginClicked}>Login</Button> ;
+      </div>
+        : <div style={{float:"right"}}><Button variant="outline-primary" onClick={this.loginClicked}>Login</Button></div>;
 
     //let showUserFirstname = this.props.loggedIn ? <p classWelcome="loginWelcome">Welcome, {this.props.activeUser.activeUser[0].firstname}</p> : null;
 
