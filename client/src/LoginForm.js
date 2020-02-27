@@ -39,7 +39,7 @@ class LoginForm extends Component {
     callAPI(email, password) {
         let self = this;
         console.log(email);
-        fetch('http://localhost:5000/user/get/email/'+email, {
+        fetch(process.env.REACT_APP_SERVER+'/user/get/email/'+email, {
           method: 'GET'
         }).then(function (response) {
           if (response.status >= 400) {

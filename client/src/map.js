@@ -48,7 +48,7 @@ class GoogleMap extends Component {
 
   callAPI() {
     let self = this;
-    fetch('http://localhost:5000/driver/get/all/info', {
+    fetch(process.env.REACT_APP_SERVER+'/driver/get/all/info', {
       method: 'GET'
     }).then(function (response) {
       if (response.status >= 400) {
@@ -319,7 +319,7 @@ class GoogleMap extends Component {
       // Important! Always set the container height explicitly otherwise it won't appear
       <div style={{ height: '92vh', width: '100%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: 'AIzaSyAb2fQDVRAkT8KMln_0HIX6s0zVcz06_3U' }}  // this is our API key
+          bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_API_KEY }}  // this is our API key
           defaultCenter={this.props.center}
           zoom={this.props.zoom}
           yesIWantToUseGoogleMapApiInternals

@@ -44,7 +44,7 @@ class RegisterForm extends Component {
         console.log(JSON.stringify(accountData));
         let self = this;
         // Put registered user data into User table
-        fetch("http://localhost:5000/user/new", {
+        fetch(process.env.REACT_APP_SERVER+"/user/new", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(accountData)
@@ -70,7 +70,7 @@ class RegisterForm extends Component {
         // Get the userID using user email
         let self = this;
         console.log("pls");
-        fetch('http://localhost:5000/user/get/id/'+accountData.regEmail, {
+        fetch(process.env.REACT_APP_SERVER+'/user/get/id/'+accountData.regEmail, {
           method: 'GET'
         }).then(function (response) {
           if (response.status >= 400) {
@@ -95,7 +95,7 @@ class RegisterForm extends Component {
 
         let self = this;
 
-        fetch("http://localhost:5000/account/new", {
+        fetch(process.env.REACT_APP_SERVER+"/account/new", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(accountData)
