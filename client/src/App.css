@@ -64,6 +64,14 @@
   text-align: center;
 }
 
+.passangers {
+  width:100%;
+}
+
+#confirm {
+  margin-bottom: 0.2rem;
+}
+
 #gpsbutton {
   width: 40px;
   height: 40px;

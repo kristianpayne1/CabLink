@@ -6,7 +6,7 @@ import Home from './Home.js';
 import Help from './Help.js';
 import NavBar from './NavBar.js';
 import Login from './Login.js';
-import { BrowserRouter, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 
 class App extends Component {
 
