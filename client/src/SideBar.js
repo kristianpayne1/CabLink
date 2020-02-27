@@ -6,6 +6,7 @@ import SearchLocationForm from './SearchLocationForm';
 import DriverListing from './DriverListing.js';
 import CustomToggle from './CustomToggle.js';
 import ConfirmBooking from './ConfirmBooking.js';
+import OptionsForm from './OptionsForm.js';
 
 class SideBar extends Component {
     constructor(props) {
@@ -43,11 +44,39 @@ class SideBar extends Component {
                                     removeExtraSteps={this.props.removeExtraSteps}
                                     handleTimeChange={this.props.handleTimeChange}
                                     handleIsArrivingLater={this.props.handleIsArrivingLater}
-                                    time={this.props.time}                                    
+                                    time={this.props.time}
                                 />
                                 <CustomToggle
                                     disabled={disableContinueCab}
                                     eventKey="1"
+                                    content="Continue to extra options"
+                                    showDrivers={null}
+                                    variant="outline-primary"
+                                    block={true}
+                                    size="sm"
+                                />
+                            </Card.Body>
+                        </Accordion.Collapse>
+                    </Card>
+                    <Card>
+                        <Card.Header>
+                            Extra options
+                        </Card.Header>
+                        <Accordion.Collapse eventKey="1">
+                            <Card.Body>
+                                <CustomToggle
+                                    disabled={false}
+                                    eventKey="0"
+                                    content="Return to pickup and drop off"
+                                    showDrivers={null}
+                                    variant="outline-primary"
+                                    block={true}
+                                    size="sm"
+                                />
+                                <OptionsForm setLuggage={this.props.setLuggage} setDisabled={this.props.setDisabled} setPassangers={this.props.setPassangers}/>
+                                <CustomToggle
+                                    disabled={false}
+                                    eventKey="2"
                                     content="Continue to choose cab"
                                     showDrivers={this.showDrivers}
                                     variant="outline-primary"
@@ -61,12 +90,12 @@ class SideBar extends Component {
                         <Card.Header>
                             Choose cab
                         </Card.Header>
-                        <Accordion.Collapse eventKey="1">
-                            <Card.Body style={{ 'maxHeight': '70vh', 'overflowY': 'auto' }}>
+                        <Accordion.Collapse eventKey="2">
+                            <Card.Body style={{ 'maxHeight': '64vh', 'overflowY': 'auto' }}>
                                 <CustomToggle
                                     disabled={false}
-                                    eventKey="0"
-                                    content="Return to pick up & drop off"
+                                    eventKey="1"
+                                    content="Return to extra options"
                                     showDrivers={null}
                                     variant="outline-primary"
                                     block={true}
@@ -97,9 +126,9 @@ class SideBar extends Component {
                         <Card.Header>
                             Payment
                         </Card.Header>
-                        <Accordion.Collapse eventKey="2">
+                        <Accordion.Collapse eventKey="3">
                             <Card.Body>
-                                <ConfirmBooking 
+                                <ConfirmBooking
                                     pickupLocation={this.props.pickupLocation}
                                     dropoffLocation={this.props.dropoffLocation}
                                     price={this.props.price}
@@ -107,6 +136,9 @@ class SideBar extends Component {
                                     isArrivingLater={this.props.isArrivingLater}
                                     driver={this.props.selectedDriver}
                                     duration={this.props.duration}
+                                    passangers={this.props.passangers}
+                                    disabled={this.props.disabled}
+                                    luggage={this.props.luggage}
                                 />
                             </Card.Body>
                         </Accordion.Collapse>

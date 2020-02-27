@@ -44,6 +44,9 @@ class Booking extends Component {
         price: null,
         selectedDriver: null,
         isArrivingLater: false,
+        passangers: 1,
+        luggage: false,
+        disabled: false,
     };
 
     handleViewSidebar = () => {
@@ -137,6 +140,18 @@ class Booking extends Component {
         this.setState({isArrivingLater: isArriving});
     }
 
+    setLuggage = (state) => {
+        this.setState({luggage: state});
+    }
+
+    setDisabled = (state) => {
+        this.setState({disabled: state});
+    }
+
+    setPassangers = (num) => {
+        this.setState({passangers: num});
+    }
+
     render() {
         return (
             <div>
@@ -177,6 +192,12 @@ class Booking extends Component {
                     selectedDriver={this.state.selectedDriver}
                     isArrivingLater={this.state.isArrivingLater}
                     handleIsArrivingLater={this.handleIsArrivingLater}
+                    setLuggage={this.setLuggage}
+                    setDisabled={this.setDisabled}
+                    setPassangers={this.setPassangers}
+                    luggage={this.state.luggage}
+                    disabled={this.state.disabled}
+                    passangers={this.state.passangers}
                 />
             </div>
         );
