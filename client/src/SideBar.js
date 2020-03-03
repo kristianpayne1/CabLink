@@ -139,6 +139,7 @@ class SideBar extends Component {
                                     passangers={this.props.passangers}
                                     disabled={this.props.disabled}
                                     luggage={this.props.luggage}
+                                    handlePaymentShow={this.props.handlePaymentShow}
                                 />
                             </Card.Body>
                         </Accordion.Collapse>

@@ -17,14 +17,14 @@ class DriverListing extends Component {
     loadDrivers = async () => {
         let self = this;
         this.props.drivers.map((driver) =>
-            this.callAPI(driver, function (err, dist, time) {
+            this.callAPI(driver, function (err, dist, time, path) {
                 if (!err) {
                     let price = driver.base_charge + ((driver.mile_charge / 5280) * (self.props.distance.value + dist.value));
                     price = Math.round(price * 100) / 100;
                     let price_text = '£' + price;
                     let found = self.checkIfLoaded(driver);
                     if (!found) {
-                        self.state.driverDistanceTime.push({ driver: driver, distance: dist, time: time, price: { value: price, text: price_text } });
+                        self.state.driverDistanceTime.push({ driver: driver, distance: dist, time: time, price: { value: price, text: price_text }, path: path });
                     } else {
                         self.state.driverDistanceTime.forEach(item => {
                             if (item.driver === driver) {
@@ -32,6 +32,7 @@ class DriverListing extends Component {
                                 item.time = time;
                                 item.price.value = price;
                                 item.price.text = price_text;
+                                item.path = path;
                             }
                         })
                     }
@@ -193,7 +194,7 @@ class DriverListing extends Component {
                 let distance = directionsDisplay.directions.routes[0].legs[0].distance;
                 // expressed in secs
                 let time = directionsDisplay.directions.routes[0].legs[0].duration_in_traffic;
-                cb(null, distance, time);
+                cb(null, distance, time, response.routes[0].overview_path);
             } else {
                 window.alert('Directions request failed due to ' + status);
             }

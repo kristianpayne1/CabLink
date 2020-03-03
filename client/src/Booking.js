@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import GoogleMap from './map.js';
 import SideBar from './SideBar.js';
+import Payment from './Payment.js'
 
 class Booking extends Component {
     constructor(props) {
@@ -47,6 +48,7 @@ class Booking extends Component {
         passangers: 1,
         luggage: false,
         disabled: false,
+        showPayment: false,
     };
 
     handleViewSidebar = () => {
@@ -63,7 +65,7 @@ class Booking extends Component {
 
     handlePickup = (lat, long, name) => {
         this.map.current.setPickupMarker(lat, long);
-        this.setState({pickupLocation: { lat: lat, lng: long, address: name} });
+        this.setState({ pickupLocation: { lat: lat, lng: long, address: name } });
     }
 
     removePickup = () => {
@@ -121,40 +123,45 @@ class Booking extends Component {
 
     showDriver = (lat, lng, driver) => {
         this.map.current.centerToPoint(lat, lng);
-        this.setState({selectedDriver: driver});
+        this.setState({ selectedDriver: driver });
     }
 
     setPrice = (price) => {
-        this.setState({price: price});
+        this.setState({ price: price });
     }
 
     removePrice = () => {
-        this.setState({price: null})
+        this.setState({ price: null })
     }
 
     handleTimeChange = (time) => {
-        this.setState({time: time});
+        this.setState({ time: time });
     }
 
     handleIsArrivingLater = (isArriving) => {
-        this.setState({isArrivingLater: isArriving});
+        this.setState({ isArrivingLater: isArriving });
     }
 
     setLuggage = (state) => {
-        this.setState({luggage: state});
+        this.setState({ luggage: state });
     }
 
     setDisabled = (state) => {
-        this.setState({disabled: state});
+        this.setState({ disabled: state });
     }
 
     setPassangers = (num) => {
-        this.setState({passangers: num});
+        this.setState({ passangers: num });
+    }
+
+    handlePaymentShow = (state) => {
+        this.setState({ showPayment: state });
     }
 
     render() {
         return (
             <div>
+                <Payment handleShow={this.state.showPayment} handlePaymentShow={this.handlePaymentShow}/>
                 <GoogleMap
                     drivers={this.state.drivers}
                     currentLat={this.state.currentLat}
@@ -177,14 +184,14 @@ class Booking extends Component {
                     removeDropoff={this.removeDropoff}
                     removeExtraSteps={this.removeExtraSteps}
                     showDriver={this.showDriver}
-                    pickupLocation= {this.state.pickupLocation}
-                    dropoffLocation = {this.state.dropoffLocation}
-                    extraStopLocation1= {this.state.extraStopLocation1}
-                    extraStopLocation2 = {this.state.extraStopLocation2}
-                    extraStopLocation3 = {this.state.extraStopLocation3}
-                    distance = {this.state.distance}
-                    duration = {this.state.duration}
-                    time= {this.state.time}
+                    pickupLocation={this.state.pickupLocation}
+                    dropoffLocation={this.state.dropoffLocation}
+                    extraStopLocation1={this.state.extraStopLocation1}
+                    extraStopLocation2={this.state.extraStopLocation2}
+                    extraStopLocation3={this.state.extraStopLocation3}
+                    distance={this.state.distance}
+                    duration={this.state.duration}
+                    time={this.state.time}
                     handleTimeChange={this.handleTimeChange}
                     setPrice={this.setPrice}
                     price={this.state.price}
@@ -198,6 +205,7 @@ class Booking extends Component {
                     luggage={this.state.luggage}
                     disabled={this.state.disabled}
                     passangers={this.state.passangers}
+                    handlePaymentShow={this.handlePaymentShow}
                 />
             </div>
         );
