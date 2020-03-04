@@ -47,6 +47,7 @@ class DriverListing extends Component {
         this.state.driverDistanceTime.forEach(item => {
             if (item.driver === driver) {
                 this.props.setPrice(item.price);
+                this.props.handleDriverInfo(item.time, item.path);
             }
         })
         this.setState({ selectedDriver: driver });

@@ -16,6 +16,7 @@ var billingAddressRouter = require('./routes/billingaddress');
 var driverRouter = require('./routes/driver');
 var carRouter = require('./routes/car');
 var bookingRouter = require('./routes/booking');
+var routeRouter = require('./routes/route');
 
 
 var app = express();
@@ -42,6 +43,7 @@ app.use('/billingaddress', billingAddressRouter);
 app.use('/driver', driverRouter);
 app.use('/car', carRouter);
 app.use('/booking', bookingRouter);
+app.use('/route', routeRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

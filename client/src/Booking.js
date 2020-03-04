@@ -49,6 +49,10 @@ class Booking extends Component {
         luggage: false,
         disabled: false,
         showPayment: false,
+        processingPayment: false,
+        paymentFailed: false,
+        driverDuration: null,
+        driverPath: null,
     };
 
     handleViewSidebar = () => {
@@ -134,6 +138,10 @@ class Booking extends Component {
         this.setState({ price: null })
     }
 
+    handleDriverInfo = (duration, path) => {
+        this.setState({ driverDuration: duration, driverPath: path });
+    }
+
     handleTimeChange = (time) => {
         this.setState({ time: time });
     }
@@ -158,10 +166,86 @@ class Booking extends Component {
         this.setState({ showPayment: state });
     }
 
+    makeBooking = () => {
+        this.setState({ processingPayment: true });
+        let self = this;
+        let routeData = {
+            departureLat: this.state.pickupLocation.lat,
+            departureLong: this.state.pickupLocation.lng,
+            extraStop1Lat: this.state.extraStopLocation1.lat,
+            extraStop1Long: this.state.extraStopLocation1.lng,
+            extraStop2Lat: this.state.extraStopLocation2.lat,
+            extraStop2Long: this.state.extraStopLocation2.lng,
+            extraStop3Lat: this.state.extraStopLocation3.lat,
+            extraStop3Long: this.state.extraStopLocation3.lng,
+            destinationLat: this.state.dropoffLocation.lat,
+            destinationLong: this.state.dropoffLocation.lng,
+        }
+        fetch(process.env.REACT_APP_SERVER + "/route/new", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(routeData)
+        }).then(function (response) {
+            if (response.status >= 400) {
+                throw new Error("Bad response from server");
+            }
+            return response.json();
+        }).then(function (data) {
+            let userID = self.props.activeUser ? self.props.activeUser.userID : 99;
+            let date = new Date();
+            if (self.state.time === 'ASAP') {
+                date.setSeconds(date.getSeconds() + self.state.driverDuration.value);
+            } else {
+                date.setHours(0, 0, 0, 0);
+                date.setSeconds(date.getSeconds() + this.state.time);
+            }
+            let luggage = self.state.luggage ? 1 : 0;
+            let disabled = self.state.disabled ? 1 : 0;
+            let bookingData = {
+                driverID: self.state.selectedDriver.driverID,
+                userID: userID,
+                routeID: data.insertId,
+                departureDateTime: date.toISOString().slice(0, 19).replace('T', ' '),
+                noPassangers: self.state.passangers,
+                luggage: luggage,
+                disabled: disabled,
+                price: self.state.price.value,
+            }
+            console.log(bookingData);
+            fetch(process.env.REACT_APP_SERVER + "/booking/new", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(routeData)
+            }).then(function (response) {
+                if (response.status >= 400) {
+                    throw new Error("Bad response from server");
+                }
+                return response.json();
+            }).then(function (data) {
+                console.log(data);
+            }).catch(function (err) {
+                console.log(err);
+                self.setState({ paymentFailed: true });
+                setTimeout(function () {
+                    self.setState({processingPayment: false, paymentFailed: false})
+                }, 2000);
+            });
+        }).catch(function (err) {
+            console.log(err);
+            self.setState({ paymentFailed: true });
+        });
+    }
+
     render() {
         return (
             <div>
-                <Payment handleShow={this.state.showPayment} handlePaymentShow={this.handlePaymentShow}/>
+                <Payment
+                    handleShow={this.state.showPayment}
+                    handlePaymentShow={this.handlePaymentShow}
+                    makeBooking={this.makeBooking}
+                    processingPayment={this.state.processingPayment}
+                    paymentFailed={this.state.paymentFailed}
+                />
                 <GoogleMap
                     drivers={this.state.drivers}
                     currentLat={this.state.currentLat}
@@ -206,6 +290,7 @@ class Booking extends Component {
                     disabled={this.state.disabled}
                     passangers={this.state.passangers}
                     handlePaymentShow={this.handlePaymentShow}
+                    handleDriverInfo={this.handleDriverInfo}
                 />
             </div>
         );

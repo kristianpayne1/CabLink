@@ -59,7 +59,7 @@ class App extends Component {
         <Account handleAccount={this.state.showAccount} handleAccountClose={this.handleAccountClose.bind(this)} activeUser={this.state.activeUser} eventKey={this.state.eventKey} editClicked={this.state.editClicked} handleEditShow={this.handleEditShow.bind(this)} handleEditClose={this.handleEditClose.bind(this)}/>
         <div className="content">
           <Route exact path="/proj/co600/project/c37_cablink/" component={Home} />
-          <Route path="/proj/co600/project/c37_cablink/booking" component={Booking} />
+          <Route path="/proj/co600/project/c37_cablink/booking" component={Booking} activeUser={this.props.activeUser}/>
           <Route path="/proj/co600/project/c37_cablink/help" component={Help} />
         </div>
       </div>

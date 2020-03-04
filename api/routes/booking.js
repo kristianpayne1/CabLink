@@ -4,7 +4,7 @@ const mysqlconnection = require('../connection');
 
 /* Default. */
 router.get('/', function(req, res, next) {
-  res.send('billing address index');
+  res.send('booking index');
 });
 
 // gets all booking
@@ -15,7 +15,7 @@ router.get('/get', function(req, res, next) {
   });
 });
 
-// get car by booking id
+// get booking by booking id
 router.get('/get/:id', function(req, res, next) {
   mysqlconnection.query('SELECT * FROM c37_cablink.Booking WHERE bookingID = '+req.params.id+';', (error, results) => {
       if(error) throw error;
@@ -23,7 +23,7 @@ router.get('/get/:id', function(req, res, next) {
   });
 });
 
-// update a car by registration 
+// update a booking by id 
 router.post('/update/:id', function(req, res, next) {
   mysqlconnection.query(
     'UPDATE c37_cablink.Driver SET driverID='+req.body.driverID+
@@ -53,8 +53,8 @@ router.get('/delete/:id', function(req, res, next) {
 
 router.post('/new', function(req, res, next) {
     mysqlconnection.query(
-        'INSERT INTO c37_cablink.Booking (driverID, userID, departureLong, departureLat, destinationLong, destinationLat, departureTime, price) VALUES ('
-        +req.body.driverID+', '+req.body.userID+', '+req.body.departureLong+', '+req.body.departureLat+', '+req.body.destinationLong+', '+req.body.destinationLat+', '+req.body.departureTime+', '+req.body.price+');', (error, results) => {
+        'INSERT INTO c37_cablink.Booking (driverID, userID, routeID, depatureDateTime, noPassangers, luggage, disabled, price) VALUES ('
+        +req.body.driverID+', '+req.body.userID+', '+req.body.routeID+', '+req.body.departureDateTime+', '+req.body.noPassangers+', '+req.body.luggage+', '+req.body.disabled+', '+req.body.price+');', (error, results) => {
             if(error) throw error;
             res.send(JSON.stringify(results));
         });

@@ -117,6 +117,7 @@ class SideBar extends Component {
                                     removePrice={this.props.removePrice}
                                     time={this.props.time}
                                     isArrivingLater={this.props.isArrivingLater}
+                                    handleDriverInfo={this.props.handleDriverInfo}
                                     ref={this.DriverListing}
                                 />
                             </Card.Body>
