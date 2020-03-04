@@ -332,11 +332,13 @@ class GoogleMap extends Component {
             color="deepskyblue"
           />
           {this.getDrivers()}
+          
           <PickupPin
             lat={this.state.pickupLocation.lat}
             lng={this.state.pickupLocation.lng}
             name="Pick up location"
             color="green"
+
           />
           <DropoffPin
             lat={this.state.dropoffLocation.lat}
@@ -348,21 +350,21 @@ class GoogleMap extends Component {
             lat={this.state.extraStopLocation1.lat}
             lng={this.state.extraStopLocation1.lng}
             name="Extra stop location"
-            color="blue"
+            color="purple"
             key='1'
           />
           <ExtraStopPin
             lat={this.state.extraStopLocation2.lat}
             lng={this.state.extraStopLocation2.lng}
             name="Extra stop location"
-            color="blue"
+            color="purple"
             key='2'
           />
           <ExtraStopPin
             lat={this.state.extraStopLocation3.lat}
             lng={this.state.extraStopLocation3.lng}
             name="Extra stop location"
-            color="blue"
+            color="purple"
             key='3'
           />
           <MapControl map={this.state.map || null}
