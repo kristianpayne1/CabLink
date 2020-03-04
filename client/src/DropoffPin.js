@@ -6,7 +6,7 @@ const DropoffMarker = (props) => {
     return (
       <div className="marker"
         style={{ backgroundColor: color, cursor: 'pointer'}}
-        title={name}
+        title={"Drop-Off Location"}
       />
     );
   };

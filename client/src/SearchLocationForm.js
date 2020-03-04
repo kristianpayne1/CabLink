@@ -8,6 +8,7 @@ import ExtraSearchInput from './ExtraSearchInput.js';
 import TimePicker from 'react-bootstrap-time-picker';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
+import './SearchLocationForm.css';
 
 class SearchLocationForm extends Component {
     constructor(props) {
@@ -192,7 +193,7 @@ class SearchLocationForm extends Component {
                     />
                 </Form.Group>
                 <Form.Group>
-                    <ToggleButtonGroup type="radio" name="options" defaultValue={1} size='sm' onChange={this.handleChange}>
+                    <ToggleButtonGroup id="frame" type="radio" name="options" defaultValue={1} size='sm' onChange={this.handleChange}>
                         <ToggleButton value={1} variant="outline-primary" onClick={() => this.handleTimeChange('ASAP')}>Leave ASAP</ToggleButton>
                         <ToggleButton value={2} variant="outline-primary" onClick={() => this.props.handleIsArrivingLater(false)}>Depart by</ToggleButton>
                         <ToggleButton value={3} variant="outline-primary" onClick={() => this.props.handleIsArrivingLater(true)}>Arrive by</ToggleButton>
