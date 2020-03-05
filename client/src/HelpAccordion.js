@@ -12,7 +12,7 @@ class HomeAccordion extends Component {
     callAPI() {
         let self = this;
 
-        fetch('http://localhost:5000/question/get', {
+        fetch(process.env.REACT_APP_SERVER + '/question/get', {
             method: 'GET'
         }).then(function (response) {
             if (response.status >= 400) {
@@ -21,55 +21,48 @@ class HomeAccordion extends Component {
 
             return response.json();
         }).then(function (data) {
-            self.setState({questions: data});
-            this.listQuestions();
+            self.setState({ questions: data }, function () {
+                this.listQuestions();
+            });
         }).catch(err => {
             console.log('caught it!', err);
         })
-        console.log(this.state.questions);
     };
 
     componentDidMount() {
         this.callAPI();
     }
 
+    listQuestions = () => {
+        return (
+            this.state.questions.map(question =>
+                <Accordion id="accordion" key={question.questionID}>
+                    <Card>
+                        <Accordion.Toggle eventKey="0" id="head">{question.question}</Accordion.Toggle>
+                        <Accordion.Collapse eventKey="0"><Card.Body id="body">{question.answer}</Card.Body></Accordion.Collapse>
+                    </Card>
+                </Accordion>
+            )
+        )
+    }
+
     render() {
-        return(
+        return (
             <div id="container">
                 <p>Below are some common questions asked that should provide you answers to questions that you have!</p>
-                <Accordion id="accordion">
-                    <Card>
-                        <Accordion.Toggle eventKey="0" id="head">Do I have to create an account in order to book a cab?</Accordion.Toggle>
-                        <Accordion.Collapse eventKey="0"><Card.Body id="body">You don't have to create an account in order to book a cab!</Card.Body></Accordion.Collapse>
-                    </Card>
-                </Accordion>
-
-                <Accordion id="accordion">
-                    <Card>
-                        <Accordion.Toggle eventKey="0" id="head">My cab hasn't arrived, what do I do?</Accordion.Toggle>
-                        <Accordion.Collapse eventKey="0"><Card.Body id="body">If your cab hasn't arrived then the best way to resolve this issue would be to contact the contact number on the booking!</Card.Body></Accordion.Collapse>
-                    </Card>
-                </Accordion>
-
-                <Accordion id="accordion">
-                    <Card>
-                        <Accordion.Toggle eventKey="0" id="head">Can I save payment information to my account?</Accordion.Toggle>
-                        <Accordion.Collapse eventKey="0"><Card.Body id="body">Yes you can, you're also able to remove the saved methods from your account at any time!</Card.Body></Accordion.Collapse>
-                    </Card>
-                </Accordion>
-
+                {this.listQuestions()}
                 <p><b>If your question isn't answered above then please send us your question below and we will respond as soon as possible!</b></p>
 
                 <Form id="form">
                     <Form.Group>
-                        <Form.Control as="textarea" maxLength="150" rows="4" placeholder="Enter question here..." id="questionfield"/>
+                        <Form.Control as="textarea" maxLength="150" rows="4" placeholder="Enter question here..." id="questionfield" />
                         <Form.Text className="text-muted">150 Character Limit</Form.Text>
-                        <Form.Control type="email" placeholder="Email Address" id="emailfield"/>
-                        
+                        <Form.Control type="email" placeholder="Email Address" id="emailfield" />
+
                     </Form.Group>
                     <Button variant="primary" type="submit" id="formbutton">Submit</Button>
                 </Form>
-                
+
             </div>
         );
     }
