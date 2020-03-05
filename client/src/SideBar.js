@@ -117,6 +117,7 @@ class SideBar extends Component {
                                     removePrice={this.props.removePrice}
                                     time={this.props.time}
                                     isArrivingLater={this.props.isArrivingLater}
+                                    handleDriverInfo={this.props.handleDriverInfo}
                                     ref={this.DriverListing}
                                 />
                             </Card.Body>
@@ -139,6 +140,7 @@ class SideBar extends Component {
                                     passangers={this.props.passangers}
                                     disabled={this.props.disabled}
                                     luggage={this.props.luggage}
+                                    handlePaymentShow={this.props.handlePaymentShow}
                                 />
                             </Card.Body>
                         </Accordion.Collapse>

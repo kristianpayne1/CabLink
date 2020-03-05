@@ -5,11 +5,38 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 class HomeAccordion extends Component {
+    state = {
+        questions: []
+    };
+
+    callAPI() {
+        let self = this;
+
+        fetch('http://localhost:5000/question/get', {
+            method: 'GET'
+        }).then(function (response) {
+            if (response.status >= 400) {
+                throw new Error("Bad response from server");
+            }
+
+            return response.json();
+        }).then(function (data) {
+            self.setState({questions: data});
+            this.listQuestions();
+        }).catch(err => {
+            console.log('caught it!', err);
+        })
+        console.log(this.state.questions);
+    };
+
+    componentDidMount() {
+        this.callAPI();
+    }
+
     render() {
         return(
             <div id="container">
                 <p>Below are some common questions asked that should provide you answers to questions that you have!</p>
-
                 <Accordion id="accordion">
                     <Card>
                         <Accordion.Toggle eventKey="0" id="head">Do I have to create an account in order to book a cab?</Accordion.Toggle>

@@ -62,7 +62,7 @@ class ConfirmBooking extends Component {
                     block={true}
                     size="sm"
                 />
-                <Button variant="outline-success" block>Confirm booking</Button>
+                <Button variant="outline-success" block onClick={() => this.props.handlePaymentShow(true)}>Confirm booking</Button>
             </div> : null;
         return (
             <div>

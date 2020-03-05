@@ -32,6 +32,19 @@
   border-radius: 5px;
 }
 
+.pickupinfo {
+  position: absolute;
+  height: 75px;
+  width: 500px;
+  bottom: 10px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.progress {
+  background-color: white !important;
+}
+
 .sidebar-toggle {
   position: absolute;
   top: 40%;

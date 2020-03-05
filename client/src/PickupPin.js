@@ -6,7 +6,7 @@ const PickupMarker = (props) => {
     return (
       <div className="marker"
         style={{ backgroundColor: color, cursor: 'pointer'}}
-        title={name}
+        title={"Pick-Up Location"}
       />
     );
   };

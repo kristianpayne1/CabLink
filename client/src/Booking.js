@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import GoogleMap from './map.js';
 import SideBar from './SideBar.js';
+import Payment from './Payment.js';
+import { Redirect } from "react-router-dom";
 
 class Booking extends Component {
     constructor(props) {
@@ -47,6 +49,14 @@ class Booking extends Component {
         passangers: 1,
         luggage: false,
         disabled: false,
+        showPayment: false,
+        processingPayment: false,
+        paymentFailed: false,
+        paymentSuccess: false,
+        driverDuration: null,
+        driverPath: null,
+        redirect: false,
+        bookingID: 0,
     };
 
     handleViewSidebar = () => {
@@ -63,7 +73,7 @@ class Booking extends Component {
 
     handlePickup = (lat, long, name) => {
         this.map.current.setPickupMarker(lat, long);
-        this.setState({pickupLocation: { lat: lat, lng: long, address: name} });
+        this.setState({ pickupLocation: { lat: lat, lng: long, address: name } });
     }
 
     removePickup = () => {
@@ -121,40 +131,143 @@ class Booking extends Component {
 
     showDriver = (lat, lng, driver) => {
         this.map.current.centerToPoint(lat, lng);
-        this.setState({selectedDriver: driver});
+        this.setState({ selectedDriver: driver });
     }
 
     setPrice = (price) => {
-        this.setState({price: price});
+        this.setState({ price: price });
     }
 
     removePrice = () => {
-        this.setState({price: null})
+        this.setState({ price: null })
+    }
+
+    handleDriverInfo = (duration, path) => {
+        this.setState({ driverDuration: duration, driverPath: path });
     }
 
     handleTimeChange = (time) => {
-        this.setState({time: time});
+        this.setState({ time: time });
     }
 
     handleIsArrivingLater = (isArriving) => {
-        this.setState({isArrivingLater: isArriving});
+        this.setState({ isArrivingLater: isArriving });
     }
 
     setLuggage = (state) => {
-        this.setState({luggage: state});
+        this.setState({ luggage: state });
     }
 
     setDisabled = (state) => {
-        this.setState({disabled: state});
+        this.setState({ disabled: state });
     }
 
     setPassangers = (num) => {
-        this.setState({passangers: num});
+        this.setState({ passangers: num });
+    }
+
+    handlePaymentShow = (state) => {
+        this.setState({ showPayment: state });
+    }
+
+    makeBooking = () => {
+        this.setState({ processingPayment: true });
+        let self = this;
+        let routeData = {
+            departureLat: this.state.pickupLocation.lat,
+            departureLong: this.state.pickupLocation.lng,
+            extraStop1Lat: this.state.extraStopLocation1.lat,
+            extraStop1Long: this.state.extraStopLocation1.lng,
+            extraStop2Lat: this.state.extraStopLocation2.lat,
+            extraStop2Long: this.state.extraStopLocation2.lng,
+            extraStop3Lat: this.state.extraStopLocation3.lat,
+            extraStop3Long: this.state.extraStopLocation3.lng,
+            destinationLat: this.state.dropoffLocation.lat,
+            destinationLong: this.state.dropoffLocation.lng,
+        }
+        fetch(process.env.REACT_APP_SERVER + "/route/new", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(routeData)
+        }).then(function (response) {
+            if (response.status >= 400) {
+                throw new Error("Bad response from server");
+            }
+            return response.json();
+        }).then(function (data) {
+            let userID = self.props.activeUser ? self.props.activeUser.userID : 1;
+            let date = new Date();
+            if (self.state.time === 'ASAP') {
+                date.setSeconds(date.getSeconds() + self.state.driverDuration.value);
+            } else {
+                date.setHours(0, 0, 0, 0);
+                date.setSeconds(date.getSeconds() + this.state.time);
+            }
+            let luggage = self.state.luggage ? 1 : 0;
+            let disabled = self.state.disabled ? 1 : 0;
+            let bookingData = {
+                driverID: self.state.selectedDriver.driverID,
+                userID: userID,
+                routeID: data.insertId,
+                departureDateTime: date.toISOString().slice(0, 19).replace('T', ' '),
+                noPassangers: self.state.passangers,
+                luggage: luggage,
+                disabled: disabled,
+                price: self.state.price.value,
+                complete: 0,
+            }
+            console.log(bookingData);
+            setTimeout(function () {
+                fetch(process.env.REACT_APP_SERVER + "/booking/new", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bookingData)
+                }).then(function (response) {
+                    if (response.status >= 400) {
+                        throw new Error("Bad response from server");
+                    }
+                    return response.json();
+                }).then(function (data) {
+                    console.log(data);
+                    self.setState({ paymentSuccess: true });
+                    setTimeout(function () {
+                        self.setState({ showPayment: false, redirect: true, bookingID: data.insertId});
+                        setTimeout(function () {
+                            self.setState({ paymentSuccess: false, processingPayment: false });
+                        }, 500);
+                    }, 2000)
+                }).catch(function (err) {
+                    console.log(err);
+                    self.setState({ paymentFailed: true });
+                    setTimeout(function () {
+                        self.setState({ paymentFailed: false, processingPayment: false });
+                    }, 2000);
+                });
+            }, 1000);
+
+        }).catch(function (err) {
+            console.log(err);
+            self.setState({ paymentFailed: true });
+            setTimeout(function () {
+                self.setState({ paymentFailed: false, processingPayment: false });
+            }, 2000);
+        });
     }
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={'/proj/co600/project/c37_cablink/pickup/'+this.state.bookingID} />
+        }
         return (
             <div>
+                <Payment
+                    handleShow={this.state.showPayment}
+                    handlePaymentShow={this.handlePaymentShow}
+                    makeBooking={this.makeBooking}
+                    processingPayment={this.state.processingPayment}
+                    paymentFailed={this.state.paymentFailed}
+                    paymentSuccess={this.state.paymentSuccess}
+                />
                 <GoogleMap
                     drivers={this.state.drivers}
                     currentLat={this.state.currentLat}
@@ -177,14 +290,14 @@ class Booking extends Component {
                     removeDropoff={this.removeDropoff}
                     removeExtraSteps={this.removeExtraSteps}
                     showDriver={this.showDriver}
-                    pickupLocation= {this.state.pickupLocation}
-                    dropoffLocation = {this.state.dropoffLocation}
-                    extraStopLocation1= {this.state.extraStopLocation1}
-                    extraStopLocation2 = {this.state.extraStopLocation2}
-                    extraStopLocation3 = {this.state.extraStopLocation3}
-                    distance = {this.state.distance}
-                    duration = {this.state.duration}
-                    time= {this.state.time}
+                    pickupLocation={this.state.pickupLocation}
+                    dropoffLocation={this.state.dropoffLocation}
+                    extraStopLocation1={this.state.extraStopLocation1}
+                    extraStopLocation2={this.state.extraStopLocation2}
+                    extraStopLocation3={this.state.extraStopLocation3}
+                    distance={this.state.distance}
+                    duration={this.state.duration}
+                    time={this.state.time}
                     handleTimeChange={this.handleTimeChange}
                     setPrice={this.setPrice}
                     price={this.state.price}
@@ -198,6 +311,8 @@ class Booking extends Component {
                     luggage={this.state.luggage}
                     disabled={this.state.disabled}
                     passangers={this.state.passangers}
+                    handlePaymentShow={this.handlePaymentShow}
+                    handleDriverInfo={this.handleDriverInfo}
                 />
             </div>
         );

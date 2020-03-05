@@ -3,8 +3,8 @@ import './CurrentMarker.css';
 
 const DriverMarker = (props) => {
     const { color, name} = props;
-    return (
-      <div className="marker"
+    return (  
+      <div className="markerD"
         style={{ backgroundColor: color, cursor: 'pointer'}}
         title={name}
       />
