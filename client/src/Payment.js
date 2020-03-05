@@ -16,18 +16,26 @@ class Payment extends Component {
     }
 
     render() {
-        let processing = !(this.props.paymentFailed) ?
-            <div style={{ 'textAlign': 'center' }}>
+        let paid = !(this.props.paymentSuccess) ?
+            <div>
                 <br />
                 <h5>Processing payment...</h5>
                 <Spinner animation="border" variant="success" />
-                <br /><br />
-            </div> : 
-            <div style={{ 'textAlign': 'center' }}>
+                <br /><br /> 
+            </div> :
+            <div>
+                <br />
+                <h5>Payment successful</h5>
                 <br/>
-                <h5>Payment failed due to error =(</h5>
+            </div>
+        let processing = !(this.props.paymentFailed) ?
+            <div>
+                {paid}
+            </div> :
+            <div>
+                <br />
+                <h5>Payment failed :(</h5>
                 <p>Please try again.</p>
-                <br/><br/>
             </div>
         let paymentForm = !(this.props.processingPayment) ?
             <div>
@@ -45,7 +53,10 @@ class Payment extends Component {
                         Close
                     </Button>
                 </Modal.Footer>
-            </div> : {processing};
+            </div> :
+            <div style={{ 'textAlign': 'center' }}>
+                {processing}
+            </div>
         return (
             <Modal show={this.props.handleShow} onHide={this.closeClicked} centered backdrop="static">
                 {paymentForm}

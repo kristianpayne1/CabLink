@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import GoogleMap from './map.js';
 import SideBar from './SideBar.js';
-import Payment from './Payment.js'
+import Payment from './Payment.js';
+import { Redirect } from "react-router-dom";
 
 class Booking extends Component {
     constructor(props) {
@@ -51,8 +52,11 @@ class Booking extends Component {
         showPayment: false,
         processingPayment: false,
         paymentFailed: false,
+        paymentSuccess: false,
         driverDuration: null,
         driverPath: null,
+        redirect: false,
+        bookingID: 0,
     };
 
     handleViewSidebar = () => {
@@ -191,7 +195,7 @@ class Booking extends Component {
             }
             return response.json();
         }).then(function (data) {
-            let userID = self.props.activeUser ? self.props.activeUser.userID : 99;
+            let userID = self.props.activeUser ? self.props.activeUser.userID : 1;
             let date = new Date();
             if (self.state.time === 'ASAP') {
                 date.setSeconds(date.getSeconds() + self.state.driverDuration.value);
@@ -210,33 +214,50 @@ class Booking extends Component {
                 luggage: luggage,
                 disabled: disabled,
                 price: self.state.price.value,
+                complete: 0,
             }
             console.log(bookingData);
-            fetch(process.env.REACT_APP_SERVER + "/booking/new", {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(routeData)
-            }).then(function (response) {
-                if (response.status >= 400) {
-                    throw new Error("Bad response from server");
-                }
-                return response.json();
-            }).then(function (data) {
-                console.log(data);
-            }).catch(function (err) {
-                console.log(err);
-                self.setState({ paymentFailed: true });
-                setTimeout(function () {
-                    self.setState({processingPayment: false, paymentFailed: false})
-                }, 2000);
-            });
+            setTimeout(function () {
+                fetch(process.env.REACT_APP_SERVER + "/booking/new", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bookingData)
+                }).then(function (response) {
+                    if (response.status >= 400) {
+                        throw new Error("Bad response from server");
+                    }
+                    return response.json();
+                }).then(function (data) {
+                    console.log(data);
+                    self.setState({ paymentSuccess: true });
+                    setTimeout(function () {
+                        self.setState({ showPayment: false, redirect: true, bookingID: data.insertId});
+                        setTimeout(function () {
+                            self.setState({ paymentSuccess: false, processingPayment: false });
+                        }, 500);
+                    }, 2000)
+                }).catch(function (err) {
+                    console.log(err);
+                    self.setState({ paymentFailed: true });
+                    setTimeout(function () {
+                        self.setState({ paymentFailed: false, processingPayment: false });
+                    }, 2000);
+                });
+            }, 1000);
+
         }).catch(function (err) {
             console.log(err);
             self.setState({ paymentFailed: true });
+            setTimeout(function () {
+                self.setState({ paymentFailed: false, processingPayment: false });
+            }, 2000);
         });
     }
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={'/proj/co600/project/c37_cablink/pickup/'+this.state.bookingID} />
+        }
         return (
             <div>
                 <Payment
@@ -245,6 +266,7 @@ class Booking extends Component {
                     makeBooking={this.makeBooking}
                     processingPayment={this.state.processingPayment}
                     paymentFailed={this.state.paymentFailed}
+                    paymentSuccess={this.state.paymentSuccess}
                 />
                 <GoogleMap
                     drivers={this.state.drivers}
