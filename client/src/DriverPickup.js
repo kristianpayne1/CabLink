@@ -25,7 +25,7 @@ class DriverPickup extends Component {
         this.setState({progress: progress});
     }
 
-    componentDidMount() {
+    getBookingInfo = (cb) => {
         let self = this;
         fetch(process.env.REACT_APP_SERVER + '/booking/get/pickup/' + this.props.match.params.id, {
             method: 'GET'
@@ -50,6 +50,8 @@ class DriverPickup extends Component {
                 companyName: data[0].companyName,
                 car: data[0].colour + ' ' + data[0].make + ' ' + data[0].model,
                 reg: data[0].registrationNo,
+            }, function() {
+                cb();
             });
         }).catch(err => {
             console.log('caught it!', err);
@@ -59,7 +61,7 @@ class DriverPickup extends Component {
     render() {
         return (
             <div>
-                <PickupMap info={this.state} updateProgress={this.updateProgress}/>
+                <PickupMap info={this.state} updateProgress={this.updateProgress} getBookingInfo={this.getBookingInfo}/>
                 <PickupInfo info={this.state} />
             </div>
         );

@@ -28,13 +28,6 @@ class PickupMap extends Component {
         finished: false,
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps !== this.props) {
-            this.setState({ pickupLocation: { lat: this.props.info.pickupLocation.lat, lng: this.props.info.pickupLocation.lng } });
-            this.setState({ driverLocation: { lat: this.props.info.driverLocation.lat, lng: this.props.info.driverLocation.lng } });
-        }
-    }
-
     viewPickup = () => {
         if (this.state.pickupLocation.lat !== null && this.state.driverLocation.lat !== null) {
             let bounds = new google.maps.LatLngBounds();
@@ -58,42 +51,47 @@ class PickupMap extends Component {
             self.setState({ driverLocation: { lat: latlng.lat(), lng: latlng.lng() } });
             if (index === path.length) {
                 clearInterval(interval);
-                self.setState({finished: true});
+                self.setState({ finished: true });
             }
         }, timeInterval)
     }
 
     apiIsLoaded = (map, maps) => {
         if (map) {
-            this.setState({map: map, maps: maps});
+            this.setState({ map: map, maps: maps });
+            let self = this;
+            this.props.getBookingInfo(function () {
+                self.setState({ pickupLocation: { lat: self.props.info.pickupLocation.lat, lng: self.props.info.pickupLocation.lng }, driverLocation: { lat: self.props.info.driverLocation.lat, lng: self.props.info.driverLocation.lng } },
+                    function () {
+                        let directionsService = new maps.DirectionsService();
+                        let directionsDisplay = new maps.DirectionsRenderer();
 
-            let directionsService = new maps.DirectionsService();
-            let directionsDisplay = new maps.DirectionsRenderer();
-
-            directionsService.route({
-                origin: { lat: this.state.driverLocation.lat, lng: this.state.driverLocation.lng },
-                destination: { lat: this.state.pickupLocation.lat, lng: this.state.pickupLocation.lng },
-                travelMode: 'DRIVING',
-                drivingOptions: {
-                    departureTime: new Date(),
-                    trafficModel: 'bestguess'
-                },
-                unitSystem: maps.UnitSystem.IMPERIAL,
-            }, (response, status) => {
-                if (status === 'OK') {
-                    directionsDisplay.setDirections(response);
-                    // this.setState({
-                    //     routePolyline: new maps.Polyline({
-                    //         path: response.routes[0].overview_path,
-                    //         strokeColor: '#007bff'
-                    //     })
-                    // });
-                    //console.log(response.routes[0].overview_path);
-                    this.runPickUp(response.routes[0].overview_path, directionsDisplay.directions.routes[0].legs[0].duration_in_traffic);
-                    //this.state.routePolyline.setMap(map);
-                } else {
-                    window.alert('Directions request failed due to ' + status);
-                }
+                        directionsService.route({
+                            origin: { lat: self.state.driverLocation.lat, lng: self.state.driverLocation.lng },
+                            destination: { lat: self.state.pickupLocation.lat, lng: self.state.pickupLocation.lng },
+                            travelMode: 'DRIVING',
+                            drivingOptions: {
+                                departureTime: new Date(),
+                                trafficModel: 'bestguess'
+                            },
+                            unitSystem: maps.UnitSystem.IMPERIAL,
+                        }, (response, status) => {
+                            if (status === 'OK') {
+                                directionsDisplay.setDirections(response);
+                                // this.setState({
+                                //     routePolyline: new maps.Polyline({
+                                //         path: response.routes[0].overview_path,
+                                //         strokeColor: '#007bff'
+                                //     })
+                                // });
+                                //console.log(response.routes[0].overview_path);
+                                self.runPickUp(response.routes[0].overview_path, directionsDisplay.directions.routes[0].legs[0].duration_in_traffic);
+                                //this.state.routePolyline.setMap(map);
+                            } else {
+                                window.alert('Directions request failed due to ' + status);
+                            }
+                        });
+                    });
             });
         }
     }
