@@ -3,10 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "forever start -l output.log -a -p ./logs --uid c_37 ./bin/www",
-    "stop": "forever stop c_37",
-    "showlogs": "forever list",
-    "start-dev": "node ./bin/www"
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
