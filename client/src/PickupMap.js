@@ -39,6 +39,11 @@ class PickupMap extends Component {
         }
     }
 
+    viewDriver = () => {
+        this.state.map.setCenter(this.state.driverLocation);
+        this.state.map.setZoom(18);
+    }
+
     runPickUp = (path, duration) => {
         let timeInterval = (duration.value * 1000) / path.length;
         let self = this;
@@ -86,7 +91,8 @@ class PickupMap extends Component {
                         if (self.props.info.standby === false) {
                             self.runPickUp(response.routes[0].overview_path, directionsDisplay.directions.routes[0].legs[0].duration_in_traffic);
                         }else{
-                            console.log(waitTime + ' ' + directionsDisplay.directions.routes[0].legs[0].duration_in_traffic.value * 1000)
+                            console.log(waitTime + ' ' + directionsDisplay.directions.routes[0].legs[0].duration_in_traffic.value * 1000);
+                            self.viewDriver();
                             cb(waitTime - directionsDisplay.directions.routes[0].legs[0].duration_in_traffic.value * 1000);
                         }
                         //self.state.routePolyline.setMap(map);

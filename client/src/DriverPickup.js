@@ -25,6 +25,7 @@ class DriverPickup extends Component {
         reg: null,
         progress: 0,
         standby: true,
+        pickupDate: null,
     }
 
     updateProgress = (progress) => {
@@ -68,6 +69,7 @@ class DriverPickup extends Component {
             }, function () {
                 let t = self.state.departureDateTime.slice(0, 19).replace('T', ' ').split(/[- :]/);
                 let departureDate = new Date(Date.UTC(t[0], t[1] - 1, t[2], t[3], t[4], t[5]));
+                self.setState({pickupDate: departureDate});
                 if (new Date().getTime() >= departureDate.getTime()) {
                     self.setState({ standby: false }, function () {
                         cb();
@@ -85,7 +87,7 @@ class DriverPickup extends Component {
         return (
             <div>
                 <PickupMap info={this.state} updateProgress={this.updateProgress} getBookingInfo={this.getBookingInfo} ref={this.PickupMap} />
-                <PickupInfo info={this.state} />
+                <PickupInfo info={this.state} pickupDate={this.state.pickupDate}/>
             </div>
         );
     }
