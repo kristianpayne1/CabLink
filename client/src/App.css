@@ -45,6 +45,12 @@
   background-color: white !important;
 }
 
+.pickupInfoTitle {
+  margin-block-start: 0.1rem;
+  margin-block-end: 0.1rem;
+  margin-left: 0.5rem; 
+}
+
 .sidebar-toggle {
   position: absolute;
   top: 40%;

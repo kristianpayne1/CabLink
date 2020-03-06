@@ -48,7 +48,7 @@ class GoogleMap extends Component {
 
   callAPI() {
     let self = this;
-    fetch(process.env.REACT_APP_SERVER+'/driver/get/all/info', {
+    fetch(process.env.REACT_APP_SERVER + '/driver/get/all/info', {
       method: 'GET'
     }).then(function (response) {
       if (response.status >= 400) {
@@ -120,37 +120,50 @@ class GoogleMap extends Component {
       default:
         console.log('Something went wrong');
     }
+    let self = this;
     this.drawRoute(function (err, directions) {
       if (!err) {
+        self.handleRouteInfo(directions);
       }
     });
   }
 
   removeExtraStopMarkers = (id) => {
+    let self = this;
     switch (id) {
       case '1':
-        this.setState({ extraStopLocation1: { lat: null, lng: null } }, () => {
-          this.drawRoute(function (err, directions) {
-            if (!err) {
-            }
+        if (this.state.extraStopLocation1.lat !== null) {
+          this.setState({ extraStopLocation1: { lat: null, lng: null } }, () => {
+            this.drawRoute(function (err, directions) {
+              if (!err) {
+                console.log('ye')
+                self.handleRouteInfo(directions);
+              }
+            });
           });
-        });
+        }
         break;
       case '2':
-        this.setState({ extraStopLocation2: { lat: null, lng: null } }, () => {
-          this.drawRoute(function (err, directions) {
-            if (!err) {
-            }
+        if (this.state.extraStopLocation2.lat !== null) {
+          this.setState({ extraStopLocation2: { lat: null, lng: null } }, () => {
+            this.drawRoute(function (err, directions) {
+              if (!err) {
+                self.handleRouteInfo(directions);
+              }
+            });
           });
-        });
+        }
         break;
       case '3':
+        if (this.state.extraStopLocation3.lat !== null) {
         this.setState({ extraStopLocation3: { lat: null, lng: null } }, () => {
           this.drawRoute(function (err, directions) {
             if (!err) {
+              self.handleRouteInfo(directions);
             }
           });
         });
+      }
         break;
       default:
         console.log('Something went wrong');
@@ -206,7 +219,7 @@ class GoogleMap extends Component {
     }
     let totalDistanceText = totalDistance * 0.00018939 + ' miles';
     let totalDurationText = totalDuration / 60 + ' mins';
-    this.props.setRouteInfo({ duration: {value: totalDuration, text: totalDurationText}, distance: {value: totalDistance, text: totalDistanceText} });
+    this.props.setRouteInfo({ duration: { value: totalDuration, text: totalDurationText }, distance: { value: totalDistance, text: totalDistanceText } });
   }
 
   drawRoute = (cd) => {
@@ -219,15 +232,15 @@ class GoogleMap extends Component {
       let waypoints = [];
       if (!(this.state.extraStopLocation1.lat === null && this.state.extraStopLocation1.lat === null)) {
         let stop = new this.state.maps.LatLng(parseFloat(this.state.extraStopLocation1.lat), parseFloat(this.state.extraStopLocation1.lng));
-        waypoints.push({ location: stop , stopover: false});
+        waypoints.push({ location: stop, stopover: false });
       }
       if (!(this.state.extraStopLocation2.lat === null && this.state.extraStopLocation2.lat === null)) {
         let stop = new this.state.maps.LatLng(parseFloat(this.state.extraStopLocation2.lat), parseFloat(this.state.extraStopLocation2.lng));
-        waypoints.push({ location: stop , stopover: false});
+        waypoints.push({ location: stop, stopover: false });
       }
       if (!(this.state.extraStopLocation3.lat === null && this.state.extraStopLocation3.lat === null)) {
         let stop = new this.state.maps.LatLng(parseFloat(this.state.extraStopLocation3.lat), parseFloat(this.state.extraStopLocation3.lng));
-        waypoints.push({ location: stop , stopover: false});
+        waypoints.push({ location: stop, stopover: false });
       }
 
       directionsService.route({
@@ -332,7 +345,7 @@ class GoogleMap extends Component {
             color="deepskyblue"
           />
           {this.getDrivers()}
-          
+
           <PickupPin
             lat={this.state.pickupLocation.lat}
             lng={this.state.pickupLocation.lng}

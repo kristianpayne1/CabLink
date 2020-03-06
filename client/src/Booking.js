@@ -92,7 +92,10 @@ class Booking extends Component {
     }
 
     setRouteInfo = (info) => {
-        this.setState({ duration: info.duration, distance: info.distance })
+        console.log(info);
+        if (info.duration !== null && info.distance !== null) {
+            this.setState({ duration: info.duration, distance: info.distance })
+        }
     }
 
     handleExtraStops = (id, location, name) => {
@@ -199,9 +202,12 @@ class Booking extends Component {
             let date = new Date();
             if (self.state.time === 'ASAP') {
                 date.setSeconds(date.getSeconds() + self.state.driverDuration.value);
+            } else if (!(self.state.isArrivingLater)) {
+                date.setHours(0, 0, 0, 0);
+                date.setSeconds(date.getSeconds() + self.state.time);
             } else {
                 date.setHours(0, 0, 0, 0);
-                date.setSeconds(date.getSeconds() + this.state.time);
+                date.setSeconds((date.getSeconds() + self.state.time) - self.state.duration.value);
             }
             let luggage = self.state.luggage ? 1 : 0;
             let disabled = self.state.disabled ? 1 : 0;
@@ -231,7 +237,7 @@ class Booking extends Component {
                     console.log(data);
                     self.setState({ paymentSuccess: true });
                     setTimeout(function () {
-                        self.setState({ showPayment: false, redirect: true, bookingID: data.insertId});
+                        self.setState({ showPayment: false, redirect: true, bookingID: data.insertId });
                         setTimeout(function () {
                             self.setState({ paymentSuccess: false, processingPayment: false });
                         }, 500);
@@ -256,7 +262,7 @@ class Booking extends Component {
 
     render() {
         if (this.state.redirect) {
-            return <Redirect to={'/proj/co600/project/c37_cablink/pickup/'+this.state.bookingID} />
+            return <Redirect to={'/proj/co600/project/c37_cablink/pickup/' + this.state.bookingID} driverDuration={this.state.driverDuration} />
         }
         return (
             <div>
