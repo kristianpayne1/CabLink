@@ -92,7 +92,6 @@ class Booking extends Component {
     }
 
     setRouteInfo = (info) => {
-        console.log(info);
         if (info.duration !== null && info.distance !== null) {
             this.setState({ duration: info.duration, distance: info.distance })
         }
@@ -173,6 +172,35 @@ class Booking extends Component {
         this.setState({ showPayment: state });
     }
 
+    bookDriver = () => {
+        let driver = this.state.selectedDriver;
+        let data = {
+            firstname: driver.firstname,
+            lastname: driver.lastname,
+            mobileNo: driver.mobileNo,
+            companyID: driver.companyID,
+            currentLat: driver.currentLat,
+            currentLong: driver.currentLong,
+            isFree: 0,
+        }
+        fetch(process.env.REACT_APP_SERVER + "/driver/update/"+this.state.selectedDriver.driverID, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(function(response) {
+            if (response.status >= 400) {
+                throw new Error("Bad response from server");
+            }
+            return response.json();
+        }).then(function(data) {
+            console.log(data)
+        }).catch(function(err) {
+            console.log(err)
+        });
+    }
+
     makeBooking = () => {
         this.setState({ processingPayment: true });
         let self = this;
@@ -222,7 +250,6 @@ class Booking extends Component {
                 price: self.state.price.value,
                 complete: 0,
             }
-            console.log(bookingData);
             setTimeout(function () {
                 fetch(process.env.REACT_APP_SERVER + "/booking/new", {
                     method: 'POST',
@@ -234,7 +261,7 @@ class Booking extends Component {
                     }
                     return response.json();
                 }).then(function (data) {
-                    console.log(data);
+                    self.bookDriver();
                     self.setState({ paymentSuccess: true });
                     setTimeout(function () {
                         self.setState({ showPayment: false, redirect: true, bookingID: data.insertId });

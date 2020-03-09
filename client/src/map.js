@@ -136,7 +136,6 @@ class GoogleMap extends Component {
           this.setState({ extraStopLocation1: { lat: null, lng: null } }, () => {
             this.drawRoute(function (err, directions) {
               if (!err) {
-                console.log('ye')
                 self.handleRouteInfo(directions);
               }
             });

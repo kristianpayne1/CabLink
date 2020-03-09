@@ -34,13 +34,13 @@ router.get('/get/pickup/:id', function (req, res, next) {
 // update a booking by id 
 router.post('/update/:id', function (req, res, next) {
   mysqlconnection.query(
-    'UPDATE c37_cablink.Driver SET driverID=' + req.body.driverID +
+    'UPDATE c37_cablink.Booking SET driverID=' + req.body.driverID +
     ', userID=' + req.body.userID +
-    ', departureLong=' + req.body.departureLong +
-    ', departureLat=' + req.body.departureLat +
-    ', destinationLong=' + req.body.destinationLong +
-    ', destinationLat=' + req.body.destinationLat +
-    ', departureTime=' + req.body.departureTime +
+    ', routeID=' + req.body.routeID +
+    ', departureDateTime="' + req.body.departureDateTime +
+    '", noPassangers=' + req.body.noPassangers +
+    ', luggage=' + req.body.luggage +
+    ', disabled=' + req.body.disabled +
     ', price=' + req.body.price +
     ', complete=' + req.body.complete +
     ' WHERE bookingID=' + req.params.id + ';',

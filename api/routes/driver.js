@@ -34,12 +34,13 @@ router.get('/get/all/info/', function (req, res, next) {
 // update a driver by id 
 router.post('/update/:id', function (req, res, next) {
   mysqlconnection.query(
-    'UPDATE c37_cablink.Driver SET firstname=' + req.body.firstname +
-    ', lastname=' + req.body.lastname +
-    ', mobileNo=' + req.body.mobileNo +
-    ', companyID=' + req.body.companyID +
+    'UPDATE c37_cablink.Driver SET firstname="' + req.body.firstname +
+    '", lastname="' + req.body.lastname +
+    '", mobileNo="' + req.body.mobileNo +
+    '", companyID=' + req.body.companyID +
     ', currentLat=' + req.body.currentLat +
     ', currentLong=' + req.body.currentLong +
+    ', isFree=' + req.body.isFree +
     ' WHERE driverID=' + req.params.id + ';',
     function (error, results) {
       if (error) throw error;
