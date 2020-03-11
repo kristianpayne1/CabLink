@@ -32,7 +32,7 @@ class NavBar extends Component {
               <Dropdown.Item eventKey="2"  onClick={() =>this.accountClicked(2)}>Change Payment Details</Dropdown.Item>
               <Dropdown.Item eventKey="3"  onClick={() => this.accountClicked(3)}>Check Recent Bookings</Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item eventKey="4">Logout</Dropdown.Item>
+              <Dropdown.Item eventKey="4" onClick={() => this.props.handleLogoutComplete()}>Logout</Dropdown.Item>
             </DropdownType>
           ))}
         </ButtonToolbar>

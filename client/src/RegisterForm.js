@@ -10,9 +10,9 @@ class RegisterForm extends Component {
         dataSet: {
             firstname: '',
             lastName: '',
-            regEmail: '',
+            email: '',
             mobileNo: '',
-            regPassword: '',
+            password: '',
             userType: '',
             userID: '',
             lastLogin: '',
@@ -28,19 +28,19 @@ class RegisterForm extends Component {
             this.setState({validated: true});
             let firstName =  this.firstNameInput.current.value;
             let lastName = this.lastNameInput.current.value;
-            let regEmail= this.regEmailInput.current.value;
+            let email= this.emailInput.current.value;
             let mobileNo = "+44" + this.mobileInput.current.value;
-            let regPassword = this.regPasswordInput.current.value;
+            let password = this.passwordInput.current.value;
             let userType = "Perm";
             let userID = '';
             let lastLogin = '';
             
-            this.callAPI(firstName, lastName, regEmail, mobileNo, regPassword, userType, userID, lastLogin);
+            this.callAPI(firstName, lastName, email, mobileNo, password, userType, userID, lastLogin);
         }
       };
 
-    callAPI(firstName, lastName, regEmail, mobileNo, regPassword, userType, userID, lastLogin){
-        let accountData = {firstName, lastName, regEmail, mobileNo, regPassword, userType, userID, lastLogin};
+    callAPI(firstName, lastName, email, mobileNo, password, userType, userID, lastLogin){
+        let accountData = {firstName, lastName, email, mobileNo, password, userType, userID, lastLogin};
         console.log(JSON.stringify(accountData));
         let self = this;
         // Put registered user data into User table
@@ -70,7 +70,7 @@ class RegisterForm extends Component {
         // Get the userID using user email
         let self = this;
         console.log("pls");
-        fetch(process.env.REACT_APP_SERVER+'/user/get/id/'+accountData.regEmail, {
+        fetch(process.env.REACT_APP_SERVER+'/user/get/id/'+accountData.email, {
           method: 'GET'
         }).then(function (response) {
           if (response.status >= 400) {
@@ -78,6 +78,7 @@ class RegisterForm extends Component {
           }
           return response.json();
         }).then(function (data) {
+            console.log(data);
             accountData.userID = data[0].userID;
             self.createNewAccount(accountData);
         }).catch(err => {
@@ -114,16 +115,16 @@ class RegisterForm extends Component {
         });
 
         var activeUser = accountData;
-        this.props.handleLoginComplete({activeUser: activeUser, loggedIn: true});
+        this.props.handleLoginComplete(activeUser, true);
         this.props.closeClicked();
     }
 
     render() {
         this.firstNameInput = React.createRef();
         this.lastNameInput = React.createRef();
-        this.regEmailInput = React.createRef();
+        this.emailInput = React.createRef();
         this.mobileInput = React.createRef();
-        this.regPasswordInput = React.createRef();
+        this.passwordInput = React.createRef();
         return (
             <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit}>
                 <Form.Group md="4" controlId="validationFirstName">
@@ -154,7 +155,7 @@ class RegisterForm extends Component {
                     <Form.Label>Email</Form.Label>
                     <InputGroup>
                         <Form.Control
-                            ref={this.regEmailInput}
+                            ref={this.emailInput}
                             type="text"
                             placeholder="Email"
                             aria-describedby="inputGroupPrepend"
@@ -179,7 +180,7 @@ class RegisterForm extends Component {
                 </Form.Group>
                 <Form.Group controlId="formPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control ref={this.regPasswordInput} type="password" placeholder="Password" required/>
+                    <Form.Control ref={this.passwordInput} type="password" placeholder="Password" required/>
                     <Form.Control.Feedback type="invalid">
                         Please enter a valid password.
                     </Form.Control.Feedback>
