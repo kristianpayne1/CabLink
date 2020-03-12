@@ -67,7 +67,7 @@ router.get('/delete/:id', function(req, res, next) {
 router.post('/new', function(req, res, next) {
     mysqlconnection.query(
         'INSERT INTO c37_cablink.User (firstname, lastname, email, mobileNo, userType) VALUES ("'
-        +req.body.firstName+'", "'+req.body.lastName+'", "'+req.body.regEmail+'", "'+req.body.mobileNo+'", "'+req.body.userType+'");', (error, results) => {
+        +req.body.firstName+'", "'+req.body.lastName+'", "'+req.body.email+'", "'+req.body.mobileNo+'", "'+req.body.userType+'");', (error, results) => {
             if(error) throw error;
             res.send(JSON.stringify(results));
         });

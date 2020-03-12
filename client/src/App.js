@@ -38,10 +38,13 @@ class App extends Component {
     this.setState({ showAccount: false });
   }
 
-  handleLoginComplete = (activeUser) => {
-    this.setState({ activeUser: activeUser, loggedIn: true });
-    console.log(this.state.activeUser);
+  handleLoginComplete = (activeUser, loggedIn) => {
+    this.setState({ activeUser: activeUser, loggedIn: loggedIn });
   };
+
+  handleLogoutComplete() {
+    this.setState({ activeUser: [], loggedIn: false});
+  }
 
   handleEditShow() {
     this.setState({ editClicked: true });
@@ -55,7 +58,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <NavBar handleShow={this.handleLoginShow.bind(this)} loggedIn={this.state.loggedIn} activeUser={this.state.activeUser} handleAccountShow={this.handleAccountShow.bind(this)} />
+        <NavBar handleShow={this.handleLoginShow.bind(this)} loggedIn={this.state.loggedIn} activeUser={this.state.activeUser} handleAccountShow={this.handleAccountShow.bind(this)} handleLogoutComplete={this.handleLogoutComplete.bind(this)} />
         <Login handleShow={this.state.showModal} handleLoginClose={this.handleLoginClose.bind(this)} handleLoginComplete={this.handleLoginComplete} />
         <Account handleAccount={this.state.showAccount} handleAccountClose={this.handleAccountClose.bind(this)} activeUser={this.state.activeUser} eventKey={this.state.eventKey} editClicked={this.state.editClicked} handleEditShow={this.handleEditShow.bind(this)} handleEditClose={this.handleEditClose.bind(this)} />
         <div className="content">

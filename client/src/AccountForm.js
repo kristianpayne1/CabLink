@@ -3,13 +3,13 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 class AccountForm extends Component {
-
     render() {
+        console.log(this.props.activeUser);
         let showPaymentForm = this.props.editClicked ? <>
             <Form>
                 <Form.Group controlId="accountFormEmail">
                     <Form.Label>Email Address</Form.Label>
-                    <Form.Control type="email" placeholder={this.props.activeUser.activeUser[0].email}/>
+                    <Form.Control type="email" placeholder={this.props.activeUser.email}/>
                 </Form.Group>
 
                 <Form.Group controlId="accountFormPassword">
@@ -22,7 +22,7 @@ class AccountForm extends Component {
             <Form>
                 <Form.Group>
                     <Form.Label>Email Address</Form.Label>
-                    <Form.Control plaintext readOnly type="email" placeholder={this.props.activeUser.activeUser[0].email} />
+                    <Form.Control plaintext readOnly type="email" placeholder={this.props.activeUser.email} />
                 </Form.Group>
 
                 <Form.Group>
