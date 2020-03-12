@@ -70,7 +70,6 @@ class GoogleMap extends Component {
           lat={driver.currentLat}
           lng={driver.currentLong}
           name={driver.firstname}
-          color="black"
           key={driver.driverID}
         />
       )

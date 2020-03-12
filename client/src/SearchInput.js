@@ -29,7 +29,6 @@ class SearchInput extends Component {
         this.autocomplete = new google.maps.places.Autocomplete(
             document.getElementById(this.props.id),
             options);
-
         this.autocomplete.setFields(
             ['address_components',
                 'formatted_address',

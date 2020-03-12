@@ -4,8 +4,8 @@ import './CurrentMarker.css';
 const DropoffMarker = (props) => {
     const { color, name} = props;
     return (
-      <div className="marker"
-        style={{ backgroundColor: color, cursor: 'pointer'}}
+      <div className="markerDO"
+        style={{cursor: 'pointer'}}
         title={"Drop-Off Location"}
       />
     );
