@@ -165,13 +165,27 @@ class DriverListing extends Component {
         }
 
         let date = new Date();
+        let currentDate = new Date();
         if (this.props.time !== 'ASAP') {
             if (this.props.isArrivingLater !== false) {
                 date.setHours(0, 0, 0, 0);
-                date.setSeconds(date.getSeconds() + (this.props.time - this.props.duration.value));
+                let msFromMidnight = currentDate - date;
+                if (!(msFromMidnight / 60 > date.getSeconds() + (this.props.time - this.props.duration.value)))
+                {
+                    date.setSeconds((date.getSeconds() + (this.props.time - this.props.duration.value)));
+                } else {
+                    date.setHours(24, 0, 0, 0);
+                    date.setSeconds(date.getSeconds() + (this.props.time - this.props.duration.value));
+                }
             }else{
                 date.setHours(0, 0, 0, 0);
-                date.setSeconds(date.getSeconds() + this.props.time);
+                let msFromMidnight = currentDate - date;
+                if (!(msFromMidnight / 60 > date.getSeconds() + this.props.time)) {
+                    date.setSeconds(date.getSeconds() + this.props.time);
+                } else {
+                    date.setHours(24, 0, 0, 0);
+                    date.setSeconds(date.getSeconds() + this.props.time);
+                }
             }
         }
 

@@ -183,19 +183,19 @@ class Booking extends Component {
             currentLong: driver.currentLong,
             isFree: 0,
         }
-        fetch(process.env.REACT_APP_SERVER + "/driver/update/"+this.state.selectedDriver.driverID, {
+        fetch(process.env.REACT_APP_SERVER + "/driver/update/" + this.state.selectedDriver.driverID, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
-        }).then(function(response) {
+        }).then(function (response) {
             if (response.status >= 400) {
                 throw new Error("Bad response from server");
             }
             return response.json();
-        }).then(function(data) {
-        }).catch(function(err) {
+        }).then(function (data) {
+        }).catch(function (err) {
             console.log(err)
         });
     }
@@ -227,14 +227,28 @@ class Booking extends Component {
         }).then(function (data) {
             let userID = self.props.activeUser ? self.props.activeUser.userID : 1;
             let date = new Date();
+            let currentDate = new Date();
             if (self.state.time === 'ASAP') {
                 date.setSeconds(date.getSeconds() + self.state.driverDuration.value);
             } else if (self.state.isArrivingLater === false) {
                 date.setHours(0, 0, 0, 0);
-                date.setSeconds(date.getSeconds() + self.state.time);
+                let msFromMidnight = currentDate - date;
+                if (!(msFromMidnight / 60 > date.getSeconds() + self.state.time)) {
+                    date.setSeconds(date.getSeconds() + self.state.time);
+                } else {
+                    date.setHours(24, 0, 0, 0);
+                    date.setSeconds(date.getSeconds() + self.state.time);
+                }
             } else {
                 date.setHours(0, 0, 0, 0);
-                date.setSeconds((date.getSeconds() + (self.state.time - self.state.duration.value)));
+                let msFromMidnight = currentDate - date;
+                if (!(msFromMidnight / 60 > date.getSeconds() + (self.state.time - self.state.duration.value)))
+                {
+                    date.setSeconds((date.getSeconds() + (self.state.time - self.state.duration.value)));
+                } else {
+                    date.setHours(24, 0, 0, 0);
+                    date.setSeconds(date.getSeconds() + (self.state.time - self.state.duration.value));
+                }
             }
             let luggage = self.state.luggage ? 1 : 0;
             let disabled = self.state.disabled ? 1 : 0;
