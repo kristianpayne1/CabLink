@@ -20,12 +20,12 @@ class PickupInfo extends Component {
                 <div>
                     {standyProgress}
                 </div>
-                <div style={{ 'float': 'left' }}>
+                <div class="container">
                     {standby}
-                    <p style={{ 'marginBlockStart': '0.1rem', 'marginBlockEnd': '0.1rem', 'marginLeft': '0.5rem', 'width':'98%' }}>{this.props.info.car} <b>{this.props.info.reg}</b> <span style={{'float':'right'}}><b>{departby}</b></span></p>
+                    <p className="info">{this.props.info.car} <b>{this.props.info.reg}</b> <span style={{'float':'right'}}><b>{departby}</b></span></p>
                 </div>
-                <div style={{ 'float': 'right', "marginRight": "2%" }}>
-                    <Spinner animation="grow" variant={spinnerStandby} style={{ "width": "3rem", "height": "3rem" }} />
+                <div className="spinnerContainer">
+                    <Spinner className="spinner" animation="grow" variant={spinnerStandby} />
                 </div>
             </div>
         );

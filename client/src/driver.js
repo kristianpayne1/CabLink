@@ -1,6 +1,7 @@
 import React from 'react';
 //import ReactDOM from 'react-dom';
 import { Marker } from 'google-maps-react';
+import car from "./images/car.png";
 
 export class DriverLocations extends React.Component {
     constructor(props) {
@@ -31,7 +32,7 @@ export class DriverLocations extends React.Component {
     renderDrivers() {
         this.state.drivers.map(driver =>
             <Marker key={driver.driverID} onClick={this.onMarkerClick} name={driver.firstname}
-                position={{ lat: driver.currentLat, lng: driver.currentLong }} />
+                position={{ lat: driver.currentLat, lng: driver.currentLong}} />
         )
     }
 }

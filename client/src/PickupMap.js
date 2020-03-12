@@ -132,7 +132,7 @@ class PickupMap extends Component {
                         lat={this.state.driverLocation.lat}
                         lng={this.state.driverLocation.lng}
                         name="Drop off location"
-                        color="black"
+                        color="white"
                     />
                 </GoogleMapReact>
             </div>
