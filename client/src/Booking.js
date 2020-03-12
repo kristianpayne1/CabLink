@@ -195,7 +195,6 @@ class Booking extends Component {
             }
             return response.json();
         }).then(function(data) {
-            console.log(data)
         }).catch(function(err) {
             console.log(err)
         });
@@ -230,12 +229,12 @@ class Booking extends Component {
             let date = new Date();
             if (self.state.time === 'ASAP') {
                 date.setSeconds(date.getSeconds() + self.state.driverDuration.value);
-            } else if (!(self.state.isArrivingLater)) {
+            } else if (self.state.isArrivingLater === false) {
                 date.setHours(0, 0, 0, 0);
                 date.setSeconds(date.getSeconds() + self.state.time);
             } else {
                 date.setHours(0, 0, 0, 0);
-                date.setSeconds((date.getSeconds() + self.state.time) - self.state.duration.value);
+                date.setSeconds((date.getSeconds() + (self.state.time - self.state.duration.value)));
             }
             let luggage = self.state.luggage ? 1 : 0;
             let disabled = self.state.disabled ? 1 : 0;

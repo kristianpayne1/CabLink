@@ -122,7 +122,9 @@ class SearchLocationForm extends Component {
 
     handleTimeChange = (time) => {
         this.props.handleTimeChange(time);
-        this.props.handleIsArrivingLater(false)
+        if (time === 'ASAP') {
+            this.props.handleIsArrivingLater(false);
+        }
     }
 
     render() {

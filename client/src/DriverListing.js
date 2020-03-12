@@ -19,7 +19,6 @@ class DriverListing extends Component {
         this.props.drivers.map((driver) =>
             this.callAPI(driver, function (err, dist, time, path) {
                 if (!err) {
-                    console.log(self.props);
                     let price = driver.base_charge + ((driver.mile_charge / 5280) * (self.props.distance.value + dist.value));
                     price = Math.round(price * 100) / 100;
                     let price_text = '£' + price;

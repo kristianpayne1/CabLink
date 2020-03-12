@@ -25,7 +25,6 @@ class PickupMap extends Component {
             lat: null,
             lng: null,
         },
-        finished: false,
     }
 
     viewPickup = () => {
@@ -56,7 +55,7 @@ class PickupMap extends Component {
             self.setState({ driverLocation: { lat: latlng.lat(), lng: latlng.lng() } });
             if (index === path.length) {
                 clearInterval(interval);
-                self.setState({ finished: true });
+                self.props.handleDriverLocation(self.state.driverLocation);
             }
         }, timeInterval)
     }
@@ -64,7 +63,7 @@ class PickupMap extends Component {
     getRoute = (waitTime, cb) => {
         let maps = this.state.maps;
         let self = this;
-        this.setState({ pickupLocation: { lat: this.props.info.pickupLocation.lat, lng: this.props.info.pickupLocation.lng }, driverLocation: { lat: this.props.info.driverLocation.lat, lng: this.props.info.driverLocation.lng } },
+        this.setState({ pickupLocation: { lat: this.props.info.pickupLocation.lat, lng: this.props.info.pickupLocation.lng }, driverLocation: { lat: this.props.info.driver.driverLocation.lat, lng: this.props.info.driver.driverLocation.lng } },
             function () {
                 let directionsService = new maps.DirectionsService();
                 let directionsDisplay = new maps.DirectionsRenderer();
