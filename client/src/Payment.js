@@ -46,15 +46,18 @@ class Payment extends Component {
         
         event.preventDefault();
         const { name, value } = event.target;
-        var validExPRegex = /\b\d{2}\W\d{2}\b/;
+        var validExPRegex = /\b\d{2}[/]\d{2}\b/;
+        var validcardnoRegex = /\b\d{16}\b/;
+        var validnameinRegex = /\w+/;
+        var validpostcodeRegex = /\b\w{2}\d{3}\w{2}|\b\w{1}\d{2}\w{2}|\b\w{1}\d{1}\w{1}\d{1}\w{2}/
         let errors = this.state.errors;
         
         switch (name) {
           case 'GuestpaymentFormCardNo': 
             errors.GuestpaymentFormCardNo = 
-              value.length < 16
-                ? 'Card Number must be 16 digits long!'
-                : '';
+              validcardnoRegex.test(value)
+                ? ''
+                : 'Card Number must be 16 digits long!';
             break;
           case 'GuestpaymentFormCardExp': 
             errors.GuestpaymentFormCardExp = 
@@ -64,39 +67,39 @@ class Payment extends Component {
             break;
           case 'GuestpaymentFormFirst': 
             errors.GuestpaymentFormFirst = 
-              value.length < 5
-                ? 'First name must be atleast 5 characters long!'
-                : '';
+               validnameinRegex.test(value)
+                ? ''
+                : 'First name must be atleast 2 characters long!';
             break;
             case 'GuestpaymentFormLast': 
             errors.GuestpaymentFormLast = 
-              value.length < 4
-                ? 'Last name must be atleast 4 characters long!'
-                : '';
+              validnameinRegex.test(value)
+                ? ''
+                : 'Last name must be atleast 2 characters long!';
             break;
             case 'GuestpaymentFormAddress1': 
             errors.GuestpaymentFormAddress1 = 
-              value.length < 1
-                ? 'Address is required!'
-                : '';
+              validnameinRegex.test(value)
+                ? ''
+                : 'Address is required!';
             break;
             case 'GuestpaymentFormTown': 
             errors.GuestpaymentFormTown = 
-              value.length < 4
+              validnameinRegex.test(value)
                 ? 'Town is required!'
                 : '';
             break;
             case 'GuestpaymentFormCity': 
             errors.GuestpaymentFormCity = 
-              value.length < 4
+              validnameinRegex.test(value)
                 ? 'City is required!'
                 : '';
             break;      
             case 'GuestpaymentFormPostCode': 
             errors.GuestpaymentFormPostCode = 
-              value.length < 5
-                ? 'Post Code must be a minimum of 5 characters!'
-                : '';
+              validpostcodeRegex.test(value)
+                ? ''
+                : 'Post Code must be in the correct form with no spaces!';
             break;          
           default:
             break;
