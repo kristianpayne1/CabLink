@@ -63,7 +63,15 @@ router.get('/delete/:id', function(req, res, next) {
   });
 });
 
+//get all the payment details for a user
+router.get('/get/paymentdetails/:id', function(req, res, next) {
+  mysqlconnection.query('SELECT Payment_Details.*, Billing_Address.* FROM c37_cablink.User INNER JOIN c37_cablink.Account ON Account.userID = User.userID INNER JOIN c37_cablink.Payment_Details ON Payment_Details.accountID = Account.accountID INNER JOIN c37_cablink.Billing_Address ON Billing_Address.billingAddressID = Payment_Details.billingAddressID WHERE User.userID = '+req.params.id+';', function(error, results) {
+    if(error) throw error;
+    res.send(JSON.stringify(results));
+  });
+})
 
+//make a new user
 router.post('/new', function(req, res, next) {
     mysqlconnection.query(
         'INSERT INTO c37_cablink.User (firstname, lastname, email, mobileNo, userType) VALUES ("'
