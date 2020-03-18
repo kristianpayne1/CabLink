@@ -3,7 +3,18 @@
     flex-direction: column;
     margin-left: 10px;
     box-shadow: 0px 7px 7px 0px rgba(0,0,0,0.75);
+    height: 5rem;
 }
+
+.pickupinfo:hover {
+    cursor:pointer;
+    height: 8rem;
+}
+
+.buttons {
+    margin-left: 20px;
+}
+
 .progressBar {
     flex-basis: 100%;   
 }

@@ -49,7 +49,7 @@ class PickupMap extends Component {
         let index = 0;
         this.viewPickup();
         let interval = setInterval(function () {
-            if (!this.props.cancelled) {
+            if (!(self.props.cancelled)) {
                 self.viewPickup();
                 let latlng = path[index++];
                 self.props.updateProgress((index / path.length) * 100);
@@ -118,7 +118,7 @@ class PickupMap extends Component {
 
     render() {
         return (
-            <div class="mapContainer">
+            <div className="mapContainer">
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: 'AIzaSyAb2fQDVRAkT8KMln_0HIX6s0zVcz06_3U' }}  // this is our API key
                     defaultCenter={this.props.center}
