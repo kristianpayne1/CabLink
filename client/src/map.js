@@ -8,6 +8,7 @@ import MapControl from './MapControl.js';
 import PickupPin from './PickupPin.js';
 import DropoffPin from './DropoffPin.js';
 import ExtraStopPin from './ExtraStopPin';
+import "./map.css";
 const google = window.google;
 
 class GoogleMap extends Component {
@@ -328,7 +329,7 @@ class GoogleMap extends Component {
   render() {
     return (
       // Important! Always set the container height explicitly otherwise it won't appear
-      <div style={{ height: '92vh', width: '100%' }}>
+      <div class="mapContainer">
         <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_API_KEY }}  // this is our API key
           defaultCenter={this.props.center}
