@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import PickupPin from './PickupPin';
 import DriverPin from './DriverPin.js';
-
+import "./map.css";
 const google = window.google;
 
 class PickupMap extends Component {
@@ -113,7 +113,7 @@ class PickupMap extends Component {
 
     render() {
         return (
-            <div style={{ height: '92vh', width: '100%' }}>
+            <div class="mapContainer">
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: 'AIzaSyAb2fQDVRAkT8KMln_0HIX6s0zVcz06_3U' }}  // this is our API key
                     defaultCenter={this.props.center}
