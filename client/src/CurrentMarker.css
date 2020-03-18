@@ -9,6 +9,7 @@
     user-select: none;
     transform: translate(-50%, -50%);
     background-image: url("images/person.png");
+    z-index: -1;
     background-repeat: no-repeat;
     background-position: center;
     background-size: 17px;
@@ -28,6 +29,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: 17px;
+    z-index: -2;
   }
   .Emarker {
     position: absolute;
