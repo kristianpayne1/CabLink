@@ -49,11 +49,16 @@ class PickupMap extends Component {
         let index = 0;
         this.viewPickup();
         let interval = setInterval(function () {
-            self.viewPickup();
-            let latlng = path[index++];
-            self.props.updateProgress((index / path.length) * 100);
-            self.setState({ driverLocation: { lat: latlng.lat(), lng: latlng.lng() } });
-            if (index === path.length) {
+            if (!this.props.cancelled) {
+                self.viewPickup();
+                let latlng = path[index++];
+                self.props.updateProgress((index / path.length) * 100);
+                self.setState({ driverLocation: { lat: latlng.lat(), lng: latlng.lng() } });
+                if (index === path.length) {
+                    clearInterval(interval);
+                    self.props.handleDriverLocation(self.state.driverLocation);
+                }
+            }else{
                 clearInterval(interval);
                 self.props.handleDriverLocation(self.state.driverLocation);
             }
@@ -89,7 +94,7 @@ class PickupMap extends Component {
                         //console.log(response.routes[0].overview_path);
                         if (self.props.info.standby === false) {
                             self.runPickUp(response.routes[0].overview_path, directionsDisplay.directions.routes[0].legs[0].duration_in_traffic);
-                        }else{
+                        } else {
                             self.viewDriver();
                             cb(waitTime - directionsDisplay.directions.routes[0].legs[0].duration_in_traffic.value * 1000);
                         }
