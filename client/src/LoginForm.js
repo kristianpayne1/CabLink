@@ -47,9 +47,9 @@ class LoginForm extends Component {
           }
           return response.json();
         }).then(function (data) {
-          self.setState({ users: data });
+          self.setState({users: data });
           self.verifyLogin(email, password)
-          var activeUser = data;
+          var activeUser = self.state.users;
           self.props.handleLoginComplete(activeUser, true);
           self.props.closeClicked();
         }).catch(err => {
