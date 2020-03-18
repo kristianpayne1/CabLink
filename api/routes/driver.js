@@ -24,8 +24,7 @@ router.get('/get/:id', function (req, res, next) {
 });
 
 router.get('/get/all/info/', function (req, res, next) {
-  mysqlconnection.query('SELECT * FROM c37_cablink.Driver INNER JOIN c37_cablink.Car ON Car.driverID = Driver.driverID '+
-                        'INNER JOIN c37_cablink.Cab_Company ON Cab_Company.companyID = Driver.companyID WHERE Driver.isFree = 1;', (error, results) => {
+  mysqlconnection.query('SELECT * FROM c37_cablink.Driver INNER JOIN c37_cablink.Car ON Car.driverID = Driver.driverID INNER JOIN c37_cablink.Cab_Company ON Cab_Company.companyID = Driver.companyID WHERE Driver.isFree = 1;', (error, results) => {
     if (error) throw error;
     res.send(results);
   });
