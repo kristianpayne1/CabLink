@@ -7,3 +7,8 @@
         height: 92.75vh;
     }
 }
+@media only screen and (max-width:350px) {
+    .mapContainer {
+        height: 90.5vh;
+    }
+}

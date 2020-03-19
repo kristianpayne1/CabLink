@@ -1,0 +1,5 @@
+@media only screen and (max-width:350px){
+    .sidebar.open{
+        width:82.5vw;
+    }
+}
