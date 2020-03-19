@@ -35,8 +35,8 @@ router.get('/delete/:id/:cardNo', function(req, res, next) {
 
 router.post('/new', function(req, res, next) {
     mysqlconnection.query(
-        'INSERT INTO c37_cablink.Payment_Details (accountID, cardNo, sortCode, cardExp, cardHolderName, billingAddressID) VALUES ('
-        +req.body.accountID+', '+req.body.cardNo+', '+req.body.sortCode+', '+req.body.cardExp+', '+req.body.cardName+', '+req.body.billingAddressID+');', (error, results) => {
+        'INSERT INTO c37_cablink.Payment_Details (accountID, cardNo, cardExp, cardHolderName, billingAddressID) VALUES ('
+        +req.body.accountID+', "'+req.body.cardNo+'", "'+req.body.cardExp+'", "'+req.body.cardName+'", '+req.body.billingAddressID+');', (error, results) => {
             if(error) throw error;
             res.send(JSON.stringify(results));
         });
