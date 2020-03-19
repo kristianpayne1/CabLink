@@ -6,6 +6,7 @@ import Tab from 'react-bootstrap/Tab';
 import LoginForm from './LoginForm.js';
 import RegisterForm from './RegisterForm.js';
 
+// login modal for account login and registration
 class Login extends Component {
 
     closeClicked = () => {

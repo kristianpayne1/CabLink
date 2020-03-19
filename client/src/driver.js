@@ -3,6 +3,7 @@ import React from 'react';
 import { Marker } from 'google-maps-react';
 import car from "./images/car.png";
 
+// THIS COMPONENT IS NO LONGER IN USE PLEASE DELETE
 export class DriverLocations extends React.Component {
     constructor(props) {
         super(props);

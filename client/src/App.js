@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-//import logo from './logo.svg';
 import './App.css';
+// import all components needed for app
 import Booking from './Booking.js';
 import Home from './Home.js';
 import Help from './Help.js';
@@ -8,6 +8,7 @@ import NavBar from './NavBar.js';
 import Login from './Login.js';
 import Account from './Account.js';
 import DriverPickup from './DriverPickup.js'
+// for application routing
 import { Route } from "react-router-dom";
 
 class App extends Component {
@@ -21,35 +22,43 @@ class App extends Component {
     editClicked: false
   };
 
+  // show login modal
   handleLoginShow() {
     this.setState({ showModal: true });
   }
 
+  // close login modal
   handleLoginClose() {
     this.setState({ showModal: false });
   }
 
+  // shows account and display selected view (Payment details, Account info, billing addresses etc.)
   handleAccountShow(eventKey) {
     this.setState({ showAccount: true, eventKey: eventKey });
     console.log(this.state.showAccount);
   }
 
+  // closes account modal
   handleAccountClose() {
     this.setState({ showAccount: false });
   }
 
+  // sets active user when login/registration complete
   handleLoginComplete = (activeUser, loggedIn) => {
     this.setState({ activeUser: activeUser, loggedIn: loggedIn });
   };
 
+  // logs out user
   handleLogoutComplete() {
     this.setState({ activeUser: [], loggedIn: false});
   }
 
+  // allows editing of user account 
   handleEditShow() {
     this.setState({ editClicked: true });
   }
 
+  // disables editing of user account
   handleEditClose() {
     this.setState({ editClicked: false });
   }

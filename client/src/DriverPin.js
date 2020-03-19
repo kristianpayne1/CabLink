@@ -1,6 +1,7 @@
 import React from 'react';
 import './CurrentMarker.css';
 
+// driver marker for map
 const DriverMarker = (props) => {
     const {name} = props;
     return (  

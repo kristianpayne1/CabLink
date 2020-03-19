@@ -2,9 +2,11 @@ import CustomToggle from './CustomToggle.js';
 import Button from 'react-bootstrap/Button';
 import React, { Component } from 'react';
 
+// displays all booking info for user to review
 class ConfirmBooking extends Component {
 
     render() {
+        // prepare info
         let time = '';
         let luggage = this.props.luggage ? "Yes" : "No";
         let disabled = this.props.disabled ? "Yes" : "No";
@@ -22,6 +24,7 @@ class ConfirmBooking extends Component {
         } else {
             time = this.props.time;
         }
+        // when driver and price has been set display booking info.
         let showConfirmation = (this.props.driver && this.props.price) ?
             <div>
                 <h5>Confirm Booking</h5>

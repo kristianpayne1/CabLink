@@ -3,8 +3,10 @@ import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 
+// for google API calls
 const google = window.google;
 
+// for extra stops autocomplete
 class ExtraSearchInput extends Component {
 
     constructor(props) {
@@ -21,6 +23,7 @@ class ExtraSearchInput extends Component {
         };
     }
 
+    // prapare autocomplete options
     componentDidMount = () => {
         const options = { types: ['address'] };
 
@@ -38,6 +41,7 @@ class ExtraSearchInput extends Component {
 
     }
 
+    // sets location and name of place selected and sends it back to booking
     handlePlaceSelect = () => {
 
         const addressObject = this.autocomplete.getPlace();
@@ -56,6 +60,7 @@ class ExtraSearchInput extends Component {
         }
     }
 
+    // if input changes clear selected address and location.
     handleOnChange = (event) => {
         this.setState({ query: event.target.value });
         if (this.state.locationName !== '') {
@@ -64,6 +69,7 @@ class ExtraSearchInput extends Component {
         }
     }
 
+    // handles whether input field is disabled or enabled 
     handleOnClick = () => {
         if (this.state.disabled === true) {
             this.setState({ disabled: false });

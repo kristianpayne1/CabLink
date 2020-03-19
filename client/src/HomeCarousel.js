@@ -2,6 +2,7 @@ import "./Carousel.css";
 import React, { Component } from 'react';
 import Carousel from 'react-bootstrap/Carousel'
 
+// Image carousel in home page
 class HomeCarousel extends Component {
     render() {
         return (

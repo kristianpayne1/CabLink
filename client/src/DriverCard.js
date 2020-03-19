@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import CustomToggle from './CustomToggle.js';
 
+// Card used in driver listing to display driver info
 class DriverCard extends Component {
     state = {
         distance: null,
@@ -10,6 +11,7 @@ class DriverCard extends Component {
         price: null,
     }
 
+    // when card is clicked centers map to driver location
     showDriver = () => {
         this.props.handleOnHover(this.props.driver);
     }
@@ -18,6 +20,7 @@ class DriverCard extends Component {
         let isSelected = false;
         if (this.props.selectedDriver === this.props.driver) { isSelected = true; }
         let isSelectedCard = isSelected ? 'success' : null;
+        let telephone = "tel: " + this.props.mobileNo;
         return (
             <Card style={{ width: '16rem' }} className="driverCard" onClick={this.showDriver} border={isSelectedCard} >
                 <Card.Body>
@@ -39,7 +42,7 @@ class DriverCard extends Component {
                         size={null}
                     />
                     {' '}
-                    <Button variant="outline-info">Call</Button>
+                    <Button variant="outline-info" href={telephone}>Call</Button>
                 </Card.Body>
             </Card>
         );

@@ -4,11 +4,13 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+// For viewing quesions in help page
 class HomeAccordion extends Component {
     state = {
         questions: []
     };
 
+    // call database a retreive all questions that have been asnwered.
     callAPI() {
         let self = this;
 
@@ -29,10 +31,12 @@ class HomeAccordion extends Component {
         })
     };
 
+    // call api when component loads
     componentDidMount() {
         this.callAPI();
     }
 
+    // lists all the questions retreived from the database as accordians
     listQuestions = () => {
         return (
             this.state.questions.map(question =>

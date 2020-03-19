@@ -4,9 +4,11 @@ import SideBar from './SideBar.js';
 import Payment from './Payment.js';
 import { Redirect } from "react-router-dom";
 
+// Booking page
 class Booking extends Component {
     constructor(props) {
         super(props);
+        // for calling methods in map
         this.map = React.createRef();
     }
 
@@ -59,44 +61,53 @@ class Booking extends Component {
         bookingID: 0,
     };
 
+    // toggles if sidebar is open or not when sidebar toggle button is clicked
     handleViewSidebar = () => {
         this.setState({ sidebarOpen: !this.state.sidebarOpen });
     }
 
+    // stores all available drivers and their info
     setDrivers = (data) => {
         this.setState({ drivers: data });
     }
 
+    // stores users current location (if geoloaction enabled)
     setLocation = (lat, long) => {
         this.setState({ currentLat: lat, currentLong: long })
     }
 
+    // sets location of pick up with road address name 
     handlePickup = (lat, long, name) => {
         this.map.current.setPickupMarker(lat, long);
         this.setState({ pickupLocation: { lat: lat, lng: long, address: name } });
     }
 
+    // removes pickup location
     removePickup = () => {
         this.map.current.removePickupMarker();
         this.setState({ pickupLocation: { lat: null, lng: null, name: '' } });
     }
 
+    // sets drop off location with address name
     handleDropoff = (lat, long, name) => {
         this.map.current.setDropoffMarker(lat, long);
         this.setState({ dropoffLocation: { lat: lat, lng: long, address: name } });
     }
 
+    // removes drop off location
     removeDropoff = () => {
         this.map.current.removeDropoffMarker();
         this.setState({ dropoffLocation: { lat: null, lng: null, name: '' } });
     }
 
+    // sets the route distance and duration (in predicted traffic) 
     setRouteInfo = (info) => {
         if (info.duration !== null && info.distance !== null) {
             this.setState({ duration: info.duration, distance: info.distance })
         }
     }
 
+    // sets the specified location and name of address if extra stops are added along the route
     handleExtraStops = (id, location, name) => {
         this.map.current.setExtraStopMarkers(id, location);
         switch (id) {
@@ -114,6 +125,7 @@ class Booking extends Component {
         }
     }
 
+    // removes location and name of specified extra stop
     removeExtraSteps = (id) => {
         this.map.current.removeExtraStopMarkers(id);
         switch (id) {
@@ -131,47 +143,58 @@ class Booking extends Component {
         }
     }
 
+    // center map to selected driver 
     showDriver = (lat, lng, driver) => {
         this.map.current.centerToPoint(lat, lng);
         this.setState({ selectedDriver: driver });
     }
 
+    // sets the price of set route
     setPrice = (price) => {
         this.setState({ price: price });
     }
 
+    // removes the price of route
     removePrice = () => {
         this.setState({ price: null })
     }
 
+    // for selected driver stores how long they will get to arrive to pick up and their path
     handleDriverInfo = (duration, path) => {
         this.setState({ driverDuration: duration, driverPath: path });
     }
 
+    // sets the time of departure (in secounds)
     handleTimeChange = (time) => {
         this.setState({ time: time });
     }
 
+    // sets if they user had chosen to arrive by the selected time
     handleIsArrivingLater = (isArriving) => {
         this.setState({ isArrivingLater: isArriving });
     }
 
+    // if the user specifies they have luggage
     setLuggage = (state) => {
         this.setState({ luggage: state });
     }
 
+    // if the user has disability requirements
     setDisabled = (state) => {
         this.setState({ disabled: state });
     }
 
+    // set the number of passangers travelling
     setPassangers = (num) => {
         this.setState({ passangers: num });
     }
 
+    // shows payment model when booking is being confirmed
     handlePaymentShow = (state) => {
         this.setState({ showPayment: state });
     }
 
+    // when booking confirmed set driver availabilty to false
     bookDriver = () => {
         let driver = this.state.selectedDriver;
         let data = {
@@ -200,9 +223,11 @@ class Booking extends Component {
         });
     }
 
+    // when booking confirmed make the booking on database.
     makeBooking = () => {
         this.setState({ processingPayment: true });
         let self = this;
+        // store route into in database 
         let routeData = {
             departureLat: this.state.pickupLocation.lat,
             departureLong: this.state.pickupLocation.lng,
@@ -225,13 +250,21 @@ class Booking extends Component {
             }
             return response.json();
         }).then(function (data) {
+            // make booking if route POST successful
+            // TODO: Remove this when Tom is finished with payment stuff
             let userID = self.props.activeUser ? self.props.activeUser.userID : 1;
+            // get the current date
             let date = new Date();
             let currentDate = new Date();
+            // if booking is set for ASAP
             if (self.state.time === 'ASAP') {
+                // set booking departure date time to when the driver will be able to arrive there.
                 date.setSeconds(date.getSeconds() + self.state.driverDuration.value);
             } else if (self.state.isArrivingLater === false) {
+                // if not ASAP but is depart by
+                // from this midnight
                 date.setHours(0, 0, 0, 0);
+                // if selected time of departure is in the past book for tomorrow otherwise set the depart time.
                 let msFromMidnight = currentDate - date;
                 if (!(msFromMidnight / 60 > date.getSeconds() + self.state.time)) {
                     date.setSeconds(date.getSeconds() + self.state.time);
@@ -240,16 +273,21 @@ class Booking extends Component {
                     date.setSeconds(date.getSeconds() + self.state.time);
                 }
             } else {
+                // if selected arrive by
                 date.setHours(0, 0, 0, 0);
                 let msFromMidnight = currentDate - date;
+                // if arrive by time is not in the past
                 if (!(msFromMidnight / 60 > date.getSeconds() + (self.state.time - self.state.duration.value)))
                 {
+                    // set the departure datetime to selected time minus trip travel time
                     date.setSeconds((date.getSeconds() + (self.state.time - self.state.duration.value)));
                 } else {
+                    // set time for tomorrow 
                     date.setHours(24, 0, 0, 0);
                     date.setSeconds(date.getSeconds() + (self.state.time - self.state.duration.value));
                 }
             }
+            // luggage and disability
             let luggage = self.state.luggage ? 1 : 0;
             let disabled = self.state.disabled ? 1 : 0;
             let bookingData = {
@@ -274,8 +312,11 @@ class Booking extends Component {
                     }
                     return response.json();
                 }).then(function (data) {
+                    // if successfull book driver
                     self.bookDriver();
+                    // show success alert
                     self.setState({ paymentSuccess: true });
+                    // close payment modal and show pickup 
                     setTimeout(function () {
                         self.setState({ showPayment: false, redirect: true, bookingID: data.insertId });
                         setTimeout(function () {
@@ -283,6 +324,7 @@ class Booking extends Component {
                         }, 500);
                     }, 2000)
                 }).catch(function (err) {
+                    // if unsuccessful show failed alert
                     console.log(err);
                     self.setState({ paymentFailed: true });
                     setTimeout(function () {
@@ -293,6 +335,7 @@ class Booking extends Component {
 
         }).catch(function (err) {
             console.log(err);
+            // if unsuccessful show failed alert.
             self.setState({ paymentFailed: true });
             setTimeout(function () {
                 self.setState({ paymentFailed: false, processingPayment: false });
@@ -301,6 +344,7 @@ class Booking extends Component {
     }
 
     render() {
+        // redirect user to pickup if they have made a booking
         if (this.state.redirect) {
             return <Redirect to={'/proj/co600/project/c37_cablink/pickup/' + this.state.bookingID} driverDuration={this.state.driverDuration} />
         }

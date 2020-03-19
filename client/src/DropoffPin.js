@@ -1,6 +1,7 @@
 import React from 'react';
 import './CurrentMarker.css';
 
+// drop off marker for map
 const DropoffMarker = () => {
     return (
       <div className="markerDO"
