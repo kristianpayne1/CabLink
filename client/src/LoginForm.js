@@ -37,7 +37,7 @@ class LoginForm extends Component {
     verifyLogin = (emailI, password) => {
       let userEmail = this.state.users[0].email;
       let userPassword = this.state.users[0].password;
-      if (userEmail == emailI && userPassword == password) {
+      if (userEmail === emailI && userPassword === password) {
         this.setState({userID: this.state.users[0].userID}) ;
         console.log(this.state.userID);
         return true;
