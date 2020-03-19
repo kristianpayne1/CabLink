@@ -19,3 +19,19 @@
         height:25vh;
     }
 }
+@media only screen and (max-width: 380px){
+    .carousel-caption{
+        position:relative;
+    }
+    #carohead{
+        font-size:16px;
+    }
+    #carop{
+        width:inherit!important;
+        text-align:center;
+        font-size:14px;
+    }
+    #caroimg{
+        height:27.5vh;
+    }
+}
