@@ -69,3 +69,55 @@
         margin-top:1.5px;
     }
 }
+@media only screen and (max-width:330px){
+    .pickupinfo{
+        width:82vw;
+        height:14vh;
+        margin-left:1vw;
+        margin-bottom:0vh;
+        box-shadow:0px 2.5px 2.5px 0px rgba(0,0,0,0.75);
+    }
+    .pickupInfoTitle{
+        margin-left:-2.75vw;
+        font-size:0.9rem;
+    }
+    .info{
+        margin-top:2vw;
+        margin-left:-3vw;
+        font-size:0.75rem;
+        margin-bottom:-2px;
+    }
+    .departTime{
+        margin-top:0;
+        font-size:0.75rem;
+    }
+    .buttons{
+        margin-top:1.5px;
+    }
+}
+@media only screen and (min-width:350px) and (max-width:380px) {
+    .pickupinfo{
+        width:82vw;
+        height:14vh;
+        margin-left:1vw;
+        margin-bottom:0vh;
+        box-shadow:0px 2.5px 2.5px 0px rgba(0,0,0,0.75);
+    }
+    .pickupInfoTitle{
+        margin-left:-2.75vw;
+        font-size:1rem;
+    }
+    .info{
+        margin-top:3vw;
+        margin-left:-3vw;
+        font-size:0.75rem;
+        margin-bottom:-2px;
+    }
+    .departTime{
+        margin-top:0;
+        font-size:0.75rem;
+    }
+    .buttons{
+        margin-top:1.5px;
+    }
+}
