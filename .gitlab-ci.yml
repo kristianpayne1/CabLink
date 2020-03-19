@@ -1,0 +1,23 @@
+image: node:latest
+
+services:
+  - mysql:latest
+
+variables:
+  # Configure mysql environment variables (https://hub.docker.com/_/mysql/)
+  MYSQL_DATABASE: "c37_cablink"
+  MYSQL_ROOT_PASSWORD: "fthundt"
+
+cache:
+  paths:
+    - node_modules/
+
+test_app:
+  script:
+    - npm install
+    - npm run test
+
+test_db:
+  image: mysql
+  script:
+  - echo "SELECT 'OK';" | mysql --user=c37_cablink --password="$MYSQL_ROOT_PASSWORD" --host=dragon "$MYSQL_DATABASE"
