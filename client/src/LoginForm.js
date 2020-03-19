@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import "./LoginForm.css";
+import hash from 'object-hash';
 
 class LoginForm extends Component {
     state = {
@@ -24,16 +25,20 @@ class LoginForm extends Component {
 
     handleLogin() {
         let emailI = this.emailInput.current.value;
-        let password = this.passwordInput.current.value;
+        let password = hash.sha1(this.passwordInput.current.value);
+        console.log(password);
         this.callAPI(emailI, password);
     };
 
     verifyLogin = (emailI, password) => {
-      let userEmail = this.state.users[0].email === emailI;
+      let userEmail = this.state.users[0].email;
       let userPassword = this.state.users[0].password;
-      if (userEmail === emailI && userPassword === password) {
+      if (userEmail == emailI && userPassword == password) {
         this.setState({userID: this.state.users[0].userID}) ;
         console.log(this.state.userID);
+        return true;
+      } else {
+        return false;
       }
     }
 
@@ -49,16 +54,17 @@ class LoginForm extends Component {
           return response.json();
         }).then(function (data) {
           self.setState({users: data });
-          self.verifyLogin(emailI, password)
-          console.log(self.state.users);
-          let userID = self.state.users[0].userID;
-          let firstname = self.state.users[0].firstname;
-          let lastname = self.state.users[0].lastname;
-          let email = self.state.users[0].email;
-          let mobileNo = self.state.users[0].mobileNo;
-          let userType = self.state.users[0].userType;
-          var activeUser = {userID, firstname, lastname, email, mobileNo, userType};
-          self.props.handleLoginComplete(activeUser, true);
+          if(self.verifyLogin(emailI, password)){
+            console.log(self.state.users);
+            let userID = self.state.users[0].userID;
+            let firstname = self.state.users[0].firstname;
+            let lastname = self.state.users[0].lastname;
+            let email = self.state.users[0].email;
+            let mobileNo = self.state.users[0].mobileNo;
+            let userType = self.state.users[0].userType;
+            var activeUser = {userID, firstname, lastname, email, mobileNo, userType};
+            self.props.handleLoginComplete(activeUser, true);
+          }
           self.props.closeClicked();
         }).catch(err => {
           console.log('caught it!', err);

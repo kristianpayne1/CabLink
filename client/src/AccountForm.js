@@ -2,23 +2,26 @@ import React, { Component } from 'react';
 // react components
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import hash from 'object-hash';
 
 // View account details
 class AccountForm extends Component {
     handleEditSubmit = event => {
         event.preventDefault();
 
-        this.props.handleEditClose();
+        //this.props.handleEditClose();
     }
 
     render() {
+        let emailInput = React.createRef();
+        let passwordInput = React.createRef();
         console.log(this.props.activeUser);
         // if edit button is clicked enable form otherwise disable.
         let showPaymentForm = this.props.editClicked ? <>
             <Form>
                 <Form.Group controlId="accountFormEmail">
                     <Form.Label>Email Address</Form.Label>
-                    <Form.Control type="email" placeholder={this.props.activeUser.email}/>
+                    <Form.Control type="email" placeholder={this.props.activeUser.email} defaultValue={this.props.activeUser.email}/>
                 </Form.Group>
 
                 <Form.Group controlId="accountFormPassword">
