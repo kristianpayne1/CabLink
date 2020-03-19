@@ -329,7 +329,7 @@ class GoogleMap extends Component {
   render() {
     return (
       // Important! Always set the container height explicitly otherwise it won't appear
-      <div class="mapContainer">
+      <div className="mapContainer">
         <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_API_KEY }}  // this is our API key
           defaultCenter={this.props.center}

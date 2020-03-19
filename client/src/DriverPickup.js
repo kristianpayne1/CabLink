@@ -180,6 +180,11 @@ class DriverPickup extends Component {
         });
     }
 
+    handleCancelBooking = () => {
+        this.setState({cancelled : true});
+        this.completeBooking();
+    }
+
     render() {
         let inProgress = this.state.complete !== 1 ?
             <div>
@@ -192,7 +197,7 @@ class DriverPickup extends Component {
                     completeBooking={this.completeBooking}
                     cancelled={this.state.cancelled}
                 />
-                <PickupInfo info={this.state} pickupDate={this.state.pickupDate} cancelled={this.state.cancelled}/>
+                <PickupInfo info={this.state} pickupDate={this.state.pickupDate} cancelled={this.state.cancelled} handleCancelBooking={this.handleCancelBooking}/>
             </div> :
             <div>
                 <br />
