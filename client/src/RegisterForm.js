@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import "./LoginForm.css";
+import hash from 'object-hash';
 
 // registraion form for when user is making a new account
 class RegisterForm extends Component {
@@ -33,7 +34,7 @@ class RegisterForm extends Component {
             let lastName = this.lastNameInput.current.value;
             let email= this.emailInput.current.value;
             let mobileNo = "+44" + this.mobileInput.current.value;
-            let password = this.passwordInput.current.value;
+            let password = hash.sha1(this.passwordInput.current.value);
             let userType = "Perm";
             let userID = '';
             let lastLogin = '';
