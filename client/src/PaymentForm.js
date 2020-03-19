@@ -6,12 +6,14 @@ import Button from 'react-bootstrap/Button';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 
+// Payment form
 class PaymentForm extends Component {
 
     state = {
         submitted: false
     }
 
+    // gets all the input data and calls database to update
     submitBankDetails = event => {
         event.preventDefault();
         const form = event.currentTarget;
@@ -33,6 +35,7 @@ class PaymentForm extends Component {
         }
     };
 
+    // updates the database of the new billing address 
     callAPI(cardName, cardNo, cardExp, firstName, lastName, addressLine1, addressLine2, city, county, postcode){
         let billingData = {cardName, cardNo, cardExp, firstName, lastName, addressLine1, addressLine2, city, county, postcode};
         let self = this;
@@ -46,6 +49,7 @@ class PaymentForm extends Component {
             }
             return response.json();
         }).then(function(data) {
+            // when successful get account
             console.log(data)
             if(data.serverStatus === 2){
                 console.log('Success');
@@ -59,6 +63,7 @@ class PaymentForm extends Component {
         });
     };
 
+    // get account details of specified user account
     getAccountID(billingAddressID, cardName, cardNo, cardExp, firstName, lastName, addressLine1, addressLine2, city, county, postcode){
         let self = this;
         fetch(process.env.REACT_APP_SERVER+'/account/get/user/'+this.props.activeUser.userID, {
@@ -69,6 +74,7 @@ class PaymentForm extends Component {
           }
           return response.json();
         }).then(function (data) {
+            // if retreival successful create new payment details
             console.log(data);
             let accountID = data[0].accountID;
             self.finishAPI(accountID, billingAddressID, cardName, cardNo, cardExp, firstName, lastName, addressLine1, addressLine2, city, county, postcode);
@@ -77,6 +83,7 @@ class PaymentForm extends Component {
         });
     }
 
+    // create new payment details for specified user account
     finishAPI(accountID, billingAddressID, cardName, cardNo, cardExp, firstName, lastName, addressLine1, addressLine2, city, county, postcode){
         let paymentData = {accountID, billingAddressID, cardName, cardNo, cardExp, firstName, lastName, addressLine1, addressLine2, city, county, postcode};
         let self = this;
@@ -92,6 +99,7 @@ class PaymentForm extends Component {
         }).then(function(data) {
             console.log(data)
             if(data.serverStatus === 2){
+                // if successsful set submitted to true
                 console.log('Success');
                 self.setState({submitted: true});
                 console.log(data);
@@ -102,6 +110,7 @@ class PaymentForm extends Component {
     }
 
     render() {
+        // Form references
         this.cardNameInput = React.createRef();
         this.cardNoInput = React.createRef();
         this.cardExpInput = React.createRef();

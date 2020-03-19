@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import "./LoginForm.css";
 import hash from 'object-hash';
 
+// Form to allow user to login
 class LoginForm extends Component {
     state = {
         validated : false,
@@ -11,6 +12,7 @@ class LoginForm extends Component {
         userID: ''
     };
 
+    // when login button clicked check if valid and submit
     handleSubmit = event => {
         event.preventDefault();
         const form = event.currentTarget;
@@ -23,6 +25,7 @@ class LoginForm extends Component {
         }
       };
 
+    // get values of email and password 
     handleLogin() {
         let emailI = this.emailInput.current.value;
         let password = hash.sha1(this.passwordInput.current.value);
@@ -30,6 +33,7 @@ class LoginForm extends Component {
         this.callAPI(emailI, password);
     };
 
+    // verfies if the provided details match details from database
     verifyLogin = (emailI, password) => {
       let userEmail = this.state.users[0].email;
       let userPassword = this.state.users[0].password;
@@ -42,6 +46,7 @@ class LoginForm extends Component {
       }
     }
 
+    // calls the database for the user's details with provided email
     callAPI(emailI, password) {
         let self = this;
         console.log(emailI);

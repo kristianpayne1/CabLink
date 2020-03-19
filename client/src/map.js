@@ -11,7 +11,9 @@ import ExtraStopPin from './ExtraStopPin';
 import "./map.css";
 const google = window.google;
 
+// Map for booking
 class GoogleMap extends Component {
+  // default values, centers on university
   static defaultProps = {
     center: {
       lat: 51.296942,
@@ -47,6 +49,7 @@ class GoogleMap extends Component {
     routePolyline: null,
   };
 
+  // calls database for all the available drivers and their details
   callAPI() {
     let self = this;
     fetch(process.env.REACT_APP_SERVER + '/driver/get/all/info', {
@@ -64,6 +67,7 @@ class GoogleMap extends Component {
     })
   };
 
+  // shows all the drivers on the map
   getDrivers() {
     return (
       this.props.drivers.map(driver =>
@@ -77,12 +81,14 @@ class GoogleMap extends Component {
     )
   }
 
+  // centers the map to specified location
   centerToPoint = (lat, lng) => {
     const latLng = new this.state.maps.LatLng(parseFloat(lat), parseFloat(lng)); // Makes a latlng
     //this.state.map.setZoom(15); zoom in not smooth will fix later
     this.state.map.panTo(latLng);
   }
 
+  // shows the pick up location on the map
   setPickupMarker = (lat, long) => {
     let self = this;
     if (!(lat === null && long === null)) {
@@ -91,6 +97,7 @@ class GoogleMap extends Component {
         this.centerToPoint(lat, long);
       }
     }
+    // draw route again
     this.drawRoute(function (err, directions) {
       if (!err) {
         self.handleRouteInfo(directions);
@@ -98,11 +105,13 @@ class GoogleMap extends Component {
     });
   }
 
+  // removes the pick up marker 
   removePickupMarker = () => {
     this.setState({ pickupLocation: { lat: null, lng: null } });
     this.removeRoute();
   }
 
+  // sets extra stop location for specified stop
   setExtraStopMarkers = (id, location) => {
     switch (id) {
       case '1':
@@ -128,6 +137,7 @@ class GoogleMap extends Component {
     });
   }
 
+  // removes specified extra location from the map
   removeExtraStopMarkers = (id) => {
     let self = this;
     switch (id) {
@@ -169,6 +179,7 @@ class GoogleMap extends Component {
     }
   }
 
+  // shows the location of the drop off marker
   setDropoffMarker = (lat, long) => {
     let self = this;
     if (!(lat === null && long === null)) {
@@ -185,11 +196,13 @@ class GoogleMap extends Component {
     }
   }
 
+  // removes the drop off marker from the map
   removeDropoffMarker = () => {
     this.setState({ dropoffLocation: { lat: null, lng: null } });
     this.removeRoute();
   }
 
+  // centers map to view entire route
   viewRoute = () => {
     let bounds = new google.maps.LatLngBounds();
     bounds.extend(this.state.pickupLocation);
@@ -208,6 +221,7 @@ class GoogleMap extends Component {
     this.state.map.setZoom(this.state.map.getZoom() - 1);
   }
 
+  // sends route info to booking.js (duration, distance etc.)
   handleRouteInfo = (directions) => {
     let totalDistance = 0;
     let totalDuration = 0;
@@ -221,6 +235,7 @@ class GoogleMap extends Component {
     this.props.setRouteInfo({ duration: { value: totalDuration, text: totalDurationText }, distance: { value: totalDistance, text: totalDistanceText } });
   }
 
+  // uses Google Maps API directions to find and draw route between pick up and drop off location (and extra stops if set)
   drawRoute = (cd) => {
     if (this.state.dropoffLocation.lat !== null && this.state.pickupLocation.lat !== null) {
       //this.removeRoute();
@@ -229,6 +244,7 @@ class GoogleMap extends Component {
       let directionsService = new google.maps.DirectionsService();
       let directionsDisplay = new google.maps.DirectionsRenderer();
       let waypoints = [];
+      // if extra stops set include thoughs too
       if (!(this.state.extraStopLocation1.lat === null && this.state.extraStopLocation1.lat === null)) {
         let stop = new this.state.maps.LatLng(parseFloat(this.state.extraStopLocation1.lat), parseFloat(this.state.extraStopLocation1.lng));
         waypoints.push({ location: stop, stopover: false });
@@ -255,6 +271,7 @@ class GoogleMap extends Component {
         unitSystem: google.maps.UnitSystem.IMPERIAL,
       }, (response, status) => {
         if (status === 'OK') {
+          // draw route on map
           directionsDisplay.setDirections(response);
           cd(null, directionsDisplay.directions)
           this.removeRoute();
@@ -272,6 +289,7 @@ class GoogleMap extends Component {
     }
   }
 
+  // removes the drawn route from map
   removeRoute = () => {
     if (!(this.state.routePolyline === null)) {
       this.state.routePolyline.setMap(null);
@@ -280,14 +298,17 @@ class GoogleMap extends Component {
     }
   }
 
+  // when retreiving user's location show GPS spinner
   onSpinner = () => {
     this.LocationButton.showSpinner();
   }
 
+  // turn of GPS spinner
   offSpinner = () => {
     this.LocationButton.hideSpinner();
   }
 
+  // when google map is loaded request users location and center to that location 
   apiIsLoaded = (map, maps) => {
     if (map) {
       this.setState({ map: map, maps: maps });
@@ -307,6 +328,7 @@ class GoogleMap extends Component {
     }
   };
 
+  // when GPS button is clicked center to user
   recenterToUser = () => {
     if (this.state.map) {
       if (navigator.geolocation) {
