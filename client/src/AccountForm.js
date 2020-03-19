@@ -5,6 +5,12 @@ import Button from 'react-bootstrap/Button';
 
 // View account details
 class AccountForm extends Component {
+    handleEditSubmit = event => {
+        event.preventDefault();
+
+        this.props.handleEditClose();
+    }
+
     render() {
         console.log(this.props.activeUser);
         // if edit button is clicked enable form otherwise disable.
@@ -19,7 +25,11 @@ class AccountForm extends Component {
                     <Form.Label>New Password</Form.Label>
                     <Form.Control type="password" placeholder="Enter a new Password" />
                 </Form.Group>   
-                <Button variant="outline-primary" onClick={this.props.handleEditClose}>Submit</Button>
+                <Form.Group>
+                    <Form.Label>Confirm Password</Form.Label>
+                    <Form.Control type="password" placeholder="Confirm your password" />
+                </Form.Group>
+                <Button variant="outline-primary" onClick={this.handleEditSubmit}>Submit</Button>
             </Form>
         </> : <>
             <Form>
