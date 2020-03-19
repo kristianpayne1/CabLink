@@ -24,7 +24,7 @@ class Account extends Component {
                             <AccountForm activeUser={this.props.activeUser} editClicked={this.props.editClicked} handleEditShow={this.props.handleEditShow} handleEditClose={this.props.handleEditClose}></AccountForm>
                         </Tab>
                         <Tab eventKey={2} title="View Payment Details">
-                            <PaymentForm></PaymentForm>
+                            <PaymentForm activeUser={this.props.activeUser}></PaymentForm>
                         </Tab>
                         <Tab eventKey={3} title="View Recent Bookings">
 
