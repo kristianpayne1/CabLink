@@ -8,21 +8,110 @@ import Card from 'react-bootstrap/Card';
 
 class PaymentForm extends Component {
 
+    state = {
+        submitted: false
+    }
+
     submitBankDetails = event => {
         event.preventDefault();
+        const form = event.currentTarget;
+        if(form.checkValidity() === false){
+            event.stopPropagation();
+        } else {
+            let cardName = this.cardNameInput.current.value;
+            let cardNo = this.cardNoInput.current.value;
+            let cardExp = this.cardExpInput.current.value;
+            let firstName = this.firstNameInput.current.value;
+            let lastName = this.lastNameInput.current.value;
+            let addressLine1 = this.addressLine1Input.current.value;
+            let addressLine2 = this.addressLine2Input.current.value;
+            let city = this.cityInput.current.value;
+            let county = this.countyInput.current.value;
+            let postcode = this.postCodeInput.current.value;
+
+            this.callAPI(cardName, cardNo, cardExp, firstName, lastName, addressLine1, addressLine2, city, county, postcode);
+        }
+    };
+
+    callAPI(cardName, cardNo, cardExp, firstName, lastName, addressLine1, addressLine2, city, county, postcode){
+        let billingData = {cardName, cardNo, cardExp, firstName, lastName, addressLine1, addressLine2, city, county, postcode};
+        let self = this;
+        fetch(process.env.REACT_APP_SERVER+"/billingaddress/new", {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(billingData)
+        }).then(function(response) {
+            if(response.status >= 400){
+                throw new Error("Bad response from server");
+            }
+            return response.json();
+        }).then(function(data) {
+            console.log(data)
+            if(data.serverStatus === 2){
+                console.log('Success');
+                self.setState({submitted: true});
+                console.log(data);
+                let billingAddressID = data.insertId;
+                self.getAccountID(billingAddressID, cardName, cardNo, cardExp, firstName, lastName, addressLine1, addressLine2, city, county, postcode);
+            }
+        }).catch(function(err) {
+            console.log(err)
+        });
+    };
+
+    getAccountID(billingAddressID, cardName, cardNo, cardExp, firstName, lastName, addressLine1, addressLine2, city, county, postcode){
+        let self = this;
+        fetch(process.env.REACT_APP_SERVER+'/account/get/user/'+this.props.activeUser.userID, {
+          method: 'GET'
+        }).then(function (response) {
+          if (response.status >= 400) {
+            throw new Error("Bad response from server");
+          }
+          return response.json();
+        }).then(function (data) {
+            console.log(data);
+            let accountID = data[0].accountID;
+            self.finishAPI(accountID, billingAddressID, cardName, cardNo, cardExp, firstName, lastName, addressLine1, addressLine2, city, county, postcode);
+        }).catch(err => {
+          console.log('caught it!', err);
+        });
+    }
+
+    finishAPI(accountID, billingAddressID, cardName, cardNo, cardExp, firstName, lastName, addressLine1, addressLine2, city, county, postcode){
+        let paymentData = {accountID, billingAddressID, cardName, cardNo, cardExp, firstName, lastName, addressLine1, addressLine2, city, county, postcode};
+        let self = this;
+        fetch(process.env.REACT_APP_SERVER+"/paymentdetails/new", {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(paymentData)
+        }).then(function(response) {
+            if(response.status >= 400){
+                throw new Error("Bad response from server");
+            }
+            return response.json();
+        }).then(function(data) {
+            console.log(data)
+            if(data.serverStatus === 2){
+                console.log('Success');
+                self.setState({submitted: true});
+                console.log(data);
+            }
+        }).catch(function(err) {
+            console.log(err)
+        });
     }
 
     render() {
-        this.cardName = React.createRef();
-        this.cardNo = React.createRef();
-        this.cardExp = React.createRef();
-        this.firstName = React.createRef();
-        this.lastName = React.createRef();
-        this.addressLine1 = React.createRef();
-        this.addressLine2 = React.createRef();
-        this.town = React.createRef();
-        this.cityCounty = React.createRef();
-        this.postCode = React.createRef();
+        this.cardNameInput = React.createRef();
+        this.cardNoInput = React.createRef();
+        this.cardExpInput = React.createRef();
+        this.firstNameInput = React.createRef();
+        this.lastNameInput = React.createRef();
+        this.addressLine1Input = React.createRef();
+        this.addressLine2Input = React.createRef();
+        this.cityInput = React.createRef();
+        this.countyInput = React.createRef();
+        this.postCodeInput = React.createRef();
         return (
             <Accordion defaultActiveKey="5">
                 <Card>
@@ -34,17 +123,17 @@ class PaymentForm extends Component {
                             <Form>
                                 <Form.Group controlId="paymentFormName">
                                     <Form.Label>Card Name</Form.Label>
-                                    <Form.Control type="name" ref={this.cardName} placeholder="Enter your name as shown on the card"/>
+                                    <Form.Control type="name" ref={this.cardNameInput} placeholder="Enter your name as shown on the card"/>
                                 </Form.Group>
                                 
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="paymentFormCardNo">
                                         <Form.Label>Card Number</Form.Label>
-                                        <Form.Control type="cardNo" ref={this.cardNo} placeholder="Enter your card Number"/>
+                                        <Form.Control type="cardNo" ref={this.cardNoInput} placeholder="Enter your card Number"/>
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="paymentFormCardExp">
                                         <Form.Label>Card Expiry (MM/YY)</Form.Label>
-                                        <Form.Control type="cardExp" ref={this.cardExp} placeholder="MM/YY"/>
+                                        <Form.Control type="cardExp" ref={this.cardExpInput} placeholder="MM/YY"/>
                                     </Form.Group>
                                 </Form.Row>
 
@@ -52,33 +141,33 @@ class PaymentForm extends Component {
                                 <Form.Row>
                                         <Form.Group as={Col} controlId="paymentFormFirst">
                                             <Form.Label>First Name</Form.Label>
-                                            <Form.Control type="firstName" ref={this.firstName} placeholder="First Name"/>
+                                            <Form.Control type="firstName" ref={this.firstNameInput} placeholder="First Name"/>
                                         </Form.Group>
                                         <Form.Group as={Col} controlId="paymentFormLast">
                                             <Form.Label>Last Name</Form.Label>
-                                            <Form.Control type="lastname" ref={this.lastName} placeholder="Last Name"/>
+                                            <Form.Control type="lastname" ref={this.lastNameInput} placeholder="Last Name"/>
                                         </Form.Group>
                                 </Form.Row>
                                 <Form.Group controlId="paymentFormAddress1">
                                     <Form.Label>Address Line 1</Form.Label>
-                                    <Form.Control type="address1" ref={this.addressLine1} placeholder="First Line of Address"/>
+                                    <Form.Control type="address1" ref={this.addressLine1Input} placeholder="First Line of Address"/>
                                 </Form.Group>
                                 <Form.Group controlId="paymentFormAddress2">
                                     <Form.Label>Address Line 2</Form.Label>
-                                    <Form.Control type="address2" ref={this.addressLine2} placeholder="Second Line of Address"/>
+                                    <Form.Control type="address2" ref={this.addressLine2Input} placeholder="Second Line of Address"/>
                                 </Form.Group>
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="paymentFormTown">
-                                        <Form.Label>Town</Form.Label>
-                                        <Form.Control type="town" ref={this.town} placeholder="Town"/>
+                                        <Form.Label>City</Form.Label>
+                                        <Form.Control type="town" ref={this.cityInput} placeholder="City"/>
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="paymentFormCity">
-                                        <Form.Label>City/County</Form.Label>
-                                        <Form.Control type="cityCounty" ref={this.cityCounty} placeholder="City / County"/>
+                                        <Form.Label>County</Form.Label>
+                                        <Form.Control type="cityCounty" ref={this.countyInput} placeholder="County"/>
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="paymentFormPostCode">
                                         <Form.Label>PostCode</Form.Label>
-                                        <Form.Control type="postCode" ref={this.postCode} placeholder="PostCode"/>
+                                        <Form.Control type="postCode" ref={this.postCodeInput} placeholder="PostCode"/>
                                     </Form.Group>
                                 </Form.Row>
                                 <Button variant="outline-primary" onClick={this.submitBankDetails}>Submit</Button>

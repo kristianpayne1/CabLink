@@ -61,7 +61,6 @@ class RegisterForm extends Component {
                 self.setState({registered: "Registration complete!"});
                 self.fetchID(accountData);
             }
-            console.log('Nah');
         }).catch(function(err) {
             console.log(err)
         });
@@ -70,7 +69,6 @@ class RegisterForm extends Component {
     fetchID(accountData) {
         // Get the userID using user email
         let self = this;
-        console.log("pls");
         fetch(process.env.REACT_APP_SERVER+'/user/get/id/'+accountData.email, {
           method: 'GET'
         }).then(function (response) {

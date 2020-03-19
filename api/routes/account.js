@@ -23,6 +23,13 @@ router.get('/get/:id', function(req, res, next) {
   });
 });
 
+router.get('/get/user/:id', function(req, res, next) {
+  mysqlconnection.query('SELECT accountID FROM c37_cablink.Account WHERE userID = '+req.params.id+';', (error, results) => {
+      if(error) throw error;
+      res.send(results);
+  });
+});
+
 // update a account by id 
 router.post('/update/:id', function(req, res, next) {
   mysqlconnection.query(
