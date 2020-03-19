@@ -8,7 +8,7 @@ class AccountForm extends Component {
     handleEditSubmit = event => {
         event.preventDefault();
 
-        this.props.handleEditClose;
+        this.props.handleEditClose();
     }
 
     render() {
