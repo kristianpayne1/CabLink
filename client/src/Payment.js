@@ -216,7 +216,7 @@ class Payment extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="outline-success" onClick={this.handleSubmit}>
-                        Confirm payment
+                        Confirm Payment
                     </Button>
                     <Button variant="secondary" onClick={this.closeClicked}>
                         Close

@@ -20,9 +20,10 @@ class PickupInfo extends Component {
                 <div>
                     {standyProgress}
                 </div>
-                <div class="container">
+                <div className="container">
                     {standby}
-                    <p className="info">{this.props.info.car} <b>{this.props.info.reg}</b> <span class="departTime"><b>{departby}</b></span></p>
+                    <p className="info">{this.props.info.car} <b>{this.props.info.reg}</b></p>
+                    <p className="departTime">{departby}</p>
                 </div>
                 <div className="spinnerContainer">
                     <Spinner className="spinner" animation="grow" variant={spinnerStandby} />

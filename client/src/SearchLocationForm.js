@@ -147,7 +147,7 @@ class SearchLocationForm extends Component {
                 <Form.Group>
                     <SearchInput
                         id='pickupLocation'
-                        name='Pick up location'
+                        name='Pick-Up Location'
                         setLocation={this.setPickupLocation}
                         removeMarker={this.removePickupLocation}
                         currentLat={this.props.currentLat}
@@ -155,13 +155,13 @@ class SearchLocationForm extends Component {
                         ref={this.SearchInput}
                     />
                     <Button variant="outline-primary" size="sm" onClick={this.handleCurrentLocation} id='locationButton' block>
-                        Use current location
+                        Use Current Location
                     </Button>
                 </Form.Group>
                 <Form.Group>
                     <ExtraSearchInput
                         id='1'
-                        name='Add destination'
+                        name='Add Destination'
                         setLocation={this.setAddtionalDest}
                         removeAddtionalDest={this.removeAddtionalDest}
                         currentLat={this.props.currentLat}
@@ -169,7 +169,7 @@ class SearchLocationForm extends Component {
                     />
                     <ExtraSearchInput
                         id='2'
-                        name='Add destination'
+                        name='Add Destination'
                         setLocation={this.setAddtionalDest}
                         removeAddtionalDest={this.removeAddtionalDest}
                         currentLat={this.props.currentLat}
@@ -177,7 +177,7 @@ class SearchLocationForm extends Component {
                     />
                     <ExtraSearchInput
                         id='3'
-                        name='Add destination'
+                        name='Add Destination'
                         setLocation={this.setAddtionalDest}
                         removeAddtionalDest={this.removeAddtionalDest}
                         currentLat={this.props.currentLat}
@@ -187,7 +187,7 @@ class SearchLocationForm extends Component {
                 <Form.Group>
                     <SearchInput
                         id='dropoffLocation'
-                        name='Drop off location'
+                        name='Drop-Off Location'
                         setLocation={this.setDropoffLocation}
                         removeMarker={this.removeDropoffLocation}
                         currentLat={this.props.currentLat}
@@ -197,8 +197,8 @@ class SearchLocationForm extends Component {
                 <Form.Group>
                     <ToggleButtonGroup id="frame" type="radio" name="options" defaultValue={1} size='sm' onChange={this.handleChange}>
                         <ToggleButton value={1} variant="outline-primary" onClick={() => this.handleTimeChange('ASAP')}>Leave ASAP</ToggleButton>
-                        <ToggleButton value={2} variant="outline-primary" onClick={() => this.props.handleIsArrivingLater(false)}>Depart by</ToggleButton>
-                        <ToggleButton value={3} variant="outline-primary" onClick={() => this.props.handleIsArrivingLater(true)}>Arrive by</ToggleButton>
+                        <ToggleButton value={2} variant="outline-primary" onClick={() => this.props.handleIsArrivingLater(false)}>Depart By</ToggleButton>
+                        <ToggleButton value={3} variant="outline-primary" onClick={() => this.props.handleIsArrivingLater(true)}>Arrive By</ToggleButton>
                     </ToggleButtonGroup>
                     {dateTime}
                 </Form.Group>

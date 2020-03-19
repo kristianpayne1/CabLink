@@ -26,13 +26,13 @@ class DriverCard extends Component {
                     <Card.Text>
                         Mobile: {this.props.mobileNo} {''}
                         Price: {this.props.price} <br />
-                        Distance away: {this.props.distance} <br />
-                        Response time: {this.props.response}
+                        Distance Away: {this.props.distance} <br />
+                        Response Time: {this.props.response}
                     </Card.Text>
                     <CustomToggle
                         disabled={false}
                         eventKey="3"
-                        content="Book now"
+                        content="Book Now"
                         showDrivers={null}
                         variant="outline-success"
                         block={false}

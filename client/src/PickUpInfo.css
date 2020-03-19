@@ -1,29 +1,46 @@
-.pickupinfo {
-    display: flex;
-    flex-direction: column;
-    margin-left: 10px;
-    box-shadow: 0px 7px 7px 0px rgba(0,0,0,0.75);
+.pickupinfo{
+    display:flex;
+    flex-direction:column;
+    margin-left:10px;
+    box-shadow:0px 7px 7px 0px rgba(0,0,0,0.75);
 }
-.progressBar {
-    flex-basis: 100%;   
+.progressBar{
+    flex-basis:100%;   
 }
-.info {
-    margin-left: 8px;
+.info{
+    margin-left:8px;
 }
-.spinnerContainer {
-    position: absolute;
+.spinnerContainer{
+    position:absolute;
     bottom:0px;
-    right: 5px;
+    right:5px;
 }
-.departTime {
-    margin-left: 10px;
+.departTime{
+    margin-left:10px;
 }
-.spinner-grow.text-primary {
-    margin-right: -2px;
+.spinner-grow.text-primary,.spinner-grow.text-warning,.spinner-grow.text-success {
+    margin-right:-2px;
 }
-.spinner-grow.text-warning {
-    margin-right: -2px;
-}
-.spinner-grow.text-success {
-    margin-right: -2px;
+@media only screen and (max-width:384px) and (max-height:768px) {
+    .pickupinfo{
+        width:85vw;
+        height:10.5vh;
+        margin-left:3px;
+        margin-bottom:2vh;
+        box-shadow:0px 5px 5px 0px rgba(0,0,0,0.75);
+    }
+    .pickupInfoTitle{
+        text-align:center;
+        margin-left:-2.75vw;
+        font-size:16px;
+    }
+    .info,.departTime{
+        margin-left:-3vw;
+        font-size:14px;
+        text-align:center;
+        margin-bottom:-2px;
+    }
+    .departTime{
+        font-weight:bold;
+    }
 }

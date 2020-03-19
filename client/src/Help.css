@@ -1,16 +1,41 @@
-#content {
+#content{
     text-align:center;
 }
-#content h1 {
+#content h1{
     margin:1% 0 2% 0;
 }
-#accordion {
+#accordion{
     margin:2% 0 2% 0;
     padding:0 30% 0 30%;
 }
-#form {
+#form{
     padding:0 30% 0 30%;
 }
-.text-muted {
+.text-muted{
     margin-bottom:2%;
+}
+@media only screen and (max-height:768px) and (max-width:384px) {
+    #content h1{
+        font-size:28px;
+    }
+    #container p{
+        width:80vw;
+        margin:0 auto;
+        margin-bottom:2.5vh;
+    }
+    #accordion{
+        padding:0 15vw 0 15vw;
+        margin-top:2vh;
+        margin-bottom:2vh;
+    }
+    #form{
+        padding:0 15vw 0 15vw;
+    }
+    #head{
+        font-size:14px;
+    }
+    .card-body{
+        font-size:14px;
+        padding:1vh 1vh 1vh 1vh!important;
+    }
 }

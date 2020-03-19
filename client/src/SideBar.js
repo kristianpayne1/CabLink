@@ -29,7 +29,7 @@ class SideBar extends Component {
                 <Accordion defaultActiveKey="0">
                     <Card>
                         <Card.Header>
-                            Choose pick-up & drop off
+                            Choose Pick-Up & Drop Off
                         </Card.Header>
                         <Accordion.Collapse eventKey="0">
                             <Card.Body>
@@ -49,7 +49,7 @@ class SideBar extends Component {
                                 <CustomToggle
                                     disabled={disableContinueCab}
                                     eventKey="1"
-                                    content="Continue to extra options"
+                                    content="Continue to Extra Options"
                                     showDrivers={null}
                                     variant="outline-primary"
                                     block={true}
@@ -60,14 +60,14 @@ class SideBar extends Component {
                     </Card>
                     <Card>
                         <Card.Header>
-                            Extra options
+                            Extra Options
                         </Card.Header>
                         <Accordion.Collapse eventKey="1">
                             <Card.Body>
                                 <CustomToggle
                                     disabled={false}
                                     eventKey="0"
-                                    content="Return to pickup and drop off"
+                                    content="Return to Pick-Up and Drop-Off"
                                     showDrivers={null}
                                     variant="outline-primary"
                                     block={true}
@@ -77,7 +77,7 @@ class SideBar extends Component {
                                 <CustomToggle
                                     disabled={false}
                                     eventKey="2"
-                                    content="Continue to choose cab"
+                                    content="Continue to Choose Cab"
                                     showDrivers={this.showDrivers}
                                     variant="outline-primary"
                                     block={true}
@@ -88,14 +88,14 @@ class SideBar extends Component {
                     </Card>
                     <Card>
                         <Card.Header>
-                            Choose cab
+                            Choose Cab
                         </Card.Header>
                         <Accordion.Collapse eventKey="2">
                             <Card.Body style={{ 'maxHeight': '64vh', 'overflowY': 'auto' }}>
                                 <CustomToggle
                                     disabled={false}
                                     eventKey="1"
-                                    content="Return to extra options"
+                                    content="Return to Extra Options"
                                     showDrivers={null}
                                     variant="outline-primary"
                                     block={true}

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
+import "./LoginForm.css";
 
 class RegisterForm extends Component {
     state = {
@@ -128,65 +129,65 @@ class RegisterForm extends Component {
         return (
             <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit}>
                 <Form.Group md="4" controlId="validationFirstName">
-                    <Form.Label>First name</Form.Label>
+                    <Form.Label>First Name:</Form.Label>
                     <Form.Control
                         ref={this.firstNameInput}
                         required
                         type="text"
-                        placeholder="First name"
+                        placeholder="First Name"
                     />
                     <Form.Control.Feedback type="invalid">
-                        Please enter a valid firstname.
+                        Please enter a valid first name.
                     </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group md="4" controlId="validationLastName">
-                    <Form.Label>Last name</Form.Label>
+                    <Form.Label>Last Name:</Form.Label>
                     <Form.Control
                         ref={this.lastNameInput}
                         required
                         type="text"
-                        placeholder="Last name"
+                        placeholder="Last Name"
                     />
                     <Form.Control.Feedback type="invalid">
                         Please enter a valid last name.
                     </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group md="4" controlId="validationEmail">
-                    <Form.Label>Email</Form.Label>
+                    <Form.Label>Email Address:</Form.Label>
                     <InputGroup>
                         <Form.Control
                             ref={this.emailInput}
                             type="text"
-                            placeholder="Email"
+                            placeholder="Email Address"
                             aria-describedby="inputGroupPrepend"
                             required
                         />
                         <Form.Control.Feedback type="invalid">
-                            Please enter a valid email.
+                            Please enter a valid email address.
                         </Form.Control.Feedback>
                     </InputGroup>
                 </Form.Group>
                 <Form.Group controlId="validationMobile">
-                    <Form.Label>Mobile number</Form.Label>
+                    <Form.Label>Mobile Number:</Form.Label>
                     <InputGroup>
                         <InputGroup.Prepend>
                             <InputGroup.Text id="inputGroupPrepend">+44</InputGroup.Text>
                         </InputGroup.Prepend>
-                        <Form.Control ref={this.mobileInput} type="text" placeholder="MobileNo" required />
+                        <Form.Control ref={this.mobileInput} type="text" placeholder="Mobile No" required />
                         <Form.Control.Feedback type="invalid">
                             Please enter a valid mobile number.
                     </Form.Control.Feedback>
                     </InputGroup>
                 </Form.Group>
                 <Form.Group controlId="formPassword">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>Password:</Form.Label>
                     <Form.Control ref={this.passwordInput} type="password" placeholder="Password" required/>
                     <Form.Control.Feedback type="invalid">
                         Please enter a valid password.
                     </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group controlId="formPasswordConfirm">
-                    <Form.Label>Confirm password</Form.Label>
+                    <Form.Label>Confirm Password:</Form.Label>
                     <Form.Control type="password" placeholder="Confirm Password" required/>
                     <Form.Control.Feedback type="invalid">
                         The confirmation password does not match.
@@ -199,7 +200,7 @@ class RegisterForm extends Component {
                         feedback="You must agree before submitting."
                     />
                 </Form.Group>
-                <Button type="submit">Submit form</Button>
+                <Button type="submit">Submit Form</Button>
             </Form>
         );
     }

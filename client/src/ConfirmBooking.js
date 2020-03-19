@@ -24,20 +24,20 @@ class ConfirmBooking extends Component {
         }
         let showConfirmation = (this.props.driver && this.props.price) ?
             <div>
-                <h5>Confirm booking</h5>
-                <p id="confirm">Pick up location: {this.props.pickupLocation.address}</p>
-                <p id="confirm">Drop off location: {this.props.dropoffLocation.address}</p>
+                <h5>Confirm Booking</h5>
+                <p id="confirm">Pick-Up Location: {this.props.pickupLocation.address}</p>
+                <p id="confirm">Drop-Off Location: {this.props.dropoffLocation.address}</p>
                 <p id="confirm">Time: {time}</p>
                 <p id="confirm">Driver: {this.props.driver.firstname} {this.props.driver.lastname}</p>
-                <p id="confirm">Cab company: {this.props.driver.companyName}</p>
+                <p id="confirm">Cab Company: {this.props.driver.companyName}</p>
                 <p id="confirm">Luggage: {luggage}</p>
-                <p id="confirm">Disability requirements: {disabled}</p>
-                <p id="confirm">Number of passangers: {this.props.passangers}</p>
+                <p id="confirm">Disability Requirements: {disabled}</p>
+                <p id="confirm">Number of Passengers: {this.props.passangers}</p>
                 <p id="confirm"> <b>Price: {this.props.price.text}</b></p>
                 <CustomToggle
                     disabled={false}
                     eventKey="0"
-                    content="Change pick up & drop off"
+                    content="Change Pick-Up & Drop-Off"
                     showDrivers={null}
                     variant="outline-primary"
                     block={true}
@@ -46,7 +46,7 @@ class ConfirmBooking extends Component {
                 <CustomToggle
                     disabled={false}
                     eventKey="1"
-                    content="Change extra options"
+                    content="Change Extra Options"
                     showDrivers={null}
                     variant="outline-primary"
                     block={true}
@@ -55,13 +55,13 @@ class ConfirmBooking extends Component {
                 <CustomToggle
                     disabled={false}
                     eventKey="2"
-                    content="Change cab"
+                    content="Change Cab"
                     showDrivers={null}
                     variant="outline-primary"
                     block={true}
                     size="sm"
                 />
-                <Button variant="outline-success" block onClick={() => this.props.handlePaymentShow(true)}>Confirm booking</Button>
+                <Button variant="outline-success" block onClick={() => this.props.handlePaymentShow(true)}>Confirm Booking</Button>
             </div> : null;
         return (
             <div>
