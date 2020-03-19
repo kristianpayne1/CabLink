@@ -13,6 +13,7 @@
   width: 25px;
   height: 25px;
   background-image: url("images/person.png");
+  background-color:green;
   z-index: -1;
   background-size: 17px;
 }

@@ -1,8 +1,7 @@
 import React from 'react';
 import './CurrentMarker.css';
 
-const ExtraStopPin = (props) => {
-    const { color, name} = props;
+const ExtraStopPin = () => {
     return (
       <div className="Emarker"
         style={{ cursor: 'pointer'}}

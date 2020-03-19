@@ -1,11 +1,10 @@
 import React from 'react';
 import './CurrentMarker.css';
 
-const PickupMarker = (props) => {
-    const { color, name} = props;
+const PickupMarker = () => {
     return (
       <div className="marker"
-        style={{ backgroundColor: color, cursor: 'pointer'}}
+        style={{cursor: 'pointer'}}
         title={"Pick-Up Location"}
       />
     );
