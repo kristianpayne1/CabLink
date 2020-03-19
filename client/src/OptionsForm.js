@@ -19,7 +19,7 @@ class OptionsForm extends Component {
                 <Form>
                     <Form.Group>
                         <br/>
-                        Number of passangers:
+                        Number of Passengers:
                     <ToggleButtonGroup className="passangers" type="radio" name="passangers" defaultValue={1} size='sm'>
                             <ToggleButton value={1} variant="outline-primary" onClick={() => this.props.setPassangers(1)}>1</ToggleButton>
                             <ToggleButton value={2} variant="outline-primary" onClick={() =>this.props.setPassangers(2)}>2</ToggleButton>
@@ -28,11 +28,11 @@ class OptionsForm extends Component {
                         </ToggleButtonGroup>
                         <br/><br/>
                         <Form.Check
-                            label="Additional luggage"
+                            label="Additional Luggage?"
                             onChange={this.handleLuggageChange}
                         />
                         <Form.Check
-                            label="Disability requirements"
+                            label="Disability Requirements?"
                             onChange={this.handleDisabilityChange}
                         />
                         <br/>

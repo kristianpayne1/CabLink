@@ -1,40 +1,123 @@
-.pickupinfo {
-    display: flex;
-    flex-direction: column;
-    margin-left: 10px;
-    box-shadow: 0px 7px 7px 0px rgba(0,0,0,0.75);
-    height: 5rem;
+.pickupinfo{
+    display:flex;
+    flex-direction:column;
+    margin-left:10px;
+    box-shadow:0px 7px 7px 0px rgba(0,0,0,0.75);
+    height:5.5rem;
 }
-
-.pickupinfo:hover {
+.pickupInfoTitle,.info,.departTime{
+    text-align:center;
+}
+.progressBar{
+    flex-basis:100%;
+}
+.pickupinfo:hover{
     cursor:pointer;
-    height: 8rem;
+    height:9rem;
+    transition:height 0.5s;
 }
-
-.buttons {
-    margin-left: 20px;
+.buttons{
+    display:flex;
+    justify-content:center;
+    margin-top:0.5rem;
 }
-
-.progressBar {
-    flex-basis: 100%;   
+.leftB,.rightB{
+    width:80px;
 }
-.info {
-    margin-left: 8px;
+.rightB{
+    margin-left:5%;
 }
-.spinnerContainer {
-    position: absolute;
+.info{
+    margin-left:8px;
+}
+.spinnerContainer{
+    position:absolute;
     bottom:0px;
-    right: 5px;
+    right:5px;
 }
-.departTime {
-    margin-left: 10px;
+.departTime{
+    margin-top:-1.25rem;
+    margin-left:10px;
+    font-weight:bold;
+    margin-bottom:0;
 }
-.spinner-grow.text-primary {
-    margin-right: -2px;
+.spinner-grow.text-primary,.spinner-grow.text-warning,.spinner-grow.text-success {
+    margin-right:-2px;
 }
-.spinner-grow.text-warning {
-    margin-right: -2px;
+@media only screen and (max-width:768px) {
+    .pickupinfo{
+        width:85vw;
+        height:10.5vh;
+        margin-left:3px;
+        margin-bottom:2vh;
+        box-shadow:0px 5px 5px 0px rgba(0,0,0,0.75);
+    }
+    .pickupInfoTitle{
+        margin-left:-2.75vw;
+        font-size:14px;
+    }
+    .info{
+        margin-left:-3vw;
+        font-size:14px;
+        margin-bottom:-2px;
+    }
+    .departTime{
+        margin-top:0;
+        font-size:14px;
+    }
+    .buttons{
+        margin-top:1.5px;
+    }
 }
-.spinner-grow.text-success {
-    margin-right: -2px;
+@media only screen and (max-width:330px){
+    .pickupinfo{
+        width:82vw;
+        height:14vh;
+        margin-left:1vw;
+        margin-bottom:0vh;
+        box-shadow:0px 2.5px 2.5px 0px rgba(0,0,0,0.75);
+    }
+    .pickupInfoTitle{
+        margin-left:-2.75vw;
+        font-size:0.9rem;
+    }
+    .info{
+        margin-top:2vw;
+        margin-left:-3vw;
+        font-size:0.75rem;
+        margin-bottom:-2px;
+    }
+    .departTime{
+        margin-top:0;
+        font-size:0.75rem;
+    }
+    .buttons{
+        margin-top:1.5px;
+    }
+}
+@media only screen and (min-width:350px) and (max-width:380px) {
+    .pickupinfo{
+        width:82vw;
+        height:14vh;
+        margin-left:1vw;
+        margin-bottom:0vh;
+        box-shadow:0px 2.5px 2.5px 0px rgba(0,0,0,0.75);
+    }
+    .pickupInfoTitle{
+        margin-left:-2.75vw;
+        font-size:1rem;
+    }
+    .info{
+        margin-top:3vw;
+        margin-left:-3vw;
+        font-size:0.75rem;
+        margin-bottom:-2px;
+    }
+    .departTime{
+        margin-top:0;
+        font-size:0.75rem;
+    }
+    .buttons{
+        margin-top:1.5px;
+    }
 }

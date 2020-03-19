@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import "./LoginForm.css";
 
 class LoginForm extends Component {
     state = {
@@ -70,15 +71,15 @@ class LoginForm extends Component {
         return (
             <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit}>
                 <Form.Group controlId="formEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control ref={this.emailInput} type="email" placeholder="Enter email" required/>
+                    <Form.Label>Email Address:</Form.Label>
+                    <Form.Control ref={this.emailInput} type="email" placeholder="Email Address" required/>
                     <Form.Control.Feedback type="invalid">
                         Please enter a valid email.
                     </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group controlId="formPassword">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>Password:</Form.Label>
                     <Form.Control ref={this.passwordInput} type="password" placeholder="Password" required/>
                     <Form.Control.Feedback type="invalid">
                         Please enter a valid password.

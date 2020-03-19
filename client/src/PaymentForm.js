@@ -123,13 +123,13 @@ class PaymentForm extends Component {
                             <Form>
                                 <Form.Group controlId="paymentFormName">
                                     <Form.Label>Card Name</Form.Label>
-                                    <Form.Control type="name" ref={this.cardNameInput} placeholder="Enter your name as shown on the card"/>
+                                    <Form.Control type="name" ref={this.cardNameInput} placeholder="Cardholder Name"/>
                                 </Form.Group>
                                 
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="paymentFormCardNo">
                                         <Form.Label>Card Number</Form.Label>
-                                        <Form.Control type="cardNo" ref={this.cardNoInput} placeholder="Enter your card Number"/>
+                                        <Form.Control type="cardNo" ref={this.cardNoInput} placeholder="Enter your Card Number"/>
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="paymentFormCardExp">
                                         <Form.Label>Card Expiry (MM/YY)</Form.Label>
@@ -150,11 +150,11 @@ class PaymentForm extends Component {
                                 </Form.Row>
                                 <Form.Group controlId="paymentFormAddress1">
                                     <Form.Label>Address Line 1</Form.Label>
-                                    <Form.Control type="address1" ref={this.addressLine1Input} placeholder="First Line of Address"/>
+                                    <Form.Control type="address1" ref={this.addressLine1Input} placeholder="Address Line 1"/>
                                 </Form.Group>
                                 <Form.Group controlId="paymentFormAddress2">
                                     <Form.Label>Address Line 2</Form.Label>
-                                    <Form.Control type="address2" ref={this.addressLine2Input} placeholder="Second Line of Address"/>
+                                    <Form.Control type="address2" ref={this.addressLine2Input} placeholder="Address Line 2"/>
                                 </Form.Group>
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="paymentFormTown">
@@ -167,7 +167,7 @@ class PaymentForm extends Component {
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="paymentFormPostCode">
                                         <Form.Label>PostCode</Form.Label>
-                                        <Form.Control type="postCode" ref={this.postCodeInput} placeholder="PostCode"/>
+                                        <Form.Control type="postCode" ref={this.postCodeInput} placeholder="Postal Code"/>
                                     </Form.Group>
                                 </Form.Row>
                                 <Button variant="outline-primary" onClick={this.submitBankDetails}>Submit</Button>

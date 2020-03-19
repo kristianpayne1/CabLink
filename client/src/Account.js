@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// react components
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Tabs from 'react-bootstrap/Tabs'
@@ -6,8 +7,10 @@ import Tab from 'react-bootstrap/Tab';
 import AccountForm from './AccountForm.js';
 import PaymentForm from './PaymentForm.js';
 
+// modal contaning account details, payment details and recent bookings
 class Account extends Component {
 
+    //closes the modal
     closeClicked = () => {
         this.props.handleAccountClose();
     }

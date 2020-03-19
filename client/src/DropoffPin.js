@@ -1,11 +1,11 @@
 import React from 'react';
 import './CurrentMarker.css';
 
-const DropoffMarker = (props) => {
-    const { color, name} = props;
+// drop off marker for map
+const DropoffMarker = () => {
     return (
       <div className="markerDO"
-        style={{cursor: 'pointer'}}
+        style={{cursor:'pointer'}}
         title={"Drop-Off Location"}
       />
     );

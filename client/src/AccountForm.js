@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+// react components
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+// View account details
 class AccountForm extends Component {
     handleEditSubmit = event => {
         event.preventDefault();
@@ -11,6 +13,7 @@ class AccountForm extends Component {
 
     render() {
         console.log(this.props.activeUser);
+        // if edit button is clicked enable form otherwise disable.
         let showPaymentForm = this.props.editClicked ? <>
             <Form>
                 <Form.Group controlId="accountFormEmail">

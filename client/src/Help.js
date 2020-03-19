@@ -2,6 +2,7 @@ import "./Help.css";
 import React, { Component } from 'react';
 import HelpAccordion from './HelpAccordion.js';
 
+// help page
 class Help extends Component {
 
     render() {

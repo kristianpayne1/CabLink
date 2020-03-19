@@ -5,8 +5,10 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import SelectableContext from 'react-bootstrap/SelectableContext';
 import Card from 'react-bootstrap/Card';
 
+// for google API calls
 const google = window.google;
 
+// Lists all the available drivers for user to selected in specified order (recommended DEFAULT)
 class DriverListing extends Component {
     state = {
         driverDistanceTime: [],
@@ -14,14 +16,17 @@ class DriverListing extends Component {
         sortByText: '',
     };
 
+    // Call google api for every driver and compute price for trip and distance from pick up. Then sorts by recommended
     loadDrivers = async () => {
         let self = this;
         this.props.drivers.map((driver) =>
             this.callAPI(driver, function (err, dist, time, path) {
                 if (!err) {
+                    // calculate trip price 
                     let price = driver.base_charge + ((driver.mile_charge / 5280) * (self.props.distance.value + dist.value));
                     price = Math.round(price * 100) / 100;
                     let price_text = '£' + price;
+                    // if driver is already loaded, update their info else add them.
                     let found = self.checkIfLoaded(driver);
                     if (!found) {
                         self.state.driverDistanceTime.push({ driver: driver, distance: dist, time: time, price: { value: price, text: price_text }, path: path });
@@ -42,6 +47,7 @@ class DriverListing extends Component {
         );
     }
 
+    // when driver card is clicked set booking price and driver info ready for completion
     handleOnHover = async (driver) => {
         this.props.showDriver(driver.currentLat, driver.currentLong, driver);
         this.state.driverDistanceTime.forEach(item => {
@@ -53,6 +59,7 @@ class DriverListing extends Component {
         this.setState({ selectedDriver: driver });
     }
 
+    // list all the drivers in cards.
     listDrivers() {
         return (
             this.state.driverDistanceTime.map((item) =>
@@ -75,6 +82,7 @@ class DriverListing extends Component {
         )
     }
 
+    // checks if the driver is already loaded
     checkIfLoaded = (driver) => {
         let list = this.state.driverDistanceTime;
         let found = false;
@@ -86,6 +94,7 @@ class DriverListing extends Component {
         return found;
     }
 
+    // orders array of drivers by lowest price first
     sortByPrice = () => {
         let sorted = this.state.driverDistanceTime.slice(0);
         sorted.sort(function (a, b) {
@@ -94,6 +103,7 @@ class DriverListing extends Component {
         return sorted;
     }
 
+    // orders array of drivers by lowest response time first
     sortByResponse = () => {
         let sorted = this.state.driverDistanceTime.slice(0);
         sorted.sort(function (a, b) {
@@ -102,17 +112,21 @@ class DriverListing extends Component {
         return sorted;
     }
 
+    // sorts array of drivers by lowest price and shortest distance away.
     sortByRecommend = () => {
         let recommendList = [];
+        // get array of driver sorted by price and assign point to each (higher the better)
         let priceList = this.sortByPrice();
         for (let i = 0; i < priceList.length; i++) {
             recommendList.push({ item: { driver: priceList[i], points: priceList.length - i } });
         }
+        // get array of drivers sorted by quickest response (higher the better)
         let responseList = this.sortByResponse();
         for (let i = 0; i < responseList.length; i++) {
             let index = this.findWithAttr(recommendList, responseList[i]);
             recommendList[index].item.points += (responseList.length - i) * 2;
         }
+        // sort array by how many points they have (higher is better)
         recommendList = recommendList.sort(function (a, b) {
             return b.item.points - a.item.points
         });
@@ -123,6 +137,7 @@ class DriverListing extends Component {
         return sorted;
     }
 
+    // finds driver in given array
     findWithAttr(array, driver) {
         for (var i = 0; i < array.length; i++) {
             if (array[i].item["driver"] === driver) {
@@ -132,6 +147,7 @@ class DriverListing extends Component {
         return -1;
     }
 
+    // sort drivers by specified order
     handleSortBy = (num) => {
         let list = [];
         switch (num) {
@@ -217,6 +233,7 @@ class DriverListing extends Component {
     }
 
     render() {
+        // show warning if user is viewing listing without specifying pick up and drop off location
         let showWarning = ((this.props.pickupLocation.lat === null && this.props.pickupLocation.lng === null)
             && (this.props.dropoffLocation.lat === null && this.props.dropoffLocation.lng == null)) ?
             <Card border="warning" text="black">

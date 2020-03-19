@@ -2,9 +2,11 @@ import React from 'react';
 import { useAccordionToggle } from 'react-bootstrap/AccordionToggle';
 import Button from 'react-bootstrap/Button';
 
+// custom button for toggling accordian used in sidebar
 function CustomToggle({ eventKey, disabled, content, showDrivers, variant, block, size}) {
 
-    const stuff = useAccordionToggle(eventKey, () => {
+    // set accordian event 
+    const toggle = useAccordionToggle(eventKey, () => {
         if (showDrivers) {
             showDrivers();
         }
@@ -14,7 +16,7 @@ function CustomToggle({ eventKey, disabled, content, showDrivers, variant, block
         <Button
             variant={variant}
             disabled={disabled}
-            onClick={stuff}
+            onClick={toggle}
             size={size}
             block={block}
         >

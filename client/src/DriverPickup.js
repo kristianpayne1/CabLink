@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import PickupMap from './PickupMap.js'
 import PickupInfo from './PickupInfo.js';
 
+// Show pickup of map and how far driver is away from pick up location
 class DriverPickup extends Component {
     constructor(props) {
         super(props);
+        // prepares pick up map methods to be called from here.
         this.PickupMap = React.createRef();
     }
 
@@ -38,10 +40,12 @@ class DriverPickup extends Component {
         cancelled: false,
     }
 
+    // updates progress bar
     updateProgress = (progress) => {
         this.setState({ progress: progress });
     }
 
+    // if departure time is not equal to or less than the current time, put the driver on standby till it is
     standby = (wait) => {
         let self = this;
         setTimeout(function () {
@@ -50,6 +54,7 @@ class DriverPickup extends Component {
         }, wait);
     }
 
+    // updates the database to inform the booking is complete 
     completeBooking = () => {
         let self = this;
         let data = {
@@ -63,6 +68,7 @@ class DriverPickup extends Component {
             price: this.state.bookingInfo.price,
             complete: 1,
         }
+        // update driver to be available
         this.freeDriver();
         fetch(process.env.REACT_APP_SERVER + '/booking/update/' + this.props.match.params.id, {
             method: 'POST',
@@ -76,6 +82,7 @@ class DriverPickup extends Component {
             }
             return response.json();
         }).then(function () {
+            // wait 5 mins before closing page
             setTimeout(function () {
                 self.setState({ complete: 1 });
             }, 300000);
@@ -84,6 +91,7 @@ class DriverPickup extends Component {
         });
     }
 
+    // gets booking info of pickup such as time and driver etc. 
     getBookingInfo = (cb) => {
         let self = this;
         fetch(process.env.REACT_APP_SERVER + '/booking/get/pickup/' + this.props.match.params.id, {
@@ -94,6 +102,7 @@ class DriverPickup extends Component {
             }
             return response.json();
         }).then(function (data) {
+            // stores all booking info
             self.setState({
                 departureDateTime: data[0].departureDateTime,
                 driver: {
@@ -119,6 +128,7 @@ class DriverPickup extends Component {
                 bookingInfo: data[0],
                 complete: data[0].complete,
             }, function () {
+                // booking is not already complete load all the info and start pickup
                 if (self.state.complete === 0) {
                     let t = self.state.departureDateTime.slice(0, 19).replace('T', ' ').split(/[- :]/);
                     let departureDate = new Date(Date.UTC(t[0], t[1] - 1, t[2], t[3], t[4], t[5]));
@@ -136,6 +146,7 @@ class DriverPickup extends Component {
         })
     }
 
+    // updates driver to make them available after booking completion
     freeDriver = () => {
         let driver = this.state.driver;
         let data = {
@@ -164,6 +175,7 @@ class DriverPickup extends Component {
         });
     }
 
+    // sets the drivers location when booking completed.
     handleDriverLocation = (location) => {
         let driver = this.state.driver;
         this.setState({ driver: { 
@@ -180,7 +192,14 @@ class DriverPickup extends Component {
         });
     }
 
+    // cancels the booking if user presses the cancel button
+    handleCancelBooking = () => {
+        this.setState({cancelled : true});
+        this.completeBooking();
+    }
+
     render() {
+        // if booking already complete show page not found otherwise proceeed with pickup
         let inProgress = this.state.complete !== 1 ?
             <div>
                 <PickupMap 
@@ -192,11 +211,11 @@ class DriverPickup extends Component {
                     completeBooking={this.completeBooking}
                     cancelled={this.state.cancelled}
                 />
-                <PickupInfo info={this.state} pickupDate={this.state.pickupDate} cancelled={this.state.cancelled}/>
+                <PickupInfo info={this.state} pickupDate={this.state.pickupDate} cancelled={this.state.cancelled} handleCancelBooking={this.handleCancelBooking}/>
             </div> :
             <div>
                 <br />
-                <h5 style={{ 'text-align': 'center' }}>403 Forbidden</h5>
+                <h5 style={{ 'text-align': 'center' }}>Oops! Page Not Found</h5>
             </div>
         return (
             <div>
