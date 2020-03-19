@@ -35,6 +35,7 @@ class DriverPickup extends Component {
         standby: true,
         pickupDate: null,
         complete: 0,
+        cancelled: false,
     }
 
     updateProgress = (progress) => {
@@ -189,8 +190,9 @@ class DriverPickup extends Component {
                     ref={this.PickupMap} 
                     handleDriverLocation={this.handleDriverLocation}
                     completeBooking={this.completeBooking}
+                    cancelled={this.state.cancelled}
                 />
-                <PickupInfo info={this.state} pickupDate={this.state.pickupDate} />
+                <PickupInfo info={this.state} pickupDate={this.state.pickupDate} cancelled={this.state.cancelled}/>
             </div> :
             <div>
                 <br />

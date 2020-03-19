@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import ProgressBar from 'react-bootstrap/ProgressBar';
+import Button from 'react-bootstrap/Button';
 import './PickUpInfo.css';
 class PickupInfo extends Component {
+    state = {
+        hover: false,
+    }
+
+    onHover = () => {
+        this.setState({hover: !this.state.hover});
+    }
 
     render() {
         let progressbar = !(this.props.info.progress === 100) ? <ProgressBar animated now={this.props.info.progress} /> : <ProgressBar variant="success" now={this.props.info.progress} />;
@@ -15,8 +23,9 @@ class PickupInfo extends Component {
         let spinnerInProgress = !(this.props.info.progress === 100) ? "primary" : "success";
         let spinnerStandby = this.props.info.standby ? "warning" : spinnerInProgress;
         let departby = (this.props.pickupDate && !(this.props.info.progress === 100)) ? "Depart by: " + this.props.pickupDate.getHours() + ':' + (this.props.pickupDate.getMinutes()<10?'0':'') + this.props.pickupDate.getMinutes() : null;
+        let buttons = this.state.hover ? <div className="buttons"><Button variant="outline-info">Call</Button>{' '}<Button variant="outline-danger">Cancel</Button></div> : null;
         return (
-            <div className="pickupinfo">
+            <div className="pickupinfo" onMouseEnter={this.onHover} onMouseLeave={this.onHover}>
                 <div>
                     {standyProgress}
                 </div>
@@ -28,6 +37,7 @@ class PickupInfo extends Component {
                 <div className="spinnerContainer">
                     <Spinner className="spinner" animation="grow" variant={spinnerStandby} />
                 </div>
+                {buttons}
             </div>
         );
     }
