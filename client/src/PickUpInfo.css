@@ -3,18 +3,29 @@
     flex-direction:column;
     margin-left:10px;
     box-shadow:0px 7px 7px 0px rgba(0,0,0,0.75);
-    height: 5rem;
+    height:5.5rem;
+}
+.pickupInfoTitle,.info,.departTime{
+    text-align:center;
 }
 .progressBar{
     flex-basis:100%;
 }
-.pickupinfo:hover {
+.pickupinfo:hover{
     cursor:pointer;
-    height: 8rem;
+    height:8rem;
+    transition:height 0.5s;
 }
-
-.buttons {
-    margin-left: 20px;
+.buttons{
+    display:flex;
+    justify-content:center;
+    margin-top:0.75rem;
+}
+.leftB,.rightB{
+    width:80px;
+}
+.rightB{
+    margin-left:5%;
 }
 .info{
     margin-left:8px;
@@ -25,7 +36,10 @@
     right:5px;
 }
 .departTime{
+    margin-top:-1.25rem;
     margin-left:10px;
+    font-weight:bold;
+    margin-bottom:0;
 }
 .spinner-grow.text-primary,.spinner-grow.text-warning,.spinner-grow.text-success {
     margin-right:-2px;
@@ -39,17 +53,15 @@
         box-shadow:0px 5px 5px 0px rgba(0,0,0,0.75);
     }
     .pickupInfoTitle{
-        text-align:center;
         margin-left:-2.75vw;
         font-size:16px;
     }
-    .info,.departTime{
+    .info{
         margin-left:-3vw;
         font-size:14px;
-        text-align:center;
         margin-bottom:-2px;
     }
     .departTime{
-        font-weight:bold;
+        margin-top:0;
     }
 }

@@ -22,8 +22,8 @@ class PickupInfo extends Component {
             status;
         let spinnerInProgress = !(this.props.info.progress === 100) ? "primary" : "success";
         let spinnerStandby = this.props.info.standby ? "warning" : spinnerInProgress;
-        let departby = (this.props.pickupDate && !(this.props.info.progress === 100)) ? "Depart by: " + this.props.pickupDate.getHours() + ':' + (this.props.pickupDate.getMinutes()<10?'0':'') + this.props.pickupDate.getMinutes() : null;
-        let buttons = this.state.hover ? <div className="buttons"><Button variant="outline-info">Call</Button>{' '}<Button variant="outline-danger">Cancel</Button></div> : null;
+        let departby = (this.props.pickupDate && !(this.props.info.progress === 100)) ? "Depart By: " + this.props.pickupDate.getHours() + ':' + (this.props.pickupDate.getMinutes()<10?'0':'') + this.props.pickupDate.getMinutes() : null;
+        let buttons = this.state.hover ? <div className="buttons"><Button className="leftB" variant="outline-info">Call</Button>{' '}<Button className="rightB" variant="outline-danger">Cancel</Button></div> : null;
         return (
             <div className="pickupinfo" onMouseEnter={this.onHover} onMouseLeave={this.onHover}>
                 <div>

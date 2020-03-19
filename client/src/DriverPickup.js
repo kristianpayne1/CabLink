@@ -196,7 +196,7 @@ class DriverPickup extends Component {
             </div> :
             <div>
                 <br />
-                <h5 style={{ 'text-align': 'center' }}>403 Forbidden</h5>
+                <h5 style={{ 'text-align': 'center' }}>Oops! Page Not Found</h5>
             </div>
         return (
             <div>
