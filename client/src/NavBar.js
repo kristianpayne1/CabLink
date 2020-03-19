@@ -7,37 +7,41 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Link } from "react-router-dom";
 
+// Navigation bar 
 class NavBar extends Component {
 
-    loginClicked = () => {
-        this.props.handleShow();
-    }
+  // when login is clicked show login modal
+  loginClicked = () => {
+    this.props.handleShow();
+  }
 
-    accountClicked = (eventKey) => {
-        this.props.handleAccountShow(eventKey);
-    }
+  // when account button clicked show account
+  accountClicked = (eventKey) => {
+    this.props.handleAccountShow(eventKey);
+  }
 
-    render() {
-        let showLoginButton = this.props.loggedIn ? <div style={{float:"right"}}>
-        <ButtonToolbar>
-          {[DropdownButton].map((DropdownType, idx) => (
-            <DropdownType
-              alignRight
-              title="Account"
-              variant="outline-primary"
-              id={`dropdown-button-drop-${idx}`}
-              key={idx}
-            >
-              <Dropdown.Item eventKey="1" onClick={() => this.accountClicked(1)}>View Account</Dropdown.Item>
-              <Dropdown.Item eventKey="2"  onClick={() =>this.accountClicked(2)}>Change Payment Details</Dropdown.Item>
-              <Dropdown.Item eventKey="3"  onClick={() => this.accountClicked(3)}>Check Recent Bookings</Dropdown.Item>
-              <Dropdown.Divider />
-              <Dropdown.Item eventKey="4" onClick={() => this.props.handleLogoutComplete()}>Logout</Dropdown.Item>
-            </DropdownType>
-          ))}
-        </ButtonToolbar>
-      </div>
-        : <div style={{float:"right"}}><Button variant="outline-primary" onClick={this.loginClicked}>Login</Button></div>;
+  render() {
+    // if user isn't logged in show login button otherwise show account button
+    let showLoginButton = this.props.loggedIn ? <div style={{ float: "right" }}>
+      <ButtonToolbar>
+        {[DropdownButton].map((DropdownType, idx) => (
+          <DropdownType
+            alignRight
+            title="Account"
+            variant="outline-primary"
+            id={`dropdown-button-drop-${idx}`}
+            key={idx}
+          >
+            <Dropdown.Item eventKey="1" onClick={() => this.accountClicked(1)}>View Account</Dropdown.Item>
+            <Dropdown.Item eventKey="2" onClick={() => this.accountClicked(2)}>Change Payment Details</Dropdown.Item>
+            <Dropdown.Item eventKey="3" onClick={() => this.accountClicked(3)}>Check Recent Bookings</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item eventKey="4" onClick={() => this.props.handleLogoutComplete()}>Logout</Dropdown.Item>
+          </DropdownType>
+        ))}
+      </ButtonToolbar>
+    </div>
+      : <div style={{ float: "right" }}><Button variant="outline-primary" onClick={this.loginClicked}>Login</Button></div>;
 
     //let showUserFirstname = this.props.loggedIn ? <p classWelcome="loginWelcome">Welcome, {this.props.activeUser.activeUser[0].firstname}</p> : null;
 

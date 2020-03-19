@@ -3,12 +3,15 @@ import Form from 'react-bootstrap/Form';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 
+// For letting the user specify how many passangers are travelling and if they need any requirements
 class OptionsForm extends Component {
 
+    // handles when luggage check boc is clicked
     handleLuggageChange = (evt) => {
         this.props.setLuggage(evt.target.checked);
     }
 
+    // handles when disability is checkbox is clicked
     handleDisabilityChange = (evt) => {
         this.props.setDisabled(evt.target.checked);
     }

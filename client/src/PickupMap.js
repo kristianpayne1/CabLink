@@ -5,7 +5,9 @@ import DriverPin from './DriverPin.js';
 import "./map.css";
 const google = window.google;
 
+// map used for when viewing pickup
 class PickupMap extends Component {
+    // default to university of kent
     static defaultProps = {
         center: {
             lat: 51.296942,
@@ -27,6 +29,7 @@ class PickupMap extends Component {
         },
     }
 
+    // centers the map to view entire route 
     viewPickup = () => {
         if (this.state.pickupLocation.lat !== null && this.state.driverLocation.lat !== null) {
             let bounds = new google.maps.LatLngBounds();
@@ -38,33 +41,43 @@ class PickupMap extends Component {
         }
     }
 
+    // when on standby center map to driver's location
     viewDriver = () => {
         this.state.map.setCenter(this.state.driverLocation);
         this.state.map.setZoom(18);
     }
 
+    // moves the driver along to pickup location in realistc time
     runPickUp = (path, duration) => {
+        // duration of driver to pickup divide by how many points in path
         let timeInterval = (duration.value * 1000) / path.length;
         let self = this;
         let index = 0;
         this.viewPickup();
         let interval = setInterval(function () {
+            // if not cancelled
             if (!(self.props.cancelled)) {
                 self.viewPickup();
+                // get location of next in the route
                 let latlng = path[index++];
+                // update progress bar
                 self.props.updateProgress((index / path.length) * 100);
+                // update driver's location
                 self.setState({ driverLocation: { lat: latlng.lat(), lng: latlng.lng() } });
+                // when booking complete update driver's location on database
                 if (index === path.length) {
                     clearInterval(interval);
                     self.props.handleDriverLocation(self.state.driverLocation);
                 }
             }else{
+                // if cancelled stop pickup and complete booking
                 clearInterval(interval);
                 self.props.handleDriverLocation(self.state.driverLocation);
             }
         }, timeInterval)
     }
 
+    // using Googles map get route from driver's location to pick up location
     getRoute = (waitTime, cb) => {
         let maps = this.state.maps;
         let self = this;

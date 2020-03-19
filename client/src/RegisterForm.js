@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import "./LoginForm.css";
 
+// registraion form for when user is making a new account
 class RegisterForm extends Component {
     state = {
         validated: false,
@@ -20,6 +21,7 @@ class RegisterForm extends Component {
         },
     };
 
+    // when create account is clicked check if all inputs are valid
     handleSubmit = event => {
         event.preventDefault();
         const form = event.currentTarget;
@@ -40,6 +42,7 @@ class RegisterForm extends Component {
         }
       };
 
+    // add the new account to database
     callAPI(firstName, lastName, email, mobileNo, password, userType, userID, lastLogin){
         let accountData = {firstName, lastName, email, mobileNo, password, userType, userID, lastLogin};
         console.log(JSON.stringify(accountData));
@@ -57,6 +60,7 @@ class RegisterForm extends Component {
         }).then(function(data) {
             console.log(data)
             if(data.serverStatus === 2){
+                // if successful set the user as active account
                 console.log('Success');
                 self.setState({registered: "Registration complete!"});
                 self.fetchID(accountData);

@@ -9,20 +9,24 @@ import ConfirmBooking from './ConfirmBooking.js';
 import OptionsForm from './OptionsForm.js';
 import "./SideBar.css";
 
+// sidebar used in booking page
 class SideBar extends Component {
     constructor(props) {
         super(props);
         this.DriverListing = React.createRef();
     }
 
+    // lists all drivers in driver lsiting
     showDrivers = async () => {
         await this.DriverListing.current.loadDrivers();
     }
 
     render() {
+        // if the user hasn't specified a drop off or pick up location disable continue button
         let disableContinueCab = ((this.props.pickupLocation.lat === null && this.props.pickupLocation.lng === null)
             || (this.props.dropoffLocation.lat === null && this.props.dropoffLocation.lng === null))
             ? true : false;
+        // toggles if the sidebar is open or not.
         let sidebarClass = this.props.isOpen ? 'sidebar open' : 'sidebar';
         let sidebarButton = this.props.isOpen ? 'sidebar-toggle open' : 'sidebar-toggle';
         return (
