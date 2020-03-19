@@ -7,6 +7,7 @@ import DriverListing from './DriverListing.js';
 import CustomToggle from './CustomToggle.js';
 import ConfirmBooking from './ConfirmBooking.js';
 import OptionsForm from './OptionsForm.js';
+import "./SideBar.css";
 
 class SideBar extends Component {
     constructor(props) {
