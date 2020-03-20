@@ -2,18 +2,21 @@ import React, { Component } from 'react';
 // react components
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import hash from 'object-hash';
 
 // View account details
 class AccountForm extends Component {
     handleEditSubmit = event => {
         event.preventDefault();
-
+        
+        let email = this.emailInput.current.value;
+        let password = hash.sha1(this.passwordInput.current.value);
         //this.props.handleEditClose();
     }
 
     render() {
-        let emailInput = React.createRef();
-        let passwordInput = React.createRef();
+        this.emailInput = React.createRef();
+        this.passwordInput = React.createRef();
         console.log(this.props.activeUser);
         // if edit button is clicked enable form otherwise disable.
         let showPaymentForm = this.props.editClicked ? <>

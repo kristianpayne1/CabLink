@@ -20,7 +20,6 @@ class LoginForm extends Component {
           event.stopPropagation();
         }
         else{
-            this.setState({validated: true});
             this.handleLogin();
         }
       };
@@ -39,6 +38,7 @@ class LoginForm extends Component {
       let userPassword = this.state.users[0].password;
       if (userEmail === emailI && userPassword === password) {
         this.setState({userID: this.state.users[0].userID}) ;
+        this.setState({validated: true});
         console.log(this.state.userID);
         return true;
       } else {
@@ -69,8 +69,9 @@ class LoginForm extends Component {
             let userType = self.state.users[0].userType;
             var activeUser = {userID, firstname, lastname, email, mobileNo, userType};
             self.props.handleLoginComplete(activeUser, true);
-          }
-          self.props.closeClicked();
+            self.props.closeClicked();
+          } 
+
         }).catch(err => {
           console.log('caught it!', err);
         })
@@ -91,7 +92,7 @@ class LoginForm extends Component {
 
                 <Form.Group controlId="formPassword">
                     <Form.Label>Password:</Form.Label>
-                    <Form.Control ref={this.passwordInput} type="password" placeholder="Password" required/>
+                    <Form.Control ref={this.passwordInput} type="password" placeholder="Password" isInvalid={!this.state.validated} required/>
                     <Form.Control.Feedback type="invalid">
                         Please enter a valid password.
                     </Form.Control.Feedback>
