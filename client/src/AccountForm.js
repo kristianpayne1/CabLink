@@ -9,8 +9,8 @@ class AccountForm extends Component {
     handleEditSubmit = event => {
         event.preventDefault();
         
-        let email = this.emailInput.current.value;
-        let password = hash.sha1(this.passwordInput.current.value);
+        //let email = this.emailInput.current.value;
+        //let password = hash.sha1(this.passwordInput.current.value);
         //this.props.handleEditClose();
     }
 
