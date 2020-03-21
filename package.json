@@ -6,7 +6,7 @@
         "npm": "6.7.0"
     },
     "scripts": {
-        "test": "(cd ./api && npm start) & (cd ./client && npm run build)",
+        "test": "cd ./client && npm run build",
         "start": "(cd ./api && npm start) & (cd ./client && npm start)"
     },
     "devDependencies": {
