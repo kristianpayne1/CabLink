@@ -30,6 +30,8 @@ class Payment extends Component {
             GuestpaymentFormTown: null,
             GuestpaymentFormCity: null,
             GuestpaymentFormPostCode: null,
+            GuestpaymentFormCardCVV: null,
+            GuestpaymentFormCardName: null,
             errors: {
                 GuestpaymentFormCardNo: '',
                 GuestpaymentFormCardExp: '',
@@ -40,6 +42,8 @@ class Payment extends Component {
                 GuestpaymentFormTown: '',
                 GuestpaymentFormCity: '',
                 GuestpaymentFormPostCode: '',
+                GuestpaymentFormCardCVV: '',
+                GuestpaymentFormCardName: '',
 
             }
         };
@@ -52,6 +56,7 @@ class Payment extends Component {
         var validcardnoRegex = /\b\d{16}\b/;
         var validnameinRegex = /\w+/;
         var validpostcodeRegex = /\b\w{2}\d{3}\w{2}|\b\w{1}\d{2}\w{2}|\b\w{1}\d{1}\w{1}\d{1}\w{2}/
+        var validcvvRegex = /\b\d{3}\b/
         let errors = this.state.errors;
 
         switch (name) {
@@ -88,20 +93,32 @@ class Payment extends Component {
             case 'GuestpaymentFormTown':
                 errors.GuestpaymentFormTown =
                     validnameinRegex.test(value)
-                        ? 'Town is required!'
-                        : '';
+                        ? ''
+                        : 'Town is required!';
                 break;
             case 'GuestpaymentFormCity':
                 errors.GuestpaymentFormCity =
                     validnameinRegex.test(value)
-                        ? 'City is required!'
-                        : '';
+                        ? ''
+                        : 'City is required!';
                 break;
             case 'GuestpaymentFormPostCode':
                 errors.GuestpaymentFormPostCode =
                     validpostcodeRegex.test(value)
                         ? ''
                         : 'Post Code must be in the correct form with no spaces!';
+                break;
+            case 'GuestpaymentFormCardCVV':
+                errors.GuestpaymentFormCardCVV =
+                    validcvvRegex.test(value)
+                        ? ''
+                        :'The CVV must be 3 digits long!'
+                break;
+            case 'GuestpaymentFormCardName':
+                errors.GuestpaymentFormCardName =
+                    validnameinRegex.test(value)
+                        ?''
+                        : 'Cardholder name is required';
                 break;
             default:
                 break;
@@ -164,7 +181,7 @@ class Payment extends Component {
                     <Form.Row>
                         <Form.Group as={Col} controlId="GuestpaymentFormCardNo">
                             <Form.Label>Card Number</Form.Label>
-                            <Form.Control type="cardNo" placeholder="Enter your card Number" name="GuestpaymentFormCardNo" onChange={this.handleChange} />
+                            <Form.Control type="cardNo" placeholder="Enter your card Number" name="GuestpaymentFormCardNo" maxLength={16} onChange={this.handleChange} />
                             {errors.GuestpaymentFormCardNo.length > 0 &&
                                 <span className='error'>{errors.GuestpaymentFormCardNo}</span>}
                         </Form.Group>
@@ -173,6 +190,20 @@ class Payment extends Component {
                             <Form.Control type="cardExp" placeholder="MM/YY" name="GuestpaymentFormCardExp" onChange={this.handleChange} />
                             {errors.GuestpaymentFormCardExp.length > 0 &&
                                 <span className='error'>{errors.GuestpaymentFormCardExp}</span>}
+                        </Form.Group>
+                    </Form.Row>
+                    <Form.Row>
+                        <Form.Group as={Col} controlId="GuestpaymentFormCardName">
+                            <Form.Label>Cardholder Name</Form.Label>
+                            <Form.Control type="cardName" placeholder="Cardholder Name" name="GuestpaymentFormCardName" onChange={this.handleChange}/>
+                            {errors.GuestpaymentFormCardName.length > 0 &&
+                                <span className='error'>{errors.GuestpaymentFormCardName}</span>}
+                        </Form.Group>
+                        <Form.Group as={Col} controlId="GuestpaymentFormCardCVV">
+                            <Form.Label>CVV</Form.Label>
+                            <Form.Control type="cardCVV" placeholder="CVV" name="GuestpaymentFormCardCVV" maxLength={3} onChange={this.handleChange}/>
+                            {errors.GuestpaymentFormCardCVV.length > 0 &&
+                                <span className='error'>{errors.GuestpaymentFormCardCVV}</span>}
                         </Form.Group>
                     </Form.Row>
 
