@@ -358,6 +358,7 @@ class Booking extends Component {
                     paymentFailed={this.state.paymentFailed}
                     paymentSuccess={this.state.paymentSuccess}
                     activeUser={this.props.activeUser}
+                    loggedIn={this.props.loggedIn}
                 />
                 <GoogleMap
                     drivers={this.state.drivers}
