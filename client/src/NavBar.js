@@ -15,7 +15,7 @@ class NavBar extends Component {
 
   // when login is clicked show login modal
   loginClicked = () => {
-    this.navbarClicked();
+    this.navbarClosed();
     this.props.handleShow();
   }
 
@@ -24,7 +24,11 @@ class NavBar extends Component {
     this.props.handleAccountShow(eventKey);
   }
 
-  navbarClicked = () => {
+  navbarClosed = () => {
+    this.setState({collapsed: false});
+  }
+
+  navbarToggle = () => {
     this.setState({collapsed: !this.state.collapsed});
   }
 
@@ -57,7 +61,7 @@ class NavBar extends Component {
       <div>
         <div>
           <Navbar expanded={this.state.collapsed} expand="lg" bg="light" variant="light">
-            <Navbar.Brand as={Link} to="/proj/co600/project/c37_cablink/">
+            <Navbar.Brand onClick={this.navbarClosed} as={Link} to="/proj/co600/project/c37_cablink/">
               <img
                 src={require('./images/logo.png')}
                 width="80"
@@ -66,12 +70,12 @@ class NavBar extends Component {
                 alt="Cablink"
               />
             </Navbar.Brand>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" onClick={this.navbarClicked}/>
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" onClick={this.navbarToggle}/>
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="mr-auto">
-                <Nav.Link as={Link} onClick={this.navbarClicked} to="/proj/co600/project/c37_cablink/">Home</Nav.Link>
-                <Nav.Link as={Link} onClick={this.navbarClicked} to="/proj/co600/project/c37_cablink/booking">Booking</Nav.Link>
-                <Nav.Link as={Link} onClick={this.navbarClicked} to="/proj/co600/project/c37_cablink/help">Help</Nav.Link>
+                <Nav.Link onClick={this.navbarClosed} as={Link} to="/proj/co600/project/c37_cablink/">Home</Nav.Link>
+                <Nav.Link onClick={this.navbarClosed} as={Link} to="/proj/co600/project/c37_cablink/booking">Booking</Nav.Link>
+                <Nav.Link onClick={this.navbarClosed} as={Link} to="/proj/co600/project/c37_cablink/help">Help</Nav.Link>
               </Nav>
               <div className="text-center">
                 {showLoginButton}
