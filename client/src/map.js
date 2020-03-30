@@ -84,7 +84,6 @@ class GoogleMap extends Component {
   // centers the map to specified location
   centerToPoint = (lat, lng) => {
     const latLng = new this.state.maps.LatLng(parseFloat(lat), parseFloat(lng)); // Makes a latlng
-    //this.state.map.setZoom(15); zoom in not smooth will fix later
     this.state.map.panTo(latLng);
   }
 

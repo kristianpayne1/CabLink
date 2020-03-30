@@ -23,7 +23,8 @@ class DriverListing extends Component {
             this.callAPI(driver, function (err, dist, time, path) {
                 if (!err) {
                     // calculate trip price 
-                    let price = driver.base_charge + ((driver.mile_charge / 5280) * (self.props.distance.value + dist.value));
+                    console.log((self.props.distance.value + dist.value));
+                    let price = driver.base_charge + (driver.mile_charge * (self.props.distance.value + dist.value) / 1609 );
                     price = price.toFixed(2);
                     let price_text = '£' + price;
                     // if driver is already loaded, update their info else add them.
