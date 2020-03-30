@@ -133,7 +133,7 @@ class SideBar extends Component {
                             Payment
                         </Card.Header>
                         <Accordion.Collapse eventKey="3">
-                            <Card.Body>
+                            <Card.Body style={{ 'maxHeight': '64vh', 'overflowY': 'auto' }}>
                                 <ConfirmBooking
                                     pickupLocation={this.props.pickupLocation}
                                     dropoffLocation={this.props.dropoffLocation}

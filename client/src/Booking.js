@@ -252,7 +252,8 @@ class Booking extends Component {
         }).then(function (data) {
             // make booking if route POST successful
             // TODO: Remove this when Tom is finished with payment stuff
-            let userID = self.props.activeUser ? self.props.activeUser.userID : 1;
+            console.log(self.props);
+            let userID = self.props.activeUser.lenth > 0 ? self.props.activeUser.userID : 1;
             // get the current date
             let date = new Date();
             let currentDate = new Date();

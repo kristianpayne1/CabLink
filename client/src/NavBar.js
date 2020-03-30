@@ -9,15 +9,23 @@ import { Link } from "react-router-dom";
 
 // Navigation bar 
 class NavBar extends Component {
+  state = {
+    collapsed: false,
+  }
 
   // when login is clicked show login modal
   loginClicked = () => {
+    this.navbarClicked();
     this.props.handleShow();
   }
 
   // when account button clicked show account
   accountClicked = (eventKey) => {
     this.props.handleAccountShow(eventKey);
+  }
+
+  navbarClicked = () => {
+    this.setState({collapsed: !this.state.collapsed});
   }
 
   render() {
@@ -48,7 +56,7 @@ class NavBar extends Component {
     return (
       <div>
         <div>
-          <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+          <Navbar expanded={this.state.collapsed} expand="lg" bg="light" variant="light">
             <Navbar.Brand as={Link} to="/proj/co600/project/c37_cablink/">
               <img
                 src={require('./images/logo.png')}
@@ -58,12 +66,12 @@ class NavBar extends Component {
                 alt="Cablink"
               />
             </Navbar.Brand>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" onClick={this.navbarClicked}/>
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="mr-auto">
-                <Nav.Link as={Link} to="/proj/co600/project/c37_cablink/">Home</Nav.Link>
-                <Nav.Link as={Link} to="/proj/co600/project/c37_cablink/booking">Booking</Nav.Link>
-                <Nav.Link as={Link} to="/proj/co600/project/c37_cablink/help">Help</Nav.Link>
+                <Nav.Link as={Link} onClick={this.navbarClicked} to="/proj/co600/project/c37_cablink/">Home</Nav.Link>
+                <Nav.Link as={Link} onClick={this.navbarClicked} to="/proj/co600/project/c37_cablink/booking">Booking</Nav.Link>
+                <Nav.Link as={Link} onClick={this.navbarClicked} to="/proj/co600/project/c37_cablink/help">Help</Nav.Link>
               </Nav>
               <div className="text-center">
                 {showLoginButton}

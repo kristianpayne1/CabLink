@@ -24,7 +24,7 @@ class DriverListing extends Component {
                 if (!err) {
                     // calculate trip price 
                     let price = driver.base_charge + ((driver.mile_charge / 5280) * (self.props.distance.value + dist.value));
-                    price = Math.round(price * 100) / 100;
+                    price = price.toFixed(2);
                     let price_text = '£' + price;
                     // if driver is already loaded, update their info else add them.
                     let found = self.checkIfLoaded(driver);

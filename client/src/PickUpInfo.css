@@ -13,13 +13,14 @@
 }
 .pickupinfo:hover{
     cursor:pointer;
-    height:9rem;
+    height:fit-content;
     transition:height 0.5s;
 }
 .buttons{
     display:flex;
     justify-content:center;
     margin-top:0.5rem;
+    margin-bottom: 0.5rem;
 }
 .leftB,.rightB{
     width:80px;
