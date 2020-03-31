@@ -17,7 +17,7 @@ const validateForm = (errors) => {
 
 // for when user is making payment to complete booking
 class Payment extends Component {
-    
+
     constructor(pays) {
         super(pays);
         this.state = {
@@ -114,12 +114,12 @@ class Payment extends Component {
                 errors.GuestpaymentFormCardCVV =
                     validcvvRegex.test(value)
                         ? ''
-                        :'The CVV must be 3 digits long!'
+                        : 'The CVV must be 3 digits long!'
                 break;
             case 'GuestpaymentFormCardName':
                 errors.GuestpaymentFormCardName =
                     validnameinRegex.test(value)
-                        ?''
+                        ? ''
                         : 'Cardholder name is required';
                 break;
             default:
@@ -149,74 +149,76 @@ class Payment extends Component {
     paymentSuccess = () => {
         this.props.makeBooking();
     }
-    
-    getAccountID(){
+
+    getAccountID() {
         let self = this;
-        fetch(process.env.REACT_APP_SERVER+'/account/get/user/'+this.props.activeUser.userID, {
-          method: 'GET'
+        fetch(process.env.REACT_APP_SERVER + '/account/get/user/' + this.props.activeUser.userID, {
+            method: 'GET'
         }).then(function (response) {
-          if (response.status >= 400) {
-            throw new Error("Bad response from server");
-          }
-          return response.json();
+            if (response.status >= 400) {
+                throw new Error("Bad response from server");
+            }
+            return response.json();
         }).then(function (data) {
             console.log(data);
             let accountID = data[0].accountID;
             self.getBankDetails(accountID);
         }).catch(err => {
-          console.log('caught it!', err);
+            console.log('caught it!', err);
         });
     }
 
-    getBankDetails(accountID){
+    getBankDetails(accountID) {
         console.log(this.props);
         let self = this;
-        fetch(process.env.REACT_APP_SERVER+'/paymentdetails/get/'+accountID, {
-          method: 'GET'
+        fetch(process.env.REACT_APP_SERVER + '/paymentdetails/get/' + accountID, {
+            method: 'GET'
         }).then(function (response) {
-          if (response.status >= 400) {
-            throw new Error("Bad response from server");
-          }
-          return response.json();
+            if (response.status >= 400) {
+                throw new Error("Bad response from server");
+            }
+            return response.json();
         }).then(function (data) {
             console.log(data);
-            if(data.length>0){
-            self.setState({Paymentdetails:data[0]}); 
-            let billingAddressID = data[0].billingAddressID
-            self.getBillingAd(billingAddressID);    
-            }      
+            if (data.length > 0) {
+                self.setState({ Paymentdetails: data[0] });
+                let billingAddressID = data[0].billingAddressID
+                self.getBillingAd(billingAddressID);
+            }
         }).catch(err => {
-          console.log('caught it!', err);
+            console.log('caught it!', err);
         });
     }
 
-    getBillingAd(billingAddressID){
+    getBillingAd(billingAddressID) {
         console.log(this.props);
         let self = this;
-        fetch(process.env.REACT_APP_SERVER+'/billingAddress/get/'+billingAddressID, {
-          method: 'GET'
+        fetch(process.env.REACT_APP_SERVER + '/billingAddress/get/' + billingAddressID, {
+            method: 'GET'
         }).then(function (response) {
-          if (response.status >= 400) {
-            throw new Error("Bad response from server");
-          }
-          return response.json();
+            if (response.status >= 400) {
+                throw new Error("Bad response from server");
+            }
+            return response.json();
         }).then(function (data) {
             console.log(data);
-            self.setState({Billingaddress:data[0]});            
+            self.setState({ Billingaddress: data[0] });
         }).catch(err => {
-          console.log('caught it!', err);
+            console.log('caught it!', err);
         });
     }
-    componentDidMount(){
-        
-        if(this.props.loggedIn){console.log(this.props);
+    componentDidMount() {
+
+        if (this.props.loggedIn) {
+            console.log(this.props);
             this.getAccountID()
         }
     }
-    componentDidUpdate(prevProps){
-        
-        if(this.props.loggedIn !== prevProps.loggedIn){
-            if(this.props.loggedIn){console.log("update" + this.props);
+    componentDidUpdate(prevProps) {
+
+        if (this.props.loggedIn !== prevProps.loggedIn) {
+            if (this.props.loggedIn) {
+                console.log("update" + this.props);
                 this.getAccountID()
             }
         }
@@ -246,7 +248,7 @@ class Payment extends Component {
                 <br />
                 <h5>Payment failed</h5>
                 <p>Please try again.</p>
-            </div>
+            </div>;
         let paymentForm = (this.state.Paymentdetails.length === 0) ?
             <div>
                 <Modal.Header closeButton>
@@ -256,7 +258,7 @@ class Payment extends Component {
                     <Form.Row>
                         <Form.Group as={Col} controlId="GuestpaymentFormCardNo">
                             <Form.Label>Card Number</Form.Label>
-                            <Form.Control type="cardNo" placeholder="Enter your card Number" name="GuestpaymentFormCardNo" maxLength={16} onChange={this.handleChange}/>
+                            <Form.Control type="cardNo" placeholder="Enter your card Number" name="GuestpaymentFormCardNo" maxLength={16} onChange={this.handleChange} />
                             {errors.GuestpaymentFormCardNo.length > 0 &&
                                 <span className='error'>{errors.GuestpaymentFormCardNo}</span>}
                         </Form.Group>
@@ -270,13 +272,13 @@ class Payment extends Component {
                     <Form.Row>
                         <Form.Group as={Col} controlId="GuestpaymentFormCardName">
                             <Form.Label>Cardholder Name</Form.Label>
-                            <Form.Control type="cardName" placeholder="Cardholder Name" name="GuestpaymentFormCardName" onChange={this.handleChange}/>
+                            <Form.Control type="cardName" placeholder="Cardholder Name" name="GuestpaymentFormCardName" onChange={this.handleChange} />
                             {errors.GuestpaymentFormCardName.length > 0 &&
                                 <span className='error'>{errors.GuestpaymentFormCardName}</span>}
                         </Form.Group>
                         <Form.Group as={Col} controlId="GuestpaymentFormCardCVV">
                             <Form.Label>CVV</Form.Label>
-                            <Form.Control type="cardCVV" placeholder="CVV" name="GuestpaymentFormCardCVV" maxLength={3} onChange={this.handleChange}/>
+                            <Form.Control type="cardCVV" placeholder="CVV" name="GuestpaymentFormCardCVV" maxLength={3} onChange={this.handleChange} />
                             {errors.GuestpaymentFormCardCVV.length > 0 &&
                                 <span className='error'>{errors.GuestpaymentFormCardCVV}</span>}
                         </Form.Group>
@@ -316,7 +318,7 @@ class Payment extends Component {
                         </Form.Group>
                         <Form.Group as={Col} controlId="GuestpaymentFormCity">
                             <Form.Label>City/County</Form.Label>
-                            <Form.Control type="cityCounty" placeholder="City / County" name="GuestpaymentFormCity" onChange={this.handleChange}/>
+                            <Form.Control type="cityCounty" placeholder="City / County" name="GuestpaymentFormCity" onChange={this.handleChange} />
                             {errors.GuestpaymentFormCity.length > 0 &&
                                 <span className='error'>{errors.GuestpaymentFormCity}</span>}
                         </Form.Group>
@@ -358,13 +360,13 @@ class Payment extends Component {
                     <Form.Row>
                         <Form.Group as={Col} controlId="GuestpaymentFormCardName">
                             <Form.Label>Cardholder Name</Form.Label>
-                            <Form.Control type="cardName" placeholder="Cardholder Name" name="GuestpaymentFormCardName" onChange={this.handleChange} value={this.state.Paymentdetails.cardHolderName} readOnly/>
+                            <Form.Control type="cardName" placeholder="Cardholder Name" name="GuestpaymentFormCardName" onChange={this.handleChange} value={this.state.Paymentdetails.cardHolderName} readOnly />
                             {errors.GuestpaymentFormCardName.length > 0 &&
                                 <span className='error'>{errors.GuestpaymentFormCardName}</span>}
                         </Form.Group>
                         <Form.Group as={Col} controlId="GuestpaymentFormCardCVV">
                             <Form.Label>CVV</Form.Label>
-                            <Form.Control type="cardCVV" placeholder="CVV" name="GuestpaymentFormCardCVV" maxLength={3} onChange={this.handleChange}/>
+                            <Form.Control type="cardCVV" placeholder="CVV" name="GuestpaymentFormCardCVV" maxLength={3} onChange={this.handleChange} />
                             {errors.GuestpaymentFormCardCVV.length > 0 &&
                                 <span className='error'>{errors.GuestpaymentFormCardCVV}</span>}
                         </Form.Group>
@@ -398,19 +400,19 @@ class Payment extends Component {
                     <Form.Row>
                         <Form.Group as={Col} controlId="GuestpaymentFormTown">
                             <Form.Label>City</Form.Label>
-                            <Form.Control type="city" placeholder="city" name="GuestpaymentFormTown" onChange={this.handleChange} value={this.state.Billingaddress.city} readOnly/>
+                            <Form.Control type="city" placeholder="city" name="GuestpaymentFormTown" onChange={this.handleChange} value={this.state.Billingaddress.city} readOnly />
                             {errors.GuestpaymentFormTown.length > 0 &&
                                 <span className='error'>{errors.GuestpaymentFormTown}</span>}
                         </Form.Group>
                         <Form.Group as={Col} controlId="GuestpaymentFormCity">
                             <Form.Label>County</Form.Label>
-                            <Form.Control type="County" placeholder="County" name="GuestpaymentFormCity" onChange={this.handleChange}value={this.state.Billingaddress.county} readOnly/>
+                            <Form.Control type="County" placeholder="County" name="GuestpaymentFormCity" onChange={this.handleChange} value={this.state.Billingaddress.county} readOnly />
                             {errors.GuestpaymentFormCity.length > 0 &&
                                 <span className='error'>{errors.GuestpaymentFormCity}</span>}
                         </Form.Group>
                         <Form.Group as={Col} controlId="GuestpaymentFormPostCode">
                             <Form.Label>PostCode</Form.Label>
-                            <Form.Control type="postCode" placeholder="PostCode" name="GuestpaymentFormPostCode" onChange={this.handleChange} value={this.state.Billingaddress.postcode} readOnly/>
+                            <Form.Control type="postCode" placeholder="PostCode" name="GuestpaymentFormPostCode" onChange={this.handleChange} value={this.state.Billingaddress.postcode} readOnly />
                             {errors.GuestpaymentFormPostCode.length > 0 &&
                                 <span className='error'>{errors.GuestpaymentFormPostCode}</span>}
                         </Form.Group>
@@ -424,20 +426,19 @@ class Payment extends Component {
                         Close
                     </Button>
                 </Modal.Footer>
-            </div>
+            </div>;
+        let makePayment = !(this.props.processingPayment) ?
+            paymentForm : <div style={{ 'textAlign': 'center' }}>
+                {processing}
+            </div>;
         return (
             <Modal show={this.props.handleShow} onHide={this.closeClicked} centered backdrop="static">
-                {paymentForm}
+                {makePayment}
             </Modal>
-            
+
         );
     }
 }
 
 
 export default Payment;
-
-
-//<div style={{ 'textAlign': 'center' }}>
-              //  {processing}
-              //  </div>
