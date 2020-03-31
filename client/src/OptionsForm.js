@@ -32,9 +32,13 @@ class OptionsForm extends Component {
                         <br/><br/>
                         <Form.Check
                             label="Additional Luggage?"
+                            type="switch"
+                            id="switch-luggage"
                             onChange={this.handleLuggageChange}
                         />
                         <Form.Check
+                            type="switch"
+                            id="switch-disabled"
                             label="Disability Requirements?"
                             onChange={this.handleDisabilityChange}
                         />

@@ -27,7 +27,7 @@ class DriverCard extends Component {
                     <Card.Title>{this.props.name}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">{this.props.company}</Card.Subtitle>
                     <Card.Text>
-                        Mobile: {this.props.mobileNo} {''}
+                        Mobile: {this.props.mobileNo} {''} <br />
                         Price: {this.props.price} <br />
                         Distance Away: {this.props.distance} <br />
                         Response Time: {this.props.response}
