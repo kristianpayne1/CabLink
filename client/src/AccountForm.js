@@ -7,6 +7,11 @@ import hash from 'object-hash';
 
 // View account details
 class AccountForm extends Component {
+    state = {
+        emailClicked: false,
+        passwordClicked: false
+    }
+
     handleEditSubmit = event => {
         event.preventDefault();
         if (this.emailInput.current != null){
@@ -18,6 +23,22 @@ class AccountForm extends Component {
             this.updatePassword(password);
         }
         //this.props.handleEditClose();
+    }
+
+    emailEditClicked = () => {
+        if(this.state.emailClicked == false){
+            this.setState({emailClicked: true});
+        } else {
+            this.setState({emailClicked: false});
+        }
+    }
+
+    passwordEditClicked = () => {
+        if(this.state.passwordClicked == false){
+            this.setState({passwordClicked: true});
+        } else {
+            this.setState({passwordClicked: false});
+        }
     }
 
     updatePassword(password){
@@ -32,6 +53,54 @@ class AccountForm extends Component {
         this.emailInput = React.createRef();
         this.passwordInput = React.createRef();
         console.log(this.props.activeUser);
+        let email = this.state.emailClicked ? <>
+            <label>Email Address</label>
+            <InputGroup classname="email">
+                <Form.Group>
+                    <Form.Control plaintext readOnly type="email" placeholder={this.props.activeUser.email} />
+                </Form.Group>
+                <InputGroup.Append>
+                    <Button variant="outline-primary" onClick={this.emailEditClicked}>Submit</Button>
+                    <Button variant="outline-danger" onClick={this.emailEditClicked}>Cancel</Button>
+               </InputGroup.Append>
+            </InputGroup>
+        </> : <>
+            <label>Email Address</label>
+            <InputGroup classname="email">
+                <Form.Group>
+                    <Form.Control plaintext readOnly type="email" placeholder={this.props.activeUser.email} />
+                </Form.Group>
+                <InputGroup.Append>
+                    <Button variant="outline-success" onClick={this.emailEditClicked}>Edit</Button>
+                </InputGroup.Append>
+            </InputGroup>
+        </>;
+
+        let password = this.state.passwordClicked ? <>
+            <label>Password</label>
+            <InputGroup classname="password">
+                <Form.Group>
+                    <Form.Control type="password" placeholder="Enter a new Password"/>
+                </Form.Group>   
+                <Form.Group>
+                    <Form.Control type="password" placeholder="Confirm your Password"/>
+                </Form.Group>
+                <InputGroup.Append>
+                    <Button variant="outline-primary" onClick={this.passwordEditClicked}>Submit</Button>
+                    <Button variant="outline-danger" onClick={this.passwordEditClicked}>Cancel</Button>
+                </InputGroup.Append>
+            </InputGroup>
+        </> : <>
+            <label>Password</label>
+            <InputGroup classname="password">
+                <Form.Group>
+                    <Form.Control plaintext readOnly type="password" placeholder="••••••••"/>
+                </Form.Group>   
+                <InputGroup.Append>
+                    <Button variant="outline-success" onClick={this.passwordEditClicked}>Edit</Button>
+                </InputGroup.Append>
+            </InputGroup>
+        </>;
         // if edit button is clicked enable form otherwise disable.
         let showPaymentForm = this.props.editClicked ? <>
             <Form>
@@ -48,27 +117,14 @@ class AccountForm extends Component {
                     <Form.Label>Confirm Password</Form.Label>
                     <Form.Control type="password" placeholder="Confirm your password" />
                 </Form.Group>
-                <Button variant="outline-primary" onClick={this.handleEditSubmit}>Submit</Button>
             </Form>
         </> : <>
             <Form>
-                <label>Email Address</label>
-                <InputGroup classname="email">
-                    <Form.Group>
-                        <Form.Control plaintext readOnly type="email" placeholder={this.props.activeUser.email} />
-                    </Form.Group>
-                    <InputGroup.Append>
-                        <Button variant="outline-success">Edit</Button>
-                    </InputGroup.Append>
-                </InputGroup>
+                {email}
 
-                <Form.Group>
-                    <Form.Label>New Password</Form.Label>
-                    <Form.Control plaintext readOnly type="password" placeholder="••••••••"/>
-                </Form.Group>   
-                <Button variant="outline-success" onClick={this.props.handleEditShow}>Edit</Button>
+                {password}
             </Form>
-        </>
+        </>;
         return (
             <div>
                 {showPaymentForm}
