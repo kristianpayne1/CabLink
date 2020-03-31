@@ -26,7 +26,7 @@ class AccountForm extends Component {
     }
 
     emailEditClicked = () => {
-        if(this.state.emailClicked == false){
+        if(this.state.emailClicked === false){
             this.setState({emailClicked: true});
         } else {
             this.setState({emailClicked: false});
@@ -34,7 +34,7 @@ class AccountForm extends Component {
     }
 
     passwordEditClicked = () => {
-        if(this.state.passwordClicked == false){
+        if(this.state.passwordClicked === false){
             this.setState({passwordClicked: true});
         } else {
             this.setState({passwordClicked: false});
