@@ -54,6 +54,14 @@ router.post('/update/:id', function(req, res, next) {
   });
 });
 
+router.post('/update/email/:id', function(req, res, next){
+  mysqlconnection.query('UPDATE c37_cablink.User SET email="'+req.body.email+'" WHERE userID='+req.params.id+';',
+  function(error, results) {
+    if(error) throw error;
+    res.send(JSON.stringify(results));
+  });
+});
+
 // delete an user with given id
 // Change to accept id through req.body
 router.get('/delete/:id', function(req, res, next) {
