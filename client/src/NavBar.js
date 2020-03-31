@@ -21,6 +21,7 @@ class NavBar extends Component {
 
   // when account button clicked show account
   accountClicked = (eventKey) => {
+    this.navbarClosed();
     this.props.handleAccountShow(eventKey);
   }
 
