@@ -72,7 +72,7 @@ class App extends Component {
         <Account handleAccount={this.state.showAccount} handleAccountClose={this.handleAccountClose.bind(this)} activeUser={this.state.activeUser} eventKey={this.state.eventKey} editClicked={this.state.editClicked} handleEditShow={this.handleEditShow.bind(this)} handleEditClose={this.handleEditClose.bind(this)} />
         <div className="content">
           <Route exact path="/proj/co600/project/c37_cablink/" component={Home} />
-    <Route path="/proj/co600/project/c37_cablink/booking" render={(props) => <Booking {...props} activeUser={this.state.activeUser} loggedIn={this.state.loggedIn}/>}/>
+          <Route path="/proj/co600/project/c37_cablink/booking" render={(props) => <Booking {...props} activeUser={this.state.activeUser} loggedIn={this.state.loggedIn}/>}/>
           <Route path="/proj/co600/project/c37_cablink/help" component={Help} />
           <Route path="/proj/co600/project/c37_cablink/pickup/:id" render={(props) => <DriverPickup {...props} />} />
         </div>

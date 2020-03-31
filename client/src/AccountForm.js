@@ -2,16 +2,30 @@ import React, { Component } from 'react';
 // react components
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import InputGroup from 'react-bootstrap/InputGroup';
 import hash from 'object-hash';
 
 // View account details
 class AccountForm extends Component {
     handleEditSubmit = event => {
         event.preventDefault();
-        
-        let email = this.emailInput.current.value;
-        let password = hash.sha1(this.passwordInput.current.value);
+        if (this.emailInput.current != null){
+            let email = this.emailInput.current.value;
+            this.updateEmail(email);
+        } 
+        if (this.emailInput.current != null){
+            let password = hash.sha1(this.passwordInput.current.value);
+            this.updatePassword(password);
+        }
         //this.props.handleEditClose();
+    }
+
+    updatePassword(password){
+
+    }
+
+    updateEmail(email){
+
     }
 
     render() {
@@ -38,10 +52,15 @@ class AccountForm extends Component {
             </Form>
         </> : <>
             <Form>
-                <Form.Group>
-                    <Form.Label>Email Address</Form.Label>
-                    <Form.Control plaintext readOnly type="email" placeholder={this.props.activeUser.email} />
-                </Form.Group>
+                <label>Email Address</label>
+                <InputGroup classname="email">
+                    <Form.Group>
+                        <Form.Control plaintext readOnly type="email" placeholder={this.props.activeUser.email} />
+                    </Form.Group>
+                    <InputGroup.Append>
+                        <Button variant="outline-success">Edit</Button>
+                    </InputGroup.Append>
+                </InputGroup>
 
                 <Form.Group>
                     <Form.Label>New Password</Form.Label>

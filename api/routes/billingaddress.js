@@ -50,8 +50,9 @@ router.get('/delete/:id', function(req, res, next) {
 
 router.post('/new', function(req, res, next) {
     mysqlconnection.query(
-        'INSERT INTO c37_cablink.Billing_Address (addressLine1, addressLine2, city, county, postcode) VALUES ("'
-        +req.body.addressLine1+'", "'+req.body.addressLine2+'", "'+req.body.city+'", "'+req.body.county+'", "'+req.body.postcode+'");', (error, results) => {
+        'INSERT INTO c37_cablink.Billing_Address (firstName, lastName, addressLine1, addressLine2, city, county, postcode) VALUES ("'
+        +req.body.firstName+'", "'+req.body.lastName+'", "'+req.body.addressLine1+'", "'+req.body.addressLine2+'", "'+req.body.city+'", "'+req.body.county+'", "'
+        +req.body.postcode+'");', (error, results) => {
             if(error) throw error;
             res.send(JSON.stringify(results));
         });
