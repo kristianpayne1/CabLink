@@ -57,7 +57,7 @@ class AccountForm extends Component {
             <label>Email Address</label>
             <InputGroup classname="email">
                 <Form.Group>
-                    <Form.Control plaintext readOnly type="email" placeholder={this.props.activeUser.email} />
+                    <Form.Control type="email" placeholder={this.props.activeUser.email} />
                 </Form.Group>
                 <InputGroup.Append>
                     <Button variant="outline-primary" onClick={this.emailEditClicked}>Submit</Button>
