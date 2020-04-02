@@ -44,7 +44,8 @@ class RecentBookings extends Component{
             for(let x = 0; x < this.state.bookingsFound.length; x++){
                 bookings.push(<Card>
                     <Accordion.Toggle as={Card.Header} eventKey={x}>
-                        Booking: {x+1}
+                        Booking: {x+1}:{" "}
+                        {this.state.bookingsFound[x].departureDateTime}
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey={x}>
                         <Card.Body>

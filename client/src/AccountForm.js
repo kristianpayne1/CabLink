@@ -58,7 +58,7 @@ class AccountForm extends Component {
     }
 
     updatePassword(password){
-        if(password != this.props.activeUser.password){
+        if(password !== this.props.activeUser.password){
             let passwordData = {password};
             let self = this;
             fetch(process.env.REACT_APP_SERVER+"/user/update/password/"+self.props.activeUser.userID, {
@@ -84,7 +84,7 @@ class AccountForm extends Component {
     }
 
     updateEmail(email){
-        if(email != this.props.activeUser.email){
+        if(email !== this.props.activeUser.email){
             let emailData = {email};
             let self = this;
             fetch(process.env.REACT_APP_SERVER+"/user/update/email/"+self.props.activeUser.userID, {
