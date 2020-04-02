@@ -160,30 +160,6 @@ class AccountForm extends Component {
                 </InputGroup.Append>
             </InputGroup>
         </>;
-        // if edit button is clicked enable form otherwise disable.
-        let showPaymentForm = this.props.editClicked ? <>
-            <Form>
-                <Form.Group controlId="accountFormEmail">
-                    <Form.Label>Email Address</Form.Label>
-                    <Form.Control type="email" placeholder={this.props.activeUser.email} defaultValue={this.props.activeUser.email}/>
-                </Form.Group>
-
-                <Form.Group controlId="accountFormPassword">
-                    <Form.Label>New Password</Form.Label>
-                    <Form.Control type="password" placeholder="Enter a new Password" />
-                </Form.Group>   
-                <Form.Group>
-                    <Form.Label>Confirm Password</Form.Label>
-                    <Form.Control type="password" placeholder="Confirm your password" />
-                </Form.Group>
-            </Form>
-        </> : <>
-            <Form>
-                {email}
-
-                {password}
-            </Form>
-        </>;
         return (
             <div>
                 <Form>
