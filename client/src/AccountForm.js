@@ -14,11 +14,11 @@ class AccountForm extends Component {
 
     handleEditSubmit = event => {
         event.preventDefault();
-        if (this.emailInput.current != null){
+        if (this.emailInput.current !== null){
             let email = this.emailInput.current.value;
             this.updateEmail(email);
         } 
-        if (this.emailInput.current != null){
+        if (this.emailInput.current !== null){
             let password = hash.sha1(this.passwordInput.current.value);
             this.updatePassword(password);
         }
@@ -111,9 +111,7 @@ class AccountForm extends Component {
 
     render() {
         this.emailInput = React.createRef();
-        let submit = "Submit";
         this.passwordInput = React.createRef();
-        console.log(this.props.activeUser);
         let email = this.state.emailClicked ? <>
             <label>Email Address</label>
             <InputGroup classname="email">
@@ -127,7 +125,7 @@ class AccountForm extends Component {
             </InputGroup>
         </> : <>
             <label>Email Address</label>
-            <InputGroup classname="email">
+            <InputGroup className="email">
                 <Form.Group>
                     <Form.Control plaintext readOnly type="email" placeholder={this.props.activeUser.email} />
                 </Form.Group>
@@ -153,7 +151,7 @@ class AccountForm extends Component {
             </InputGroup>
         </> : <>
             <label>Password</label>
-            <InputGroup classname="password">
+            <InputGroup className="password">
                 <Form.Group>
                     <Form.Control plaintext readOnly type="password" placeholder="••••••••"/>
                 </Form.Group>   
@@ -188,7 +186,11 @@ class AccountForm extends Component {
         </>;
         return (
             <div>
-                {showPaymentForm}
+                <Form>
+                    {email}
+
+                    {password}
+                </Form>
             </div>  
             
         );

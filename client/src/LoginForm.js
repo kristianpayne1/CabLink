@@ -71,7 +71,6 @@ class LoginForm extends Component {
             self.props.handleLoginComplete(activeUser, true);
             self.props.closeClicked();
           } 
-
         }).catch(err => {
           console.log('caught it!', err);
         })

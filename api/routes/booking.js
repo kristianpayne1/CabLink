@@ -23,6 +23,14 @@ router.get('/get/:id', function (req, res, next) {
   });
 });
 
+// get booking by user id
+router.get('/get/user/:id', function (req, res, next) {
+  mysqlconnection.query('SELECT * FROM c37_cablink.Booking WHERE userID = ' + req.params.id + ';', (error, results) => {
+    if (error) throw error;
+    res.send(results);
+  });
+});
+
 // get booking by booking id
 router.get('/get/pickup/:id', function (req, res, next) {
   mysqlconnection.query('SELECT * FROM c37_cablink.Booking INNER JOIN c37_cablink.Driver ON Driver.driverID = Booking.driverID INNER JOIN c37_cablink.Route ON Route.routeID=Booking.routeID INNER JOIN c37_cablink.Cab_Company ON Cab_Company.companyID = Driver.companyID INNER JOIN c37_cablink.Car ON Car.driverID = Driver.driverID WHERE bookingID = ' + req.params.id + ';', (error, results) => {
