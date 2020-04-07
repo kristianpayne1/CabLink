@@ -8,6 +8,7 @@ class RecentBookings extends Component{
         bookingsFound: [],
         driver: [],
         driverName: "",
+        driverList: [],
         bookings: []
     }
 
@@ -28,7 +29,7 @@ class RecentBookings extends Component{
         })
     }
 
-    getDriverName(booking){
+    getDriverName= async (callback, booking) => {
         let self = this;
         fetch(process.env.REACT_APP_SERVER+'/driver/get/'+booking.driverID, {
           method: 'GET'
@@ -40,15 +41,28 @@ class RecentBookings extends Component{
         }).then(function (data) {
             self.setState({driver: data});
             let driverName = self.state.driver[0].firstname + " " + self.state.driver[0].lastname;
-            self.setState({driverName: driverName});
+            callback(driverName);
         }).catch(err => {
           console.log('caught it!', err);
         })
-        return self.state.driverName;
     }
 
+    getDrivers(){
+        let self = this;
+        fetch(process.env.REACT_APP_SERVER+'/driver/get', {
+            method: 'GET'
+        }).then(function (response) {
+            if (response.status >= 400) {
+                throw new Error("Bad response from server");
+            }
+            return response.json();
+        }).then(function (data) {
+            self.setState({driverList: data});
+        })
+    }
+
+
     loadBookings(){
-        this.getBookings();
         let bookings = [];
         if(this.state.bookingsFound !== null){
             if(this.state.bookingsFound.length === 0){
@@ -62,23 +76,29 @@ class RecentBookings extends Component{
                         </Card.Body>
                     </Accordion.Collapse>
                 </Card>);
+            } else {
+                for(let x = 0; x < this.state.bookingsFound.length; x++){
+                    let dateTime = this.state.bookingsFound[x].departureDateTime;
+                    let time = dateTime.slice(0,19).replace('T',' ').split(/[- :]/);
+                    let departureDate = new Date(Date.UTC(time[0], time[1] - 1, time[2], time[3], time[4], time[5]));
+                    let self = this;
+                    this.getDriverName(function (driverName) {
+                        bookings.push(<Card key={x}>
+                            <Accordion.Toggle as={Card.Header} eventKey={x}>
+                                {departureDate.toDateString() + " "}@{" " + departureDate.getHours() + ':' + departureDate.getMinutes() + ':' + departureDate.getSeconds()}
+                            </Accordion.Toggle>
+                            <Accordion.Collapse eventKey={x}>
+                                <Card.Body>
+                                    Your Booking cost you £{self.state.bookingsFound[x].price}
+                                    <br/>
+                                    Your Driver was {driverName}
+                                </Card.Body>
+                            </Accordion.Collapse>
+                        </Card>);
+                    }, this.state.bookingsFound[x]);
+                }
             }
-            for(let x = 0; x < this.state.bookingsFound.length; x++){
-                bookings.push(<Card>
-                    <Accordion.Toggle as={Card.Header} eventKey={x}>
-                        Booking: {x+1}:{" "}
-                        {this.state.bookingsFound[x].departureDateTime}
-                    </Accordion.Toggle>
-                    <Accordion.Collapse eventKey={x}>
-                        <Card.Body>
-                            Your Booking cost you £{this.state.bookingsFound[x].price}
-                            <br/>
-                            Your Driver was {this.getDriverName(this.state.bookingsFound[x])}
-                        </Card.Body>
-                    </Accordion.Collapse>
-                </Card>);
-            }
-            return bookings;
+            this.setState({bookings: bookings});
         } else {
             bookings.push(<Card>
                 <Accordion.Toggle as={Card.Header} eventKey={0}>
@@ -90,21 +110,22 @@ class RecentBookings extends Component{
                     </Card.Body>
                 </Accordion.Collapse>
             </Card>);
-            return bookings;
+            this.setState({bookings: bookings});
         }
     }
 
     componentDidMount(){
-        let bookings = this.loadBookings();
-        this.setState({bookings: bookings});
+        this.getBookings();
     }
 
     render(){
         let bookings = this.state.bookings;
         return(
-            <Accordion>
-                {bookings}
-            </Accordion>
+            <div style={{'maxHeight': '64vh', 'overflowY': 'auto'}}>
+                <Accordion defaultActiveKey={0}>
+                    {bookings}
+                </Accordion>
+            </div>
         );
     }
 }
