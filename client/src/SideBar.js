@@ -7,8 +7,6 @@ import DriverListing from './DriverListing.js';
 import CustomToggle from './CustomToggle.js';
 import ConfirmBooking from './ConfirmBooking.js';
 import OptionsForm from './OptionsForm.js';
-import Overlay from 'react-bootstrap/Overlay';
-import Tooltip from 'react-bootstrap/Tooltip';
 import "./SideBar.css";
 
 // sidebar used in booking page
@@ -19,13 +17,8 @@ class SideBar extends Component {
         this.toggleSidebar = React.createRef();
     }
 
-    state = {
-        show: true,
-    }
-
     toggleClicked = () => {
         this.props.toggleSidebar();
-        this.setState({show: false});
     }
 
     // lists all drivers in driver lsiting
@@ -163,14 +156,7 @@ class SideBar extends Component {
                         </Accordion.Collapse>
                     </Card>
                 </Accordion>
-                <Button variant="light" onClick={this.toggleClicked} className={sidebarButton} ref={this.sidebartoggle}>></Button>
-                <Overlay target={this.sidebartoggle} show={this.state.show} placement="right">
-                    {(props) => (
-                        <Tooltip id="overlay-example" {...props}>
-                            Click here to get started!
-                        </Tooltip>
-                    )}
-                </Overlay>
+                <Button variant="light" onClick={this.toggleClicked} className={sidebarButton}>></Button>
             </div>
         );
     }
