@@ -24,7 +24,7 @@
 .sidebar {
   position: absolute;
   top: 60px;
-  left: -280px;
+  left: -300px;
   height: 90vh;
   width: 300px;
   transition: left .3s ease-in-out;

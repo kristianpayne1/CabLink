@@ -61,6 +61,12 @@ class Booking extends Component {
         bookingID: 0,
     };
 
+    componentDidMount() {
+        if(window.screen.width > 768) {
+            this.setState({sidebarOpen: true});
+        }
+    }
+
     // toggles if sidebar is open or not when sidebar toggle button is clicked
     handleViewSidebar = () => {
         this.setState({ sidebarOpen: !this.state.sidebarOpen });
