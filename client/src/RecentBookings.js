@@ -5,7 +5,10 @@ import Accordion from 'react-bootstrap/Accordion';
 class RecentBookings extends Component{
     
     state = {
-        bookingsFound: []
+        bookingsFound: [],
+        driver: [],
+        driverName: "",
+        bookings: []
     }
 
     getBookings(){
@@ -23,6 +26,25 @@ class RecentBookings extends Component{
         }).catch(err => {
           console.log('caught it!', err);
         })
+    }
+
+    getDriverName(booking){
+        let self = this;
+        fetch(process.env.REACT_APP_SERVER+'/driver/get/'+booking.driverID, {
+          method: 'GET'
+        }).then(function (response) {
+          if (response.status >= 400) {
+            throw new Error("Bad response from server");
+          }
+          return response.json();
+        }).then(function (data) {
+            self.setState({driver: data});
+            let driverName = self.state.driver[0].firstname + " " + self.state.driver[0].lastname;
+            self.setState({driverName: driverName});
+        }).catch(err => {
+          console.log('caught it!', err);
+        })
+        return self.state.driverName;
     }
 
     loadBookings(){
@@ -49,7 +71,9 @@ class RecentBookings extends Component{
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey={x}>
                         <Card.Body>
-                            Details of Booking
+                            Your Booking cost you £{this.state.bookingsFound[x].price}
+                            <br/>
+                            Your Driver was {this.getDriverName(this.state.bookingsFound[x])}
                         </Card.Body>
                     </Accordion.Collapse>
                 </Card>);
@@ -70,8 +94,13 @@ class RecentBookings extends Component{
         }
     }
 
-    render(){
+    componentDidMount(){
         let bookings = this.loadBookings();
+        this.setState({bookings: bookings});
+    }
+
+    render(){
+        let bookings = this.state.bookings;
         return(
             <Accordion>
                 {bookings}
