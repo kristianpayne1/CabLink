@@ -324,7 +324,7 @@ class Payment extends Component {
                         </Form.Group>
                         <Form.Group as={Col} controlId="GuestpaymentFormPostCode">
                             <Form.Label>PostCode</Form.Label>
-                            <Form.Control type="postCode" placeholder="PostCode" name="GuestpaymentFormPostCode" onChange={this.handleChange} />
+                            <Form.Control type="postCode" placeholder="PostCode" name="GuestpaymentFormPostCode" maxLength={7} onChange={this.handleChange} />
                             {errors.GuestpaymentFormPostCode.length > 0 &&
                                 <span className='error'>{errors.GuestpaymentFormPostCode}</span>}
                         </Form.Group>
