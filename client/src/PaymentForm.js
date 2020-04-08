@@ -191,8 +191,19 @@ class PaymentForm extends Component {
                                     <Form>
                                         <Form.Group controlID="paymentFormName">
                                             <Form.Label>Card Name</Form.Label>
-                                            <Form.Control type="name" placeholder={self.state.paymentDetails[x].cardHolderName}/>
+                                            <Form.Control plaintext readOnly type="name" placeholder={self.state.paymentDetails[x].cardHolderName}/>
                                         </Form.Group>
+
+                                        <Form.Row>
+                                            <Form.Group as={Col} controlId="paymentFormCardNo">
+                                                <Form.Label>Card Number</Form.Label>
+                                                <Form.Control plaintext readOnly type="cardNo" placeholder={self.state.paymentDetails[x].cardNo}/>
+                                            </Form.Group>
+                                            <Form.Group as={Col} controlId="paymentFormCardExp">
+                                                <Form.Label>Card Expiry (MM/YY)</Form.Label>
+                                                <Form.Control plaintext readOnly type="cardExp" placeholder="MM/YY"/>
+                                            </Form.Group>
+                                        </Form.Row>
                                     </Form>
                                 </Card.Body>
                             </Accordion.Collapse>
@@ -223,6 +234,7 @@ class PaymentForm extends Component {
 
     render() {
         let paymentCards = this.state.paymentCards;
+        console.log(this.state.paymentCards);
         // Form references
         this.cardNameInput = React.createRef();
         this.cardNoInput = React.createRef();
