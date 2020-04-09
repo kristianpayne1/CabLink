@@ -3,6 +3,8 @@ import Spinner from 'react-bootstrap/Spinner';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import Button from 'react-bootstrap/Button';
 import './PickUpInfo.css';
+import { Link } from "react-router-dom";
+
 class PickupInfo extends Component {
     state = {
         hover: false,
@@ -42,7 +44,7 @@ class PickupInfo extends Component {
         // when user hovers over pickup info box show call and cancel buttons
         let buttons = this.state.hover ? <div className="buttons"><Button className="leftB" variant="outline-info" href={telephone}>Call</Button>{' '}<Button className="rightB" variant="outline-danger" onClick={this.props.handleCancelBooking}>Cancel</Button></div> : null;
         // if user has cancelled or pickup complete don't show cancel and call buttons and instead show home button
-        let cancelledButtons = ((this.props.cancelled || this.props.info.progress === 100) && this.state.hover) ? <div className="buttons"><Button variant="outline-primary">Return home</Button></div> : buttons;
+        let cancelledButtons = ((this.props.cancelled || this.props.info.progress === 100) && this.state.hover) ? <div className="buttons"><Button variant="outline-primary"  as={Link} to="/proj/co600/project/c37_cablink/">Return home</Button></div> : buttons;
         return (
             <div className="pickupinfo" onMouseEnter={this.onHover} onMouseLeave={this.onHover}>
                 <div>

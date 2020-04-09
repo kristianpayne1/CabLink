@@ -9,15 +9,28 @@ import { Link } from "react-router-dom";
 
 // Navigation bar 
 class NavBar extends Component {
+  state = {
+    collapsed: false,
+  }
 
   // when login is clicked show login modal
   loginClicked = () => {
+    this.navbarClosed();
     this.props.handleShow();
   }
 
   // when account button clicked show account
   accountClicked = (eventKey) => {
+    this.navbarClosed();
     this.props.handleAccountShow(eventKey);
+  }
+
+  navbarClosed = () => {
+    this.setState({collapsed: false});
+  }
+
+  navbarToggle = () => {
+    this.setState({collapsed: !this.state.collapsed});
   }
 
   render() {
@@ -48,8 +61,8 @@ class NavBar extends Component {
     return (
       <div>
         <div>
-          <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-            <Navbar.Brand as={Link} to="/proj/co600/project/c37_cablink/">
+          <Navbar expanded={this.state.collapsed} expand="lg" bg="light" variant="light">
+            <Navbar.Brand onClick={this.navbarClosed} as={Link} to="/proj/co600/project/c37_cablink/">
               <img
                 src={require('./images/logo.png')}
                 width="80"
@@ -58,12 +71,12 @@ class NavBar extends Component {
                 alt="Cablink"
               />
             </Navbar.Brand>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" onClick={this.navbarToggle}/>
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="mr-auto">
-                <Nav.Link as={Link} to="/proj/co600/project/c37_cablink/">Home</Nav.Link>
-                <Nav.Link as={Link} to="/proj/co600/project/c37_cablink/booking">Booking</Nav.Link>
-                <Nav.Link as={Link} to="/proj/co600/project/c37_cablink/help">Help</Nav.Link>
+                <Nav.Link onClick={this.navbarClosed} as={Link} to="/proj/co600/project/c37_cablink/">Home</Nav.Link>
+                <Nav.Link onClick={this.navbarClosed} as={Link} to="/proj/co600/project/c37_cablink/booking">Booking</Nav.Link>
+                <Nav.Link onClick={this.navbarClosed} as={Link} to="/proj/co600/project/c37_cablink/help">Help</Nav.Link>
               </Nav>
               <div className="text-center">
                 {showLoginButton}

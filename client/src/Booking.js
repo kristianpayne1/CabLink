@@ -61,6 +61,12 @@ class Booking extends Component {
         bookingID: 0,
     };
 
+    componentDidMount() {
+        if(window.screen.width > 768) {
+            this.setState({sidebarOpen: true});
+        }
+    }
+
     // toggles if sidebar is open or not when sidebar toggle button is clicked
     handleViewSidebar = () => {
         this.setState({ sidebarOpen: !this.state.sidebarOpen });
@@ -252,7 +258,8 @@ class Booking extends Component {
         }).then(function (data) {
             // make booking if route POST successful
             // TODO: Remove this when Tom is finished with payment stuff
-            let userID = self.props.activeUser ? self.props.activeUser.userID : 1;
+            console.log(self.props);
+            let userID = self.props.activeUser.lenth > 0 ? self.props.activeUser.userID : 1;
             // get the current date
             let date = new Date();
             let currentDate = new Date();
@@ -357,6 +364,8 @@ class Booking extends Component {
                     processingPayment={this.state.processingPayment}
                     paymentFailed={this.state.paymentFailed}
                     paymentSuccess={this.state.paymentSuccess}
+                    activeUser={this.props.activeUser}
+                    loggedIn={this.props.loggedIn}
                 />
                 <GoogleMap
                     drivers={this.state.drivers}

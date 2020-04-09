@@ -25,8 +25,8 @@ router.get('/get/:id', function(req, res, next) {
 
 // delete a payment detail with given id and card no
 // Change to accept id through req.body
-router.get('/delete/:id/:cardNo', function(req, res, next) {
-  mysqlconnection.query('DELETE FROM c37_cablink.Payment_Details WHERE accountID = '+req.params.id+' AND cardNo = '+req.params.cardNo+';', function (error, results) {
+router.get('/delete/:accountID/:billingAddressID', function(req, res, next) {
+  mysqlconnection.query('DELETE FROM c37_cablink.Payment_Details WHERE accountID = '+req.params.accountID+' AND billingAddressID = '+req.params.billingAddressID+';', function (error, results) {
       if(error) throw error;
       res.send(JSON.stringify(results));
   });

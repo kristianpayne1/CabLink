@@ -6,6 +6,7 @@ import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab';
 import AccountForm from './AccountForm.js';
 import PaymentForm from './PaymentForm.js';
+import RecentBookings from './RecentBookings.js';
 
 // modal contaning account details, payment details and recent bookings
 class Account extends Component {
@@ -30,7 +31,7 @@ class Account extends Component {
                             <PaymentForm activeUser={this.props.activeUser}></PaymentForm>
                         </Tab>
                         <Tab eventKey={3} title="View Recent Bookings">
-
+                            <RecentBookings activeUser={this.props.activeUser}></RecentBookings>
                         </Tab>
                     </Tabs>
                 </Modal.Body>

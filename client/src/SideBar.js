@@ -14,6 +14,11 @@ class SideBar extends Component {
     constructor(props) {
         super(props);
         this.DriverListing = React.createRef();
+        this.toggleSidebar = React.createRef();
+    }
+
+    toggleClicked = () => {
+        this.props.toggleSidebar();
     }
 
     // lists all drivers in driver lsiting
@@ -78,7 +83,7 @@ class SideBar extends Component {
                                     block={true}
                                     size="sm"
                                 />
-                                <OptionsForm setLuggage={this.props.setLuggage} setDisabled={this.props.setDisabled} setPassangers={this.props.setPassangers}/>
+                                <OptionsForm setLuggage={this.props.setLuggage} setDisabled={this.props.setDisabled} setPassangers={this.props.setPassangers} />
                                 <CustomToggle
                                     disabled={false}
                                     eventKey="2"
@@ -151,7 +156,7 @@ class SideBar extends Component {
                         </Accordion.Collapse>
                     </Card>
                 </Accordion>
-                <Button variant="light" onClick={this.props.toggleSidebar} className={sidebarButton}>></Button>
+                <Button variant="light" onClick={this.toggleClicked} className={sidebarButton}>></Button>
             </div>
         );
     }

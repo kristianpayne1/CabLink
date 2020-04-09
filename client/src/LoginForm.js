@@ -71,7 +71,6 @@ class LoginForm extends Component {
             self.props.handleLoginComplete(activeUser, true);
             self.props.closeClicked();
           } 
-
         }).catch(err => {
           console.log('caught it!', err);
         })
@@ -92,7 +91,7 @@ class LoginForm extends Component {
 
                 <Form.Group controlId="formPassword">
                     <Form.Label>Password:</Form.Label>
-                    <Form.Control ref={this.passwordInput} type="password" placeholder="Password" isInvalid={!this.state.validated} required/>
+                    <Form.Control ref={this.passwordInput} type="password" placeholder="Password" isInvalid={this.state.validated} required/>
                     <Form.Control.Feedback type="invalid">
                         Please enter a valid password.
                     </Form.Control.Feedback>
