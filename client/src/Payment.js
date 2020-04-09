@@ -160,7 +160,6 @@ class Payment extends Component {
             }
             return response.json();
         }).then(function (data) {
-            console.log(data);
             let accountID = data[0].accountID;
             self.getBankDetails(accountID);
         }).catch(err => {
@@ -169,7 +168,6 @@ class Payment extends Component {
     }
 
     getBankDetails(accountID) {
-        console.log(this.props);
         let self = this;
         fetch(process.env.REACT_APP_SERVER + '/paymentdetails/get/' + accountID, {
             method: 'GET'
@@ -179,7 +177,6 @@ class Payment extends Component {
             }
             return response.json();
         }).then(function (data) {
-            console.log(data);
             if (data.length > 0) {
                 self.setState({ Paymentdetails: data[0] });
                 let billingAddressID = data[0].billingAddressID
@@ -191,7 +188,6 @@ class Payment extends Component {
     }
 
     getBillingAd(billingAddressID) {
-        console.log(this.props);
         let self = this;
         fetch(process.env.REACT_APP_SERVER + '/billingAddress/get/' + billingAddressID, {
             method: 'GET'
@@ -201,7 +197,6 @@ class Payment extends Component {
             }
             return response.json();
         }).then(function (data) {
-            console.log(data);
             self.setState({ Billingaddress: data[0] });
         }).catch(err => {
             console.log('caught it!', err);
@@ -210,7 +205,6 @@ class Payment extends Component {
     componentDidMount() {
 
         if (this.props.loggedIn) {
-            console.log(this.props);
             this.getAccountID()
         }
     }
@@ -218,14 +212,12 @@ class Payment extends Component {
 
         if (this.props.loggedIn !== prevProps.loggedIn) {
             if (this.props.loggedIn) {
-                console.log("update" + this.props);
                 this.getAccountID()
             }
         }
     }
 
     render() {
-        console.log(this.state.Paymentdetails);
         const { errors } = this.state;
         // if not paid show form otherwise show proccessing payment 
         let paid = !(this.props.paymentSuccess) ?

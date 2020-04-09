@@ -28,7 +28,6 @@ class LoginForm extends Component {
     handleLogin() {
         let emailI = this.emailInput.current.value;
         let password = hash.sha1(this.passwordInput.current.value);
-        console.log(password);
         this.callAPI(emailI, password);
     };
 
@@ -39,7 +38,6 @@ class LoginForm extends Component {
       if (userEmail === emailI && userPassword === password) {
         this.setState({userID: this.state.users[0].userID}) ;
         this.setState({validated: true});
-        console.log(this.state.userID);
         return true;
       } else {
         return false;
@@ -49,7 +47,6 @@ class LoginForm extends Component {
     // calls the database for the user's details with provided email
     callAPI(emailI, password) {
         let self = this;
-        console.log(emailI);
         fetch(process.env.REACT_APP_SERVER+'/user/get/email/'+emailI, {
           method: 'GET'
         }).then(function (response) {
@@ -60,7 +57,6 @@ class LoginForm extends Component {
         }).then(function (data) {
           self.setState({users: data });
           if(self.verifyLogin(emailI, password)){
-            console.log(self.state.users);
             let userID = self.state.users[0].userID;
             let firstname = self.state.users[0].firstname;
             let lastname = self.state.users[0].lastname;

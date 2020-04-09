@@ -46,7 +46,6 @@ class RegisterForm extends Component {
     // add the new account to database
     callAPI(firstName, lastName, email, mobileNo, password, userType, userID, lastLogin){
         let accountData = {firstName, lastName, email, mobileNo, password, userType, userID, lastLogin};
-        console.log(JSON.stringify(accountData));
         let self = this;
         // Put registered user data into User table
         fetch(process.env.REACT_APP_SERVER+"/user/new", {
@@ -59,10 +58,8 @@ class RegisterForm extends Component {
             }
             return response.json();
         }).then(function(data) {
-            console.log(data)
             if(data.serverStatus === 2){
                 // if successful set the user as active account
-                console.log('Success');
                 self.setState({registered: "Registration complete!"});
                 self.fetchID(accountData);
             }
@@ -82,7 +79,6 @@ class RegisterForm extends Component {
           }
           return response.json();
         }).then(function (data) {
-            console.log(data);
             accountData.userID = data[0].userID;
             self.createNewAccount(accountData);
         }).catch(err => {
@@ -110,7 +106,6 @@ class RegisterForm extends Component {
             }
             return response.json();
         }).then(function(data) {
-            console.log(data)
             if(data.serverStatus === 2){
                 self.setState({registered: "Registration complete!"});
             }

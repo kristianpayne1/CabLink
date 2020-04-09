@@ -23,7 +23,6 @@ class DriverListing extends Component {
             this.callAPI(driver, function (err, dist, time, path) {
                 if (!err) {
                     // calculate trip price 
-                    console.log((self.props.distance.value + dist.value));
                     let price = driver.base_charge + (driver.mile_charge * (self.props.distance.value + dist.value) / 1609 );
                     price = price.toFixed(2);
                     let price_text = '£' + price;
