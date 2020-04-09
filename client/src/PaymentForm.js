@@ -12,8 +12,9 @@ class PaymentForm extends Component {
     state = {
         submitted: false,
         paymentDetails: [],
+        accountID: [],
         paymentCards: [],
-        accountID: ""
+        newPaymentInformation: []
     }
 
     // gets all the input data and calls database to update
@@ -53,11 +54,8 @@ class PaymentForm extends Component {
             return response.json();
         }).then(function(data) {
             // when successful get account
-            console.log(data)
             if(data.serverStatus === 2){
-                console.log('Success');
                 self.setState({submitted: true});
-                console.log(data);
                 let billingAddressID = data.insertId;
                 self.getAccountID(billingAddressID, cardName, cardNo, cardExp, firstName, lastName, addressLine1, addressLine2, city, county, postcode);
             }
@@ -78,15 +76,15 @@ class PaymentForm extends Component {
           return response.json();
         }).then(function (data) {
             // if retreival successful create new payment details
-            console.log(data);
             let accountID = data[0].accountID;
+            self.setState({accountID: accountID});
             self.finishAPI(accountID, billingAddressID, cardName, cardNo, cardExp, firstName, lastName, addressLine1, addressLine2, city, county, postcode);
         }).catch(err => {
           console.log('caught it!', err);
         });
     }
 
-    getAccountID(){
+    getAccountIDNoParam(){
         let self = this;
         fetch(process.env.REACT_APP_SERVER+'/account/get/user/'+this.props.activeUser.userID, {
           method: 'GET'
@@ -97,7 +95,8 @@ class PaymentForm extends Component {
           return response.json();
         }).then(function (data) {
             self.setState({accountID: data[0].accountID});
-            self.getPaymentDetails();
+            let accountID = data[0].accountID;
+            self.getPaymentDetails(accountID);
         }).catch(err => {
           console.log('caught it!', err);
         });
@@ -117,22 +116,20 @@ class PaymentForm extends Component {
             }
             return response.json();
         }).then(function(data) {
-            console.log(data)
             if(data.serverStatus === 2){
                 // if successsful set submitted to true
-                console.log('Success');
                 self.setState({submitted: true});
-                console.log(data);
+                self.getAccountIDNoParam();
             }
         }).catch(function(err) {
             console.log(err)
         });
     }
 
-    getPaymentDetails(){
-        if(this.state.accountID !== null){
+    getPaymentDetails(accountID){
+        if(accountID !== null){
             let self = this;
-            fetch(process.env.REACT_APP_SERVER+"/paymentdetails/get/" + self.state.accountID, {
+            fetch(process.env.REACT_APP_SERVER+"/paymentdetails/get/" + accountID, {
                 method: 'GET'
             }).then(function(response) {
                 if(response.status >= 400){
@@ -141,16 +138,16 @@ class PaymentForm extends Component {
                 return response.json();
             }).then(function (data) {
                 self.setState({paymentDetails: data})
-                self.loadPaymentDetails();
+                self.getBillingAddress(accountID);
             }).catch(err => {
                 console.log('caught it!', err);
             })
         }
     }
 
-    getBillingAddress = async (callback, billingAddressID) => {
+    getBillingAddress(accountID){
         let self = this;
-        fetch(process.env.REACT_APP_SERVER+"/billingaddress/get/" + billingAddressID, {
+        fetch(process.env.REACT_APP_SERVER+"/billingaddress/get", {
             method: 'GET'
         }).then(function(response) {
             if(response.status >= 400){
@@ -158,12 +155,48 @@ class PaymentForm extends Component {
             }
             return response.json();
         }).then(function (data) {
-            let billingAddress = data[0];
-            callback(billingAddress);
+            self.setState({billingAddressData: data});
+            self.loadPaymentDetails(accountID);
+        })
+    }
+    
+    deletePaymentDetails(e){
+        let accountID = e.target.getAttribute("accountid");
+        let billingAddressID = e.target.getAttribute("billingaddressid");
+        if(accountID !== null){
+            let self = this;
+            fetch(process.env.REACT_APP_SERVER+"/paymentdetails/delete/" + accountID + "/" + billingAddressID, {
+                method: 'GET'
+            }).then(function(response) {
+                if(response.status >= 400){
+                    throw new Error("Bad response from server");
+                }
+                return response.json();
+            }).then(function (data) {
+                self.deleteBillingAddress(billingAddressID);
+            }).catch(err => {
+                console.log('caught it!', err);
+            })
+        }
+    }
+
+    deleteBillingAddress(billingAddressID){
+        let self = this;
+        fetch(process.env.REACT_APP_SERVER+"/billingaddress/delete/" + billingAddressID, {
+            method: 'GET'
+        }).then(function(response) {
+            if(response.status >= 400){
+                throw new Error("Bad response from server");
+            }
+            return response.json();
+        }).then(function (data) {
+            self.getAccountIDNoParam();
+        }).catch(err => {
+            console.log('caught it!', err);
         })
     }
 
-    loadPaymentDetails(){
+    loadPaymentDetails(accountID){
         let paymentCards = [];
         if(this.state.paymentDetails !== null){
             if(this.state.paymentDetails.length === 0){
@@ -180,40 +213,79 @@ class PaymentForm extends Component {
                 this.setState({paymentCards: paymentCards});
             } else {
                 for(let x = 0; x < this.state.paymentDetails.length; x++){
-                    let self = this;
-                    this.getBillingAddress(function (billingAddress) {
-                        paymentCards.push(<Card key={x}>
-                            <Accordion.Toggle as={Card.Header} eventKey={x}>
-                                {self.state.paymentDetails[x].cardHolderName}
-                            </Accordion.Toggle>
-                            <Accordion.Collapse eventKey={x}>
-                                <Card.Body>
-                                    <Form>
-                                        <Form.Group controlID="paymentFormName">
-                                            <Form.Label>Card Name</Form.Label>
-                                            <Form.Control plaintext readOnly type="name" placeholder={self.state.paymentDetails[x].cardHolderName}/>
-                                        </Form.Group>
+                    let billingAddressID = this.state.paymentDetails[x].billingAddressID;
+                    let billingAddress = [];
+                    for(let y = 0; y < this.state.billingAddressData.length; y++){
+                        if(billingAddressID === this.state.billingAddressData[y].billingAddressID){
+                            billingAddress = this.state.billingAddressData[y];
+                        }
+                    }
+                    paymentCards.push(<Card key={x}>
+                        <Accordion.Toggle as={Card.Header} eventKey={x}>
+                            {this.state.paymentDetails[x].cardHolderName}
+                        </Accordion.Toggle>
+                        <Accordion.Collapse eventKey={x}>
+                            <Card.Body>
+                                <Form>
+                                    <Form.Group controlId="paymentFormName">
+                                        <Form.Label>Card Name</Form.Label>
+                                        <Form.Control readOnly type="name" placeholder={this.state.paymentDetails[x].cardHolderName}/>
+                                    </Form.Group>
 
-                                        <Form.Row>
-                                            <Form.Group as={Col} controlId="paymentFormCardNo">
-                                                <Form.Label>Card Number</Form.Label>
-                                                <Form.Control plaintext readOnly type="cardNo" placeholder={self.state.paymentDetails[x].cardNo}/>
+                                    <Form.Row>
+                                        <Form.Group as={Col} controlId="paymentFormCardNo">
+                                            <Form.Label>Card Number</Form.Label>
+                                            <Form.Control readOnly type="cardNo" placeholder={this.state.paymentDetails[x].cardNo}/>
+                                        </Form.Group>
+                                        <Form.Group as={Col} controlId="paymentFormCardExp">
+                                            <Form.Label>Card Expiry (MM/YY)</Form.Label>
+                                            <Form.Control readOnly type="cardExp" placeholder={this.state.paymentDetails[x].cardExp}/>
+                                        </Form.Group>
+                                    </Form.Row>
+
+                                    <Form.Label>Billing Address</Form.Label>
+                                    <Form.Row>
+                                            <Form.Group as={Col} controlId="paymentFormFirst">
+                                                <Form.Label>First Name</Form.Label>
+                                                <Form.Control readOnly type="firstName" placeholder={billingAddress.firstName}/>
                                             </Form.Group>
-                                            <Form.Group as={Col} controlId="paymentFormCardExp">
-                                                <Form.Label>Card Expiry (MM/YY)</Form.Label>
-                                                <Form.Control plaintext readOnly type="cardExp" placeholder="MM/YY"/>
+                                            <Form.Group as={Col} controlId="paymentFormLast">
+                                                <Form.Label>Last Name</Form.Label>
+                                                <Form.Control readOnly type="lastname" placeholder={billingAddress.lastName}/>
                                             </Form.Group>
-                                        </Form.Row>
-                                    </Form>
-                                </Card.Body>
-                            </Accordion.Collapse>
-                        </Card>);
-                    }, this.state.paymentDetails[x].billingAddressID)
+                                    </Form.Row>
+                                    <Form.Group controlId="paymentFormAddress1">
+                                        <Form.Label>Address Line 1</Form.Label>
+                                        <Form.Control readOnly type="address1" placeholder={billingAddress.addressLine1}/>
+                                    </Form.Group>
+                                    <Form.Group controlId="paymentFormAddress2">
+                                        <Form.Label>Address Line 2</Form.Label>
+                                        <Form.Control readOnly type="address2" placeholder={billingAddress.addressLine2}/>
+                                    </Form.Group>
+                                    <Form.Row>
+                                        <Form.Group as={Col} controlId="paymentFormTown">
+                                            <Form.Label>City</Form.Label>
+                                            <Form.Control readOnly type="town" placeholder={billingAddress.city}/>
+                                        </Form.Group>
+                                        <Form.Group as={Col} controlId="paymentFormCity">
+                                            <Form.Label>County</Form.Label>
+                                            <Form.Control readOnly type="cityCounty" placeholder={billingAddress.county}/>
+                                        </Form.Group>
+                                        <Form.Group as={Col} controlId="paymentFormPostCode">
+                                            <Form.Label>PostCode</Form.Label>
+                                            <Form.Control readOnly type="postCode" placeholder={billingAddress.postcode}/>
+                                        </Form.Group>
+                                    </Form.Row>
+                                    <Button variant="outline-danger" billingaddressid={billingAddressID} accountid={accountID} onClick={this.deletePaymentDetails.bind(this)}>Delete</Button>
+                                </Form>
+                            </Card.Body>
+                        </Accordion.Collapse>
+                    </Card>);
                 }
                 this.setState({paymentCards: paymentCards});
             }
         } else {
-            paymentCards.push(<Card>
+            paymentCards.push(<Card key={0}>
                 <Accordion.Toggle as={Card.Header} eventKey={0}>
                     No Card Details Found
                 </Accordion.Toggle>
@@ -225,17 +297,10 @@ class PaymentForm extends Component {
             </Card>);
             this.setState({paymentCards: paymentCards});
         }
-        console.log(this.state.paymentCards);
+        this.renderNewPaymentForm();
     }
 
-    componentDidMount(){
-        this.getAccountID();
-    }
-
-    render() {
-        let paymentCards = this.state.paymentCards;
-        console.log(this.state.paymentCards);
-        // Form references
+    renderNewPaymentForm(){
         this.cardNameInput = React.createRef();
         this.cardNoInput = React.createRef();
         this.cardExpInput = React.createRef();
@@ -246,7 +311,7 @@ class PaymentForm extends Component {
         this.cityInput = React.createRef();
         this.countyInput = React.createRef();
         this.postCodeInput = React.createRef();
-        let newPaymentInformation = <Card>
+        let newPaymentInformation = <Card key={3}>
             <Accordion.Toggle as={Card.Header} eventKey={3}>
                 Enter a new Payment Method
             </Accordion.Toggle>
@@ -307,6 +372,18 @@ class PaymentForm extends Component {
                 </Card.Body>
             </Accordion.Collapse>
         </Card>
+
+        this.setState({newPaymentInformation: newPaymentInformation});
+    }
+
+    componentDidMount(){
+        this.getAccountIDNoParam();
+        
+    }
+
+    render() {
+        let paymentCards = this.state.paymentCards;
+        let newPaymentInformation = this.state.newPaymentInformation;   
         if(this.state.paymentCards.length >= 3){
             newPaymentInformation = [];
         }

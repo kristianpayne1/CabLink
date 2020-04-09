@@ -71,15 +71,11 @@ class AccountForm extends Component {
                 }
                 return response.json();
             }).then(function(data) {
-                console.log(data)
                 if(data.serverStatus === 2){
-                    console.log('Success');
                 }
             }).catch(function(err) {
                 console.log(err)
             });
-        } else {
-            console.log("Password didn't change");
         }
     }
 
@@ -97,15 +93,11 @@ class AccountForm extends Component {
                 }
                 return response.json();
             }).then(function(data) {
-                console.log(data)
                 if(data.serverStatus === 2){
-                    console.log('Success');
                 }
             }).catch(function(err) {
                 console.log(err)
             });
-        } else {
-            console.log("Email didn't change");
         }
     }
 
