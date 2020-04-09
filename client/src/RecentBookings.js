@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
 
+// Returns an Accordion containing all of the users recent bookings
 class RecentBookings extends Component{
-    
     state = {
         bookingsFound: [],
         driver: [],
@@ -12,6 +12,7 @@ class RecentBookings extends Component{
         bookings: []
     }
 
+    // Get bookings corresponding to the active user
     getBookings(){
         let self = this;
         fetch(process.env.REACT_APP_SERVER+'/booking/get/user/'+this.props.activeUser.userID, {
@@ -29,6 +30,7 @@ class RecentBookings extends Component{
         })
     }
 
+    // Get the first and last name of the corresponding driver
     getDriverName= async (callback, booking) => {
         let self = this;
         fetch(process.env.REACT_APP_SERVER+'/driver/get/'+booking.driverID, {
@@ -47,6 +49,7 @@ class RecentBookings extends Component{
         })
     }
 
+    // Get all drivers
     getDrivers(){
         let self = this;
         fetch(process.env.REACT_APP_SERVER+'/driver/get', {
@@ -61,7 +64,7 @@ class RecentBookings extends Component{
         })
     }
 
-
+    // Load all bookings into Cards to be placed within the accordion
     loadBookings(){
         let bookings = [];
         if(this.state.bookingsFound !== null){
@@ -114,6 +117,7 @@ class RecentBookings extends Component{
         }
     }
 
+    // Forces the component to update upon first render
     componentDidMount(){
         this.getBookings();
     }
